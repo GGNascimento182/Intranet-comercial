@@ -1,12 +1,15 @@
-name: Deploy GitHub Pages
+name: Atualizar dados e publicar GitHub Pages
 
 on:
   push:
     branches: [main]
+  schedule:
+    # Executa no minuto 17 para evitar os picos do início de cada hora.
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,13 +18,66 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  refresh-salesforce:
+    # O push já contém os dados mais recentes. Agenda e execução manual os atualizam.
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      salesforce-configured: ${{ steps.auth-state.outputs.configured }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verificar credencial Salesforce
+        id: auth-state
+        env:
+          SF_AUTH_URL: ${{ secrets.SF_AUTH_URL }}
+        run: |
+          if [ -n "$SF_AUTH_URL" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "O segredo SF_AUTH_URL ainda não foi cadastrado."
+          fi
+      - name: Instalar Salesforce CLI
+        if: steps.auth-state.outputs.configured == 'true'
+        run: npm install --global @salesforce/cli@latest
+      - name: Autenticar no Salesforce
+        if: steps.auth-state.outputs.configured == 'true'
+        env:
+          SF_AUTH_URL: ${{ secrets.SF_AUTH_URL }}
+        run: |
+          printf '%s' "$SF_AUTH_URL" > auth-url.txt
+          sf org login sfdx-url --sfdx-url-file auth-url.txt --alias production --set-default
+          rm auth-url.txt
+      - name: Atualizar agregados do dashboard
+        if: steps.auth-state.outputs.configured == 'true'
+        run: pwsh -File ./sync-salesforce.ps1 -TargetOrg production
+      - name: Registrar snapshot atualizado
+        if: steps.auth-state.outputs.configured == 'true'
+        run: |
+          if git diff --quiet -- salesforce-data.js; then
+            echo "Sem alteracoes nos dados."
+            exit 0
+          fi
+          git config user.name "Ideal Trends Dashboard"
+          git config user.email "dashboard@idealtrends.com.br"
+          git add salesforce-data.js
+          git commit -m "Atualiza dados do Salesforce"
+          git push
+
   deploy:
+    needs: refresh-salesforce
+    if: ${{ always() && (github.event_name == 'push' || (needs.refresh-salesforce.result == 'success' && needs.refresh-salesforce.outputs.salesforce-configured == 'true')) }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

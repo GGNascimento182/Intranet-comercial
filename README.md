@@ -4,13 +4,14 @@ Abra `index.html` no navegador. HTML, CSS e JavaScript sem instalação de bibli
 
 ## Publicação no GitHub Pages
 
-O workflow [`.github/workflows/deploy-pages.yml`](../.github/workflows/deploy-pages.yml) publica esta pasta quando mudanças chegam à branch `main`.
+O workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) publica esta pasta quando mudanças chegam à branch `main` e atualiza o snapshot do Salesforce a cada hora (no minuto 17).
 
 1. Crie ou associe este diretório a um repositório GitHub e envie a branch `main`.
 2. No repositório, em **Settings → Pages**, selecione **GitHub Actions** como fonte.
-3. Atualize os agregados localmente com `./sync-salesforce.ps1`, revise `salesforce-data.js` e faça o push.
+3. Cadastre o segredo `SF_AUTH_URL` no repositório com uma URL de autenticação SFDX de uma conta Salesforce somente-leitura. O workflow a usa apenas no GitHub Actions; ela nunca é incluída no site ou nos commits.
+4. Atualize os agregados localmente com `./sync-salesforce.ps1`, revise `salesforce-data.js` e faça o push quando necessário.
 
-O Pages não acessa Salesforce, não recebe credenciais e não atualiza dados sozinho. Cada publicação reflete o snapshot agregado incluído no commit.
+O navegador continua recebendo apenas o snapshot agregado. A atualização ocorre no GitHub Actions e publica uma nova versão quando os dados mudam.
 
 ## Dados reais e recorte
 
