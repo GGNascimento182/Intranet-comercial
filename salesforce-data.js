@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-17T17:05:45.2048429Z",
-  "startedAt": "2026-09-17T17:03:51.6009308Z",
+  "extractedAt": "2026-09-17T17:26:03.6556935Z",
+  "startedAt": "2026-09-17T17:24:05.3900135Z",
   "asOfDate": "2026-09-17",
   "range": {
     "start": "2019-01",
@@ -76,16 +76,16 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2007-07-24",
+    "sales": "2019-02-04",
     "pipeline": "1899-12-30",
     "appointments": "2015-10-30",
-    "sales": "2019-02-04"
+    "connections": "2007-07-24"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2024: 6 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2025: 3263 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
-    "2026: 4544 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
+    "2026: 4543 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2027: 29 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -290,14 +290,14 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 8778,
+      "records": 8779,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4747,
+      "records": 4749,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -311,9 +311,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5929,
-      "knownAmount": 2659812.8400000003,
-      "missingAmounts": 4544
+      "records": 5927,
+      "knownAmount": 2658061.8400000003,
+      "missingAmounts": 4543
     },
     {
       "year": 2027,
@@ -5761,7 +5761,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 25404,
-      "appointments": 97,
+      "appointments": 96,
       "connections": 53,
       "sales": 11,
       "pipeline": null
@@ -5811,8 +5811,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28439,
-      "appointments": 176,
-      "connections": 81,
+      "appointments": 177,
+      "connections": 82,
       "sales": 16,
       "pipeline": null
     },
@@ -5821,7 +5821,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 6467,
-      "appointments": 30,
+      "appointments": 31,
       "connections": 13,
       "sales": 3,
       "pipeline": null
@@ -5832,7 +5832,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 43622,
       "appointments": 97,
-      "connections": 46,
+      "connections": 47,
       "sales": 20,
       "pipeline": null
     },
@@ -50941,7 +50941,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 0,
-      "appointments": 5,
+      "appointments": 4,
       "connections": 3,
       "sales": 0,
       "pipeline": null
@@ -51865,8 +51865,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 2196,
-      "appointments": 7,
-      "connections": 0,
+      "appointments": 8,
+      "connections": 1,
       "sales": 1,
       "pipeline": null
     },
@@ -51876,7 +51876,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 0,
-      "appointments": 1,
+      "appointments": 2,
       "connections": 0,
       "sales": 0,
       "pipeline": null
@@ -51888,7 +51888,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 0,
       "appointments": 8,
-      "connections": 0,
+      "connections": 1,
       "sales": 0,
       "pipeline": null
     },
