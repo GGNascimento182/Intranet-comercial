@@ -1,0 +1,20 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const {build}=require('./build-salesforce-data.cjs');
+const {valueFor}=require('./data-model.js');
+const record=(overrides={})=>({date:'2026-08-15',HunterSupervisor__c:'A',Name:'Supervisor A',n:2,valued:2,amount:1200,...overrides});
+const payload=()=>({startYear:2026,endYear:2027,today:'2026-09-16',extractedAt:'2026-09-16T13:00:00Z',startedAt:'2026-09-16T12:59:00Z',amountField:'Amount',excludeLostSales:true,connectedWithoutDate:0,supervisors:['A','B','C','D','E'].map(id=>({id,name:'Supervisor '+id})),batches:[
+ {year:2026,metric:'appointments',dateField:'date',records:[record({n:10})]},
+ {year:2026,metric:'connections',dateField:'date',records:[record({n:6})]},
+ {year:2026,metric:'sales',dateField:'date',records:[record()]},
+ {year:2026,metric:'pipeline',dateField:'date',records:[record({date:'2026-12-15',amount:3000})]},
+ {year:2027,metric:'pipeline',dateField:'date',records:[record({date:'2027-01-15',amount:1000})]}
+]});
+ test('Maps daily CRM results and reconciles monthly totals with future pipeline',()=>{const d=build(payload());assert.equal(valueFor(d,'2026-08','appointments'),10);assert.equal(valueFor(d,'2026-08','connections'),6);assert.equal(valueFor(d,'2026-08','ticket'),600);assert.equal(valueFor(d,'2027-01','pipeline'),1000);assert.equal(valueFor(d,'2027-01','sales'),null);assert.equal(valueFor(d,'2026-08','pipeline'),0);assert.equal(valueFor(d,'2026-08','sales',undefined,14),0);assert.equal(valueFor(d,'2026-08','sales',undefined,15),2);});
+ test('Missing amounts do not silently lower ticket or revenue',()=>{const p=payload();p.batches[2].records[0].valued=1;const d=build(p);assert.equal(valueFor(d,'2026-08','sales'),2);assert.equal(valueFor(d,'2026-08','revenue'),null);assert.equal(valueFor(d,'2026-08','ticket'),null);assert.equal(d.warnings.length,1);});
+ test('Incomplete extraction cannot overwrite a valid dataset',()=>{const p=payload();p.batches.pop();assert.throws(()=>build(p),/incompleto/);});
+test('Supervisors outside the five configured IDs are rejected',()=>{const p=payload();p.batches[0].records[0].HunterSupervisor__c='outsider';assert.throws(()=>build(p),/fora do recorte/);});
+test('Disconnected records are combined in their own visible group',()=>{const p=payload();p.batches[0].records.push(record({HunterSupervisor__c:'DISCONNECTED',Name:'Desligados',n:4}));const d=build(p);assert.equal(valueFor(d,'2026-08','appointments','DISCONNECTED'),4);assert.equal(valueFor(d,'2026-08','appointments'),14);assert.equal(d.displayGroups.at(-1).name,'Desligados');});
+ test('Duplicate daily groups and future realized events are rejected',()=>{const p=payload();p.batches[0].records.push({...p.batches[0].records[0]});assert.throws(()=>build(p),/duplicado/);const q=payload();q.batches[0].records[0].date='2026-09-17';assert.throws(()=>build(q),/futura/);});
+ test('Current extraction month is marked partial even when viewed later',()=>{const d=build(payload());assert.equal(d.coverage.find(c=>c.month==='2026-09'&&c.metric==='sales').partialPeriod,true);assert.equal(d.coverage.find(c=>c.month==='2026-08'&&c.metric==='sales').partialPeriod,false);});
+ test('Daily sums are rolled up once and match full-month MTD',()=>{const p=payload();p.batches[2].records.push(record({date:'2026-08-25',amount:300,n:1,valued:1}));const d=build(p);assert.equal(valueFor(d,'2026-08','revenue'),1500);assert.equal(valueFor(d,'2026-08','revenue',undefined,15),1200);assert.equal(valueFor(d,'2026-08','revenue',undefined,31),1500);assert.match(d.rules.sales,/Dia_da_venda__c/);assert.equal(d.rules.excludeLostSales,true);});

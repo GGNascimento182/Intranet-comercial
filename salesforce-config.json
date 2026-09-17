@@ -1,0 +1,12 @@
+{
+  "amountField": "Amount",
+  "saleDateField": "Dia_da_venda__c",
+  "excludeLostSales": true,
+  "supervisors": [
+    {"id":"005bL000007dcn4QAA","name":"Guilherme Bispo"},
+    {"id":"005bL00000OfjD3QAJ","name":"Rodrigo Silva"},
+    {"id":"005bL000007dcX6QAI","name":"Samantha Jeronimo"},
+    {"id":"005bL0000092GukQAE","name":"Thais Leite"},
+    {"id":"005bL00000FhaPOQAZ","name":"Willian Cardoso"}
+  ]
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1a30">
+  <title>Ideal Trends · Dashboard Comercial</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="components.js" defer></script>
+  <script src="data-model.js" defer></script>
+  <script src="salesforce-data.js" defer></script>
+  <script src="crm-components.js" defer></script>
+  <script src="crm-app.js" defer></script>
+  <script src="business-plan-config.js" defer></script>
+  <script src="business-plan.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <dashboard-sidebar></dashboard-sidebar>
+  <main id="conteudo">
+    <header class="page-header view-page" data-view="dashboard">
+      <div><h1>Dashboard Comercial</h1><p>Visão geral do desempenho comercial da Ideal Trends</p></div>
+      <div class="period-controls"><label class="period-chip" for="report-month"><ui-icon name="calendar"></ui-icon>Mês <input type="month" id="report-month" required></label></div>
+    </header>
+    <p id="connection-status" class="connection-status view-page" data-view="dashboard" role="status" aria-live="polite"></p>
+    <details class="source-details view-page" data-view="dashboard"><summary>Critérios e qualidade dos dados</summary><div id="source-details"></div></details>
+    <section class="panel view-page" aria-labelledby="macro-title" id="dashboard" data-view="dashboard">
+      <header class="section-header"><span class="section-icon"><ui-icon name="activity"></ui-icon></span><div><h2 id="macro-title">Visão Macro</h2><p>Resultados gerais da operação comercial</p></div></header>
+      <div class="metrics-grid" id="macro-metrics"></div>
+    </section>
+    <section class="panel view-page" aria-labelledby="team-title" id="times" data-view="dashboard">
+      <header class="section-header"><span class="section-icon"><ui-icon name="users"></ui-icon></span><div><h2 id="team-title">Desempenho por Time</h2><p>5 supervisores ativos e grupo consolidado de desligados</p></div></header>
+      <crm-team></crm-team>
+    </section>
+    <section class="panel history-panel view-page" aria-labelledby="history-title" id="historico" data-view="dashboard">
+      <header class="section-header"><span class="section-icon"><ui-icon name="trend"></ui-icon></span><div><h2 id="history-title">Evolução Histórica por Indicador</h2><p id="history-period">Períodos mensais</p></div><div class="history-controls"><label>Período <select id="history-mode"><option value="mtd" selected>MTD · mesmo dia útil</option><option value="month">Mês completo</option></select></label><label id="cutoff-label">Até o <input id="history-cutoff" type="number" min="1" max="31" value="1" aria-label="Posição do dia útil no mês">º dia útil</label><label>Gráfico <select id="chart-style"><option value="area">Área</option><option value="line">Linha</option></select></label></div></header>
+      <div class="history-grid" id="history-metrics"></div>
+    </section>
+    <section class="view-page bp-page" id="business-plan" data-view="business-plan" hidden aria-labelledby="bp-title">
+      <header class="page-header page-header-view"><div><h1 id="bp-title">Business Plan</h1><p>Plano, ritmo até o mesmo dia útil e realizado da operação</p></div><div class="period-controls"><label class="period-chip" for="bp-month"><ui-icon name="calendar"></ui-icon>Mês <input type="month" id="bp-month" required></label></div></header>
+      <p id="bp-status" class="connection-status" role="status"></p>
+      <section class="panel" aria-labelledby="bp-summary-title"><header class="section-header"><span class="section-icon"><ui-icon name="activity"></ui-icon></span><div><h2 id="bp-summary-title">Acompanhamento do plano</h2><p>Planejado até hoje usa a posição de dia útil do mês</p></div></header><div id="bp-table"></div></section>
+      <section class="panel" aria-labelledby="bp-history-title"><header class="section-header"><span class="section-icon"><ui-icon name="trend"></ui-icon></span><div><h2 id="bp-history-title">Business Plan x Realizado por mês</h2><p>Histórico desde o primeiro mês disponível na carga</p></div></header><div id="bp-history"></div></section>
+    </section>
+    <section class="view-page placeholder-page" id="performance" data-view="performance" hidden><h1>Performance</h1><p>Esta página será desenvolvida.</p></section>
+    <section class="view-page placeholder-page" id="insights" data-view="insights" hidden><h1>Insights</h1><p>Esta página será desenvolvida.</p></section>
+    <section class="view-page placeholder-page" id="knowledge" data-view="knowledge" hidden><h1>Conhecimento</h1><p>Playbook, Produtos, Mercado, FAQ, Templates, Onboarding, Organograma e Links serão desenvolvidos aqui.</p></section>
+    <section class="view-page placeholder-page" id="operation" data-view="operation" hidden><h1>Operação</h1><p>Políticas, Processos e Rituais serão desenvolvidos aqui.</p></section>
+    <footer class="page-footer">Fonte: Salesforce via CLI · Times por Supervisor de Hunter · Histórico mensal</footer>
+  </main>
+</body>
+</html>

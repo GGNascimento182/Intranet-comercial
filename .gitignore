@@ -1,0 +1,7 @@
+# Salesforce CLI authentication and diagnostic files remain local.
+.sf/
+.sfdx/
+*.log
+
+# The generated, aggregated snapshot is intentionally versioned for GitHub Pages.
+!salesforce-data.js
