@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-17T21:27:26.3590950Z",
-  "startedAt": "2026-09-17T21:25:28.4379581Z",
+  "extractedAt": "2026-09-17T22:25:55.4551203Z",
+  "startedAt": "2026-09-17T22:24:03.5668108Z",
   "asOfDate": "2026-09-17",
   "range": {
     "start": "2019-01",
@@ -76,8 +76,8 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2007-07-24",
     "pipeline": "1899-12-30",
+    "connections": "2007-07-24",
     "sales": "2019-02-04",
     "appointments": "2015-10-30"
   },
@@ -85,7 +85,7 @@ window.SALESFORCE_DATA = {
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2024: 6 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2025: 3263 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
-    "2026: 4544 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
+    "2026: 4569 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2027: 29 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -297,23 +297,23 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4756,
+      "records": 4758,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "sales",
-      "records": 325,
-      "knownAmount": 661163.5499999999,
+      "records": 326,
+      "knownAmount": 663883.5499999999,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5933,
-      "knownAmount": 2668945.8400000003,
-      "missingAmounts": 4544
+      "records": 5959,
+      "knownAmount": 2671615.8400000003,
+      "missingAmounts": 4569
     },
     {
       "year": 2027,
@@ -5790,10 +5790,10 @@ window.SALESFORCE_DATA = {
       "month": "2026-09",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
-      "revenue": 24480,
+      "revenue": 27200,
       "appointments": 186,
-      "connections": 79,
-      "sales": 12,
+      "connections": 81,
+      "sales": 13,
       "pipeline": null
     },
     {
@@ -51853,10 +51853,10 @@ window.SALESFORCE_DATA = {
       "month": "2026-09",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
-      "revenue": 2700,
+      "revenue": 5420,
       "appointments": 14,
-      "connections": 3,
-      "sales": 1,
+      "connections": 5,
+      "sales": 2,
       "pipeline": null
     },
     {
