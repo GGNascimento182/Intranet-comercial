@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-18T09:28:42.2053843Z",
-  "startedAt": "2026-09-18T09:26:44.8294459Z",
+  "extractedAt": "2026-09-18T10:27:25.5234298Z",
+  "startedAt": "2026-09-18T10:26:18.2658116Z",
   "asOfDate": "2026-09-18",
   "range": {
     "start": "2019-01",
@@ -76,10 +76,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
+    "pipeline": "1899-12-30",
     "sales": "2019-02-04",
     "connections": "2007-07-24",
-    "appointments": "2015-10-30",
-    "pipeline": "1899-12-30"
+    "appointments": "2015-10-30"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
@@ -297,7 +297,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4761,
+      "records": 4762,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -5812,7 +5812,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28439,
       "appointments": 184,
-      "connections": 83,
+      "connections": 84,
       "sales": 16,
       "pipeline": null
     },
@@ -51877,7 +51877,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 2196,
       "appointments": 15,
-      "connections": 2,
+      "connections": 3,
       "sales": 1,
       "pipeline": null
     },
