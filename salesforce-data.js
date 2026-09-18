@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-18T11:27:15.9104766Z",
-  "startedAt": "2026-09-18T11:25:20.6657253Z",
+  "extractedAt": "2026-09-18T12:32:42.8445005Z",
+  "startedAt": "2026-09-18T12:30:47.3389916Z",
   "asOfDate": "2026-09-18",
   "range": {
     "start": "2019-01",
@@ -78,14 +78,14 @@ window.SALESFORCE_DATA = {
   "firstDates": {
     "pipeline": "1899-12-30",
     "appointments": "2015-10-30",
-    "connections": "2007-07-24",
-    "sales": "2019-02-04"
+    "sales": "2019-02-04",
+    "connections": "2007-07-24"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2024: 6 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2025: 3263 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
-    "2026: 4568 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
+    "2026: 4566 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2027: 29 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -290,14 +290,14 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 8809,
+      "records": 8810,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4762,
+      "records": 4764,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -312,8 +312,8 @@ window.SALESFORCE_DATA = {
       "year": 2026,
       "metric": "pipeline",
       "records": 5961,
-      "knownAmount": 2679935.8400000003,
-      "missingAmounts": 4568
+      "knownAmount": 2683552.8400000003,
+      "missingAmounts": 4566
     },
     {
       "year": 2027,
@@ -5781,8 +5781,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 11488,
-      "appointments": 64,
-      "connections": 28,
+      "appointments": 65,
+      "connections": 29,
       "sales": 6,
       "pipeline": null
     },
@@ -5812,7 +5812,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28439,
       "appointments": 184,
-      "connections": 84,
+      "connections": 85,
       "sales": 16,
       "pipeline": null
     },
@@ -5924,7 +5924,7 @@ window.SALESFORCE_DATA = {
       "appointments": 0,
       "connections": 0,
       "sales": 0,
-      "pipeline": 2500
+      "pipeline": 4150
     },
     {
       "month": "2026-11",
@@ -51844,7 +51844,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 4650,
       "appointments": 12,
-      "connections": 1,
+      "connections": 2,
       "sales": 2,
       "pipeline": null
     },
@@ -51877,7 +51877,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 2196,
       "appointments": 15,
-      "connections": 3,
+      "connections": 4,
       "sales": 1,
       "pipeline": null
     },
@@ -51909,7 +51909,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 0,
+      "appointments": 1,
       "connections": 0,
       "sales": 0,
       "pipeline": null
@@ -52815,6 +52815,17 @@ window.SALESFORCE_DATA = {
       "connections": 0,
       "sales": 0,
       "pipeline": null
+    },
+    {
+      "date": "2026-11-02",
+      "month": "2026-11",
+      "supervisorId": "005bL00000OfjD3QAJ",
+      "supervisorName": "Rodrigo Silva",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 0,
+      "sales": 0,
+      "pipeline": 1650
     },
     {
       "date": "2026-11-02",
