@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-17T23:23:53.6851037Z",
-  "startedAt": "2026-09-17T23:21:56.2473109Z",
+  "extractedAt": "2026-09-18T00:34:38.2499746Z",
+  "startedAt": "2026-09-18T00:32:43.0388640Z",
   "asOfDate": "2026-09-17",
   "range": {
     "start": "2019-01",
@@ -76,16 +76,16 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2015-10-30",
     "sales": "2019-02-04",
     "connections": "2007-07-24",
-    "pipeline": "1899-12-30"
+    "pipeline": "1899-12-30",
+    "appointments": "2015-10-30"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2024: 6 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2025: 3263 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
-    "2026: 4570 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
+    "2026: 4568 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "2027: 29 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -290,14 +290,14 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 8808,
+      "records": 8809,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4759,
+      "records": 4761,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -312,8 +312,8 @@ window.SALESFORCE_DATA = {
       "year": 2026,
       "metric": "pipeline",
       "records": 5961,
-      "knownAmount": 2673235.8400000003,
-      "missingAmounts": 4570
+      "knownAmount": 2679935.8400000003,
+      "missingAmounts": 4568
     },
     {
       "year": 2027,
@@ -5792,7 +5792,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 27200,
       "appointments": 186,
-      "connections": 82,
+      "connections": 83,
       "sales": 13,
       "pipeline": null
     },
@@ -5831,8 +5831,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 45919,
-      "appointments": 100,
-      "connections": 48,
+      "appointments": 101,
+      "connections": 49,
       "sales": 21,
       "pipeline": null
     },
@@ -51855,7 +51855,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 5420,
       "appointments": 14,
-      "connections": 6,
+      "connections": 7,
       "sales": 2,
       "pipeline": null
     },
@@ -51898,8 +51898,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 2297,
-      "appointments": 10,
-      "connections": 1,
+      "appointments": 11,
+      "connections": 2,
       "sales": 1,
       "pipeline": null
     },
