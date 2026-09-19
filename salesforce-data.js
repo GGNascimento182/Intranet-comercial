@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-19T02:27:26.9569785Z",
-  "startedAt": "2026-09-19T02:25:38.9132746Z",
-  "asOfDate": "2026-09-18",
+  "extractedAt": "2026-09-19T03:27:32.2089239Z",
+  "startedAt": "2026-09-19T03:25:38.1128205Z",
+  "asOfDate": "2026-09-19",
   "range": {
     "start": "2019-01",
     "end": "2027-12"
@@ -76,10 +76,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2007-07-24",
+    "sales": "2019-02-04",
     "appointments": "2015-10-30",
-    "pipeline": "1899-12-30",
-    "sales": "2019-02-04"
+    "connections": "2007-07-24",
+    "pipeline": "1899-12-30"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
@@ -53448,6 +53448,17 @@ window.SALESFORCE_DATA = {
       "month": "2027-01",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 0,
+      "sales": 0,
+      "pipeline": null
+    },
+    {
+      "date": "2027-01-01",
+      "month": "2027-01",
+      "supervisorId": "005bL00000FhaPOQAZ",
+      "supervisorName": "Willian Cardoso",
       "revenue": 0,
       "appointments": 0,
       "connections": 0,
