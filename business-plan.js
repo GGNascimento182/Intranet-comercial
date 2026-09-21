@@ -41,10 +41,10 @@ function bpWeeklyPeriods(month){
 function bpWeeklyRow(label,values,{total=false,kind=''}={}){const monthTotal=values.reduce((sum,value)=>sum+value,0);return `<tr class="${total?'bp-weekly-total ':''}${kind?`bp-weekly-${kind}`:''}"><th scope="row">${escapeHTML(label)}</th>${values.map(value=>`<td>${bpMoney(value)}</td>`).join('')}<td>${bpMoney(monthTotal)}</td></tr>`;}
 function bpWeeklyTeamKey(row,teams){
   // IM 2 tem prioridade: seus membros não podem ser contados novamente no
-  // time de Patrick ou Matheus caso a estrutura de supervisão mude.
+  // projeto-base mesmo que a estrutura de times mude.
   const memberTeam=teams.find(team=>(team.members||[]).some(name=>bpNameContains(row.closerName,name)));
   if(memberTeam)return memberTeam.key;
-  return teams.find(team=>team.supervisor&&bpNameContains(row.supervisorName,team.supervisor))?.key||null;
+  return teams.find(team=>team.project===row.project)?.key||null;
 }
 function bpWeeklySalesAmount(team,period,field,teams,month){
   // S1 pode começar no mês anterior. Ele só deve trazer dias do mês exibido,

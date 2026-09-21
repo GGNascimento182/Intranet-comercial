@@ -92,8 +92,8 @@ foreach ($year in $StartYear..$EndYear) {
     if ($plan.key -in @('sales','totalSales')) {
       # O BP semanal abre venda e pago por Closer, mas continua sendo uma carga
       # agregada: não há nomes de oportunidades ou clientes no snapshot.
-      $closerGroup = "$($plan.date), Closer__r.Name, CloserSupervisor__r.Name"
-      $closerQuery = "SELECT $($plan.date), Closer__r.Name closerName, CloserSupervisor__r.Name closerSupervisorName, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) GROUP BY $closerGroup"
+      $closerGroup = "$($plan.date), Closer__r.Name, CloserSupervisor__r.Name, OppProjectSelection__c"
+      $closerQuery = "SELECT $($plan.date), Closer__r.Name closerName, CloserSupervisor__r.Name closerSupervisorName, OppProjectSelection__c project, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) GROUP BY $closerGroup"
       $closerRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $closerQuery) } else { @() }
       $closerSalesBatches.Add(@{year=$year;metric=$plan.key;dateField=$plan.date;records=$closerRecords})
     }

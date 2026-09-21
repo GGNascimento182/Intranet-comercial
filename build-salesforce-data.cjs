@@ -6,10 +6,10 @@ function buildCloserSales(batches){
   for(const batch of batches){
     if(!['sales','totalSales'].includes(batch.metric))throw Error('Métrica de closer inválida.');
     for(const record of (batch.records||[])){
-      const date=record[batch.dateField],closerName=record.closerName||'Sem closer',supervisorName=record.closerSupervisorName||'Sem supervisor';
-      if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isInteger(record.n)||record.n<0||!Number.isFinite(record.amount??0))throw Error('Agregado diário de closer inválido.');
-      const key=JSON.stringify([date,closerName,supervisorName]);
-      if(!rows.has(key))rows.set(key,{date,month:date.slice(0,7),closerName,supervisorName,sales:0,salesAmount:0,paidSales:0,paidAmount:0});
+      const date=record[batch.dateField],closerName=record.closerName||'Sem closer',supervisorName=record.closerSupervisorName||'Sem supervisor',project=record.project||null;
+      if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date)||!(project===null||typeof project==='string')||!Number.isInteger(record.n)||record.n<0||!Number.isFinite(record.amount??0))throw Error('Agregado diário de closer inválido.');
+      const key=JSON.stringify([date,closerName,supervisorName,project]);
+      if(!rows.has(key))rows.set(key,{date,month:date.slice(0,7),closerName,supervisorName,project,sales:0,salesAmount:0,paidSales:0,paidAmount:0});
       const row=rows.get(key),amount=record.amount??0;
       if(batch.metric==='totalSales'){row.sales=record.n;row.salesAmount=amount;}
       else {row.paidSales=record.n;row.paidAmount=amount;}
