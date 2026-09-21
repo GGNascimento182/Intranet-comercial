@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-21T14:29:54.8025501Z",
-  "startedAt": "2026-09-21T14:27:17.0387067Z",
+  "extractedAt": "2026-09-21T15:27:32.6060975Z",
+  "startedAt": "2026-09-21T15:24:55.1438686Z",
   "asOfDate": "2026-09-21",
   "range": {
     "start": "2015-01",
@@ -76,10 +76,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2015-10-30",
     "sales": "1990-01-01",
     "pipeline": "1899-12-30",
-    "connections": "2007-07-24"
+    "connections": "2007-07-24",
+    "appointments": "2015-10-30"
   },
   "warnings": [
     "2017: 51 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -94,7 +94,7 @@ window.SALESFORCE_DATA = {
     "2024: 2 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1070 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3502 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3503 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 28 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -411,7 +411,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 8872,
+      "records": 8878,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -432,9 +432,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 4893,
-      "knownAmount": 2698205.84,
-      "missingAmounts": 3502
+      "records": 4895,
+      "knownAmount": 2700138.84,
+      "missingAmounts": 3503
     },
     {
       "year": 2027,
@@ -7865,14 +7865,14 @@ window.SALESFORCE_DATA = {
       "appointments": 78,
       "connections": 29,
       "sales": 2,
-      "pipeline": 526051.75
+      "pipeline": 527984.75
     },
     {
       "month": "2026-09",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 23900,
-      "appointments": 199,
+      "appointments": 202,
       "connections": 94,
       "sales": 11,
       "pipeline": 0
@@ -7882,7 +7882,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000OfjD3QAJ",
       "supervisorName": "Rodrigo Silva",
       "revenue": 5000,
-      "appointments": 91,
+      "appointments": 93,
       "connections": 39,
       "sales": 3,
       "pipeline": 0
@@ -7912,7 +7912,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 28421,
-      "appointments": 116,
+      "appointments": 117,
       "connections": 56,
       "sales": 13,
       "pipeline": 0
@@ -67647,7 +67647,7 @@ window.SALESFORCE_DATA = {
       "appointments": 5,
       "connections": 0,
       "sales": 0,
-      "pipeline": 29110
+      "pipeline": 31043
     },
     {
       "date": "2026-09-18",
@@ -67754,7 +67754,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
-      "appointments": 3,
+      "appointments": 6,
       "connections": 1,
       "sales": 0,
       "pipeline": 0
@@ -67765,7 +67765,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000OfjD3QAJ",
       "supervisorName": "Rodrigo Silva",
       "revenue": 0,
-      "appointments": 2,
+      "appointments": 4,
       "connections": 0,
       "sales": 0,
       "pipeline": 0
@@ -67787,7 +67787,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 0,
-      "appointments": 3,
+      "appointments": 4,
       "connections": 1,
       "sales": 0,
       "pipeline": 0
