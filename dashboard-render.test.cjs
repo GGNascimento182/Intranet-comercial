@@ -12,7 +12,7 @@ class Element{
   hasAttribute(key){return key in this.attrs;}
   removeAttribute(key){delete this.attrs[key];}
 }
-const roots=Object.fromEntries(['#report-month','#connection-status','#source-details','#macro-metrics','#history-metrics','#history-period','#history-mode','#history-cutoff','#cutoff-label','#chart-style','#bp-month','#bp-status','#bp-table','#bp-history'].map(key=>[key,new Element()]));
+const roots=Object.fromEntries(['#report-month','#connection-status','#source-details','#macro-metrics','#history-metrics','#history-period','#history-mode','#history-cutoff','#cutoff-label','#chart-style','#bp-month','#bp-status','#bp-table','#bp-weekly','#bp-history'].map(key=>[key,new Element()]));
 roots['#history-mode'].value='mtd';
 roots['#chart-style'].value='area';
 const context={
@@ -31,6 +31,10 @@ assert.equal(roots['#macro-metrics'].children.length,8);
 assert.equal(roots['#history-metrics'].children.length,7);
 assert.match(roots['crm-team'].innerHTML,/Desligados/);
 assert.match(roots['#bp-table'].innerHTML,/Diagnóstico/);
+assert.match(roots['#bp-weekly'].innerHTML,/META/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?115\.036,00/);
+assert.match(roots['#bp-weekly'].innerHTML,/Atingimento/);
+assert.doesNotMatch(roots['#bp-weekly'].innerHTML,/NaN|undefined/);
 assert.match(roots['#bp-history'].innerHTML,/BP/);
 assert.match(roots['#bp-status'].textContent,/dia útil/);
 for(const element of [...roots['#macro-metrics'].children,...roots['#history-metrics'].children])assert.doesNotMatch(element.innerHTML,/NaN|undefined/);
