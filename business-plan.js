@@ -9,15 +9,17 @@ const bpMoney=value=>value===null?'—':new Intl.NumberFormat('pt-BR',{style:'cu
 const bpPercent=value=>value===null?'—':`${(value*100).toLocaleString('pt-BR',{maximumFractionDigits:2})}%`;
 const bpPp=value=>value===null?'—':`${value>=0?'+':''}${(value*100).toLocaleString('pt-BR',{maximumFractionDigits:2})} p.p.`;
 const bpGap=(value,type)=>value===null?'—':type==='rate'?bpPp(value):type==='money'?`${value>=0?'+':''}${bpMoney(value)}`:`${value>=0?'+':''}${bpNumber(value)}`;
-function bpDefinition(month){const plan=window.BUSINESS_PLAN.months[month];const received=key=>DashboardData.valueFor(dataset,month,key);const appointments=received('appointments'),meetings=received('connections'),sales=received('sales'),revenue=received('revenue');const workedCnpjs=SupabaseData.valueFor(supabaseDataset,month,'hunter','calledCnpjs'),totalCalls=SupabaseData.valueFor(supabaseDataset,month,'hunter','calls');return [
+function bpDefinition(month){const plan=window.BUSINESS_PLAN.months[month];const received=key=>DashboardData.valueFor(dataset,month,key);const appointments=received('appointments'),meetings=received('connections'),paidSales=received('sales'),paidRevenue=received('revenue'),sales=received('totalSales'),revenue=received('totalRevenue');const workedCnpjs=SupabaseData.valueFor(supabaseDataset,month,'hunter','calledCnpjs'),totalCalls=SupabaseData.valueFor(supabaseDataset,month,'hunter','calls');return [
   {key:'calls',label:'Ligações / CNPJs trabalhados',type:'count',plan:plan?.calls??null,actual:workedCnpjs,comparisonActual:totalCalls,detail:totalCalls===null?null:`${bpNumber(totalCalls)} ligações no total`},
   {key:'schedulingRate',label:'Tx Ag.',type:'rate',plan:plan?.schedulingRate??null,actual:totalCalls===null||totalCalls===0||appointments===null?null:appointments/totalCalls},
   {key:'appointments',label:'Agendamentos',type:'count',plan:plan?.appointments??null,actual:appointments},
   {key:'connectionRate',label:'Tx Conexões',type:'rate',plan:plan?.connectionRate??null,actual:appointments===null||appointments===0||meetings===null?null:meetings/appointments},
   {key:'meetings',label:'Reuniões',type:'count',plan:plan?.meetings??null,actual:meetings},
   {key:'conversionRate',label:'Tx Conversão',type:'rate',plan:plan?.conversionRate??null,actual:meetings===null||meetings===0||sales===null?null:sales/meetings},
-  {key:'sales',label:'Vendas',type:'count',plan:plan?.sales??null,actual:sales},
-  {key:'revenue',label:'Receita',type:'money',plan:plan?.revenue??null,actual:revenue},
+  {key:'totalSales',label:'Vendas',type:'count',plan:plan?.sales??null,actual:sales},
+  {key:'totalRevenue',label:'Vendas (R$)',type:'money',plan:plan?.revenue??null,actual:revenue},
+  {key:'sales',label:'Vendas pagas',type:'count',plan:null,actual:paidSales},
+  {key:'revenue',label:'Pago (R$)',type:'money',plan:null,actual:paidRevenue},
   {key:'ticket',label:'TM',type:'money',plan:plan?.ticket??null,actual:DashboardData.valueFor(dataset,month,'ticket'),fixedPlan:true}
 ];}
 const bpNormalizedName=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
@@ -31,35 +33,23 @@ function bpWeeklyPeriods(month){
     return {key:`S${index+1}`,from:`${from.toISOString().slice(0,10)}`,to:`${to.toISOString().slice(0,10)}`,active:to>=first&&from<=monthEnd};
   });
 }
-function bpWeeklyMemberIds(team){
-  const members=SupabaseData.membersFor(supabaseDataset,'closer',{activeOnly:false});
-  if(team.supervisor){
-    const supervisor=(supabaseDataset.supervisors.closer||[]).find(item=>bpNormalizedName(item.name)===bpNormalizedName(team.supervisor));
-    return {ids:supervisor?members.filter(member=>member.supervisorId===supervisor.id).map(member=>member.id):[],missing:supervisor?[ ]:[team.supervisor]};
-  }
-  const requested=new Set((team.members||[]).map(bpNormalizedName));
-  const found=members.filter(member=>requested.has(bpNormalizedName(member.name)));
-  return {ids:found.map(member=>member.id),missing:(team.members||[]).filter(name=>!found.some(member=>bpNormalizedName(member.name)===bpNormalizedName(name)))};
-}
-function bpWeeklyAmount(memberIds,period,field){
-  const selected=new Set(memberIds);
-  return supabaseDataset.dailyRows.filter(row=>row.role==='closer'&&selected.has(row.memberId)&&row.date>=period.from&&row.date<=period.to).reduce((sum,row)=>sum+(Number(row[field])||0),0);
-}
 function bpWeeklyRow(label,values,{total=false,kind=''}={}){const monthTotal=values.reduce((sum,value)=>sum+value,0);return `<tr class="${total?'bp-weekly-total ':''}${kind?`bp-weekly-${kind}`:''}"><th scope="row">${escapeHTML(label)}</th>${values.map(value=>`<td>${bpMoney(value)}</td>`).join('')}<td>${bpMoney(monthTotal)}</td></tr>`;}
-function bpWeeklyPercentRow(label,actual,target){const values=actual.map((value,index)=>target[index]===0?null:value/target[index]);const monthActual=actual.reduce((sum,value)=>sum+value,0),monthTarget=target.reduce((sum,value)=>sum+value,0);return `<tr class="bp-weekly-rate"><th scope="row">${escapeHTML(label)}</th>${values.map(value=>`<td>${bpPercent(value)}</td>`).join('')}<td>${bpPercent(monthTarget===0?null:monthActual/monthTarget)}</td></tr>`;}
+function bpWeeklySalesAmount(team,period,field){
+  const isTeam=row=>team.supervisor?bpNormalizedName(row.supervisorName)===bpNormalizedName(team.supervisor):(team.members||[]).some(name=>bpNormalizedName(name)===bpNormalizedName(row.closerName));
+  return (dataset.closerSalesDaily||[]).filter(row=>row.date>=period.from&&row.date<=period.to&&isTeam(row)).reduce((sum,row)=>sum+(Number(row[field])||0),0);
+}
+function bpWeeklyRateRow(label,values,target,{total=false}={}){const rates=values.map((value,index)=>target[index]===0?null:value/target[index]),amount=values.reduce((sum,value)=>sum+value,0),targetAmount=target.reduce((sum,value)=>sum+value,0);return `<tr class="${total?'bp-weekly-total ':''}bp-weekly-rate"><th scope="row">${escapeHTML(label)}</th>${rates.map(value=>`<td>${bpPercent(value)}</td>`).join('')}<td>${bpPercent(targetAmount===0?null:amount/targetAmount)}</td></tr>`;}
 function bpRenderWeekly(month){
   const config=window.BUSINESS_PLAN.weeklyCloserPlan?.[month];
   if(!config){bpWeekly.innerHTML=`<div class="empty-state">A distribuição semanal de meta ainda não foi cadastrada para ${escapeHTML(bpMonthLabel(month))}.</div>`;return;}
-  const periods=bpWeeklyPeriods(month),warnings=[];
-  const teams=config.teams.map(team=>{
-    const members=bpWeeklyMemberIds(team);if(members.missing.length)warnings.push(`${team.label}: ${members.missing.join(', ')}`);
-    return {...team,memberIds:members.ids,realized:periods.map(period=>bpWeeklyAmount(members.ids,period,'soldAmount')),paid:periods.map(period=>bpWeeklyAmount(members.ids,period,'paidAmount'))};
-  });
+  const periods=bpWeeklyPeriods(month);
+  const teams=config.teams.map(team=>({...team,realized:periods.map(period=>bpWeeklySalesAmount(team,period,'salesAmount')),paid:periods.map(period=>bpWeeklySalesAmount(team,period,'paidAmount'))}));
   const totalFor=key=>periods.map((_,index)=>teams.reduce((sum,team)=>sum+team[key][index],0));
   const targets=totalFor('targets'),realized=totalFor('realized'),paid=totalFor('paid');
   const section=(title,rows,total,kind)=>`<tr class="bp-weekly-section"><th colspan="7">${title}</th></tr>${rows.map(team=>bpWeeklyRow(team.short||team.label.split(' — ')[0],team[kind],{kind})).join('')}${bpWeeklyRow('TOTAL',total,{total:true,kind})}`;
-  const gapTeams=teams.map(team=>({...team,gap:team.realized.map((value,index)=>value-team.targets[index])})),gap=realized.map((value,index)=>value-targets[index]);
-  bpWeekly.innerHTML=`<div class="table-scroll"><table class="bp-weekly-table"><caption>S1 a S5 seguem semanas de segunda a domingo no mês. A coluna MÊS consolida o período.${warnings.length?` Pessoas ainda não localizadas no Supabase: ${escapeHTML(warnings.join(' · '))}.`:''}</caption><thead><tr><th>${escapeHTML(new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${month}-01T00:00:00Z`)))}</th>${periods.map(period=>`<th>${period.key}</th>`).join('')}<th>MÊS</th></tr></thead><tbody>${section('META',teams,targets,'targets')}${section('REALIZADO',teams,realized,'realized')}${bpWeeklyPercentRow('Atingimento',realized,targets)}${section('PAGO',teams,paid,'paid')}${section('GAP',gapTeams,gap,'gap')}${bpWeeklyPercentRow('Atingimento acumulado',realized,targets)}</tbody></table></div>`;
+  const gapTeams=teams.map(team=>({...team,gap:team.paid.map((value,index)=>value-team.targets[index])})),gap=paid.map((value,index)=>value-targets[index]);
+  const rateSection=`<tr class="bp-weekly-section"><th colspan="7">GAP · % PAGO VS META</th></tr>${teams.map(team=>bpWeeklyRateRow(team.short||team.label.split(' — ')[0],team.paid,team.targets)).join('')}${bpWeeklyRateRow('TOTAL',paid,targets,{total:true})}`;
+  bpWeekly.innerHTML=`<div class="table-scroll"><table class="bp-weekly-table"><caption>S1 a S5 seguem semanas de segunda a domingo no mês. A coluna MÊS consolida o período. Vendas e pago são agregados diários do Salesforce.</caption><thead><tr><th>${escapeHTML(new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${month}-01T00:00:00Z`)))}</th>${periods.map(period=>`<th>${period.key}</th>`).join('')}<th>MÊS</th></tr></thead><tbody>${section('META',teams,targets,'targets')}${section('REALIZADO · VENDAS (R$)',teams,realized,'realized')}${section('PAGO · PAGO (R$)',teams,paid,'paid')}${section('GAP · PAGO (R$) − META',gapTeams,gap,'gap')}${rateSection}</tbody></table></div>`;
 }
 function bpFormat(value,type){return type==='rate'?bpPercent(value):type==='money'?bpMoney(value):bpNumber(value);}
 function bpDiagnosis(row,planned){if(row.reason)return row.reason;if(row.plan===null)return 'Meta não cadastrada';if(row.actual===null)return 'Realizado indisponível';const gap=row.actual-planned;if(row.type==='rate'){const pp=gap*100;if(Math.abs(pp)<=2)return 'Taxa próxima da meta';return pp<0?`${Math.abs(pp).toLocaleString('pt-BR',{maximumFractionDigits:1})} p.p. abaixo da meta`:`${pp.toLocaleString('pt-BR',{maximumFractionDigits:1})} p.p. acima da meta`;}

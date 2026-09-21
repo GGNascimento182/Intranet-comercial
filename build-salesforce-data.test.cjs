@@ -7,10 +7,11 @@ const payload=()=>({startYear:2026,endYear:2027,today:'2026-09-16',extractedAt:'
  {year:2026,metric:'appointments',dateField:'date',records:[record({n:10})]},
  {year:2026,metric:'connections',dateField:'date',records:[record({n:6})]},
  {year:2026,metric:'sales',dateField:'date',records:[record()]},
+ {year:2026,metric:'totalSales',dateField:'date',records:[record({n:3,valued:3,amount:1800})]},
  {year:2026,metric:'pipeline',dateField:'date',records:[record({date:'2026-12-15',amount:3000})]},
  {year:2027,metric:'pipeline',dateField:'date',records:[record({date:'2027-01-15',amount:1000})]}
 ]});
- test('Maps daily CRM results and reconciles monthly totals with future pipeline',()=>{const d=build(payload());assert.equal(valueFor(d,'2026-08','appointments'),10);assert.equal(valueFor(d,'2026-08','connections'),6);assert.equal(valueFor(d,'2026-08','ticket'),600);assert.equal(valueFor(d,'2027-01','pipeline'),1000);assert.equal(valueFor(d,'2027-01','sales'),null);assert.equal(valueFor(d,'2026-08','pipeline'),0);assert.equal(valueFor(d,'2026-08','sales',undefined,14),0);assert.equal(valueFor(d,'2026-08','sales',undefined,15),2);});
+ test('Maps daily CRM results and reconciles monthly totals with future pipeline',()=>{const d=build(payload());assert.equal(valueFor(d,'2026-08','appointments'),10);assert.equal(valueFor(d,'2026-08','connections'),6);assert.equal(valueFor(d,'2026-08','ticket'),600);assert.equal(valueFor(d,'2026-08','totalSales'),3);assert.equal(valueFor(d,'2026-08','totalRevenue'),1800);assert.equal(valueFor(d,'2027-01','pipeline'),1000);assert.equal(valueFor(d,'2027-01','sales'),null);assert.equal(valueFor(d,'2026-08','pipeline'),0);assert.equal(valueFor(d,'2026-08','sales',undefined,14),0);assert.equal(valueFor(d,'2026-08','sales',undefined,15),2);});
  test('Missing amounts remain visible as zero in the Amount sum',()=>{const p=payload();p.batches[2].records[0].valued=1;const d=build(p);assert.equal(valueFor(d,'2026-08','sales'),2);assert.equal(valueFor(d,'2026-08','revenue'),1200);assert.equal(valueFor(d,'2026-08','ticket'),600);assert.equal(d.warnings.length,1);});
  test('Incomplete extraction cannot overwrite a valid dataset',()=>{const p=payload();p.batches.pop();assert.throws(()=>build(p),/incompleto/);});
 test('Supervisors outside the five configured IDs are rejected',()=>{const p=payload();p.batches[0].records[0].HunterSupervisor__c='outsider';assert.throws(()=>build(p),/fora do recorte/);});

@@ -38,10 +38,12 @@ $started = [DateTime]::UtcNow.ToString('o')
 $today = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([DateTime]::UtcNow,'E. South America Standard Time').ToString('yyyy-MM-dd')
 $thisYear = [int]$today.Substring(0,4)
 $batches = [Collections.Generic.List[object]]::new()
+$closerSalesBatches = [Collections.Generic.List[object]]::new()
 $plans = @(
     @{key='appointments';object='Lead';date='ScheduleDate__c';predicate="ScheduleDate__c <= $today";aggregate='COUNT(Id) n'},
     @{key='connections';object='Opportunity';date='MeetingDate__c';predicate="DidTheMeetingTakePlace__c = 'Conectada' AND MeetingDate__c <= $today AND MeetingDate__c != 1899-12-30";aggregate='COUNT(Id) n'},
     @{key='sales';object='Opportunity';date='CloseDate';predicate="IsWon = true AND CloseDate <= $today";aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"},
+    @{key='totalSales';object='Opportunity';date='Dia_da_venda__c';predicate="StageName IN ('Fechado Ganho','Aguardando pagamento') AND RecordType.Name = 'Oportunidade - Digitais' AND CloserSupervisor__r.Name != 'Leandro Novaes - CS - GIT' AND Dia_da_venda__c <= $today";aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"},
     @{key='pipeline';object='Opportunity';date='CloseDate';predicate='IsClosed = false AND Closer__c != null';aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"}
   )
 $availableYears = @{}
@@ -54,7 +56,7 @@ foreach ($plan in $plans) {
   $firstDates[$plan.key] = ($discovery.firstDate | Sort-Object | Select-Object -First 1)
 }
 if ($StartYear -eq 0) {
-  $realizedYears = @('appointments','connections','sales') | ForEach-Object { ($availableYears[$_] | Measure-Object -Minimum).Minimum }
+  $realizedYears = @('appointments','connections','sales','totalSales') | ForEach-Object { ($availableYears[$_] | Measure-Object -Minimum).Minimum }
   # O histórico do BP começa quando todos os indicadores realizados já têm dados.
   $StartYear = ($realizedYears | Measure-Object -Maximum).Maximum
   if (-not $StartYear) { $StartYear = $thisYear }
@@ -87,13 +89,21 @@ foreach ($year in $StartYear..$EndYear) {
       $records = @($selectedRecords) + @($disconnectedRecords)
     }
     $batches.Add(@{year=$year;metric=$plan.key;dateField=$plan.date;records=$records})
+    if ($plan.key -in @('sales','totalSales')) {
+      # O BP semanal abre venda e pago por Closer, mas continua sendo uma carga
+      # agregada: não há nomes de oportunidades ou clientes no snapshot.
+      $closerGroup = "$($plan.date), Closer__r.Name, CloserSupervisor__r.Name"
+      $closerQuery = "SELECT $($plan.date), Closer__r.Name closerName, CloserSupervisor__r.Name closerSupervisorName, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) GROUP BY $closerGroup"
+      $closerRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $closerQuery) } else { @() }
+      $closerSalesBatches.Add(@{year=$year;metric=$plan.key;dateField=$plan.date;records=$closerRecords})
+    }
   }
 }
 $quality = @(Invoke-SalesforceQuery "SELECT COUNT(Id) n FROM Opportunity WHERE DidTheMeetingTakePlace__c = 'Conectada' AND MeetingDate__c = null")
 $invalidDates = @(Invoke-SalesforceQuery "SELECT COUNT(Id) n FROM Opportunity WHERE DidTheMeetingTakePlace__c = 'Conectada' AND MeetingDate__c = 1899-12-30")
 $payload = @{
   startYear=$StartYear;endYear=$EndYear;today=$today;startedAt=$started;extractedAt=[DateTime]::UtcNow.ToString('o');
-  amountField=$AmountField;batches=$batches.ToArray();connectedWithoutDate=[int]$quality[0].n;invalidMeetingDates=[int]$invalidDates[0].n;firstDates=$firstDates;supervisors=@($config.supervisors);excludeLostSales=[bool]$config.excludeLostSales
+  amountField=$AmountField;batches=$batches.ToArray();closerSalesBatches=$closerSalesBatches.ToArray();connectedWithoutDate=[int]$quality[0].n;invalidMeetingDates=[int]$invalidDates[0].n;firstDates=$firstDates;supervisors=@($config.supervisors);excludeLostSales=[bool]$config.excludeLostSales
 }
 $payload | ConvertTo-Json -Depth 30 -Compress | & $nodeExecutable (Join-Path $PSScriptRoot 'build-salesforce-data.cjs')
 if ($LASTEXITCODE -ne 0) { throw 'Falha na validação ou gravação dos dados.' }

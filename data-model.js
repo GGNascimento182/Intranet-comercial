@@ -9,6 +9,8 @@
     {key:'ticket',label:'TM (R$)',icon:'ticket',tone:'green',money:true},
     {key:'pipeline',label:'Pipeline (R$)',icon:'layers',tone:'slate',money:true,note:'Abertas na extração · mês previsto de fechamento'}
   ];
+  // Métricas auxiliares para o Business Plan. Não compõem os cartões do Dashboard.
+  const storedDefinitions=[...definitions,{key:'totalSales',label:'Vendas totais'},{key:'totalRevenue',label:'Vendas totais (R$)',money:true}];
   const validMonth=v=>/^\d{4}-(0[1-9]|1[0-2])$/.test(v);
   const fixedNationalHolidays=['01-01','04-21','05-01','09-07','10-12','11-02','11-15','12-25'];
   function easterSunday(year){const a=year%19,b=Math.floor(year/100),c=year%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),month=Math.floor((h+l-7*m+114)/31),day=(h+l-7*m+114)%31+1;return new Date(Date.UTC(year,month-1,day));}
@@ -28,15 +30,18 @@
       if(dayGrain&&(!/^\d{4}-\d{2}-\d{2}$/.test(row.date)||row.date.slice(0,7)!==row.month||new Date(`${row.date}T00:00:00Z`).toISOString().slice(0,10)!==row.date))throw Error('Data diária inválida.');
       const key=JSON.stringify([dayGrain?row.date:row.month,row.supervisorId]);
       if(seen.has(key))throw Error('Supervisor duplicado no mesmo mês.');seen.add(key);
-      for(const d of definitions.filter(d=>d.source!=='dialer'&&d.key!=='ticket')){
+      for(const d of storedDefinitions.filter(d=>d.source!=='dialer'&&d.key!=='ticket')){
         const v=row[d.key];
-        if(v!==null&&(!Number.isFinite(v)||(['appointments','connections','sales'].includes(d.key)&&(!Number.isInteger(v)||v<0))))throw Error(`Valor inválido: ${d.key}. Use null para indisponível.`);
+        // Snapshots anteriores à inclusão das métricas auxiliares não as possuem.
+        // A ausência é aceita só nelas; os indicadores originais continuam obrigatórios.
+        if(v===undefined&&['totalSales','totalRevenue'].includes(d.key))continue;
+        if(v!==null&&(!Number.isFinite(v)||(['appointments','connections','sales','totalSales'].includes(d.key)&&(!Number.isInteger(v)||v<0))))throw Error(`Valor inválido: ${d.key}. Use null para indisponível.`);
       }
     }
     }
     const coverageKeys=new Set();
     for(const c of data.coverage){
-      if(!validMonth(c.month)||!definitions.some(d=>d.key===c.metric&&d.source!=='dialer'&&d.key!=='ticket')||typeof c.complete!=='boolean')throw Error('Cobertura inválida.');
+      if(!validMonth(c.month)||!storedDefinitions.some(d=>d.key===c.metric&&d.source!=='dialer'&&d.key!=='ticket')||typeof c.complete!=='boolean')throw Error('Cobertura inválida.');
       const key=c.month+':'+c.metric;if(coverageKeys.has(key))throw Error('Cobertura duplicada.');coverageKeys.add(key);
     }
     return data;
