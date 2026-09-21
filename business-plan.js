@@ -23,6 +23,11 @@ function bpDefinition(month){const plan=window.BUSINESS_PLAN.months[month];const
   {key:'ticket',label:'TM',type:'money',plan:plan?.ticket??null,actual:DashboardData.valueFor(dataset,month,'ticket'),fixedPlan:true}
 ];}
 const bpNormalizedName=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
+const bpNameContains=(value,expected)=>{
+  const actual=bpNormalizedName(value).replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  const target=bpNormalizedName(expected).replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  return !!actual&&!!target&&(actual.includes(target)||target.includes(actual));
+};
 function bpWeeklyPeriods(month){
   const first=new Date(`${month}-01T00:00:00Z`),start=new Date(first);
   start.setUTCDate(first.getUTCDate()-((first.getUTCDay()+6)%7));
@@ -34,16 +39,24 @@ function bpWeeklyPeriods(month){
   });
 }
 function bpWeeklyRow(label,values,{total=false,kind=''}={}){const monthTotal=values.reduce((sum,value)=>sum+value,0);return `<tr class="${total?'bp-weekly-total ':''}${kind?`bp-weekly-${kind}`:''}"><th scope="row">${escapeHTML(label)}</th>${values.map(value=>`<td>${bpMoney(value)}</td>`).join('')}<td>${bpMoney(monthTotal)}</td></tr>`;}
-function bpWeeklySalesAmount(team,period,field){
-  const isTeam=row=>team.supervisor?bpNormalizedName(row.supervisorName)===bpNormalizedName(team.supervisor):(team.members||[]).some(name=>bpNormalizedName(name)===bpNormalizedName(row.closerName));
-  return (dataset.closerSalesDaily||[]).filter(row=>row.date>=period.from&&row.date<=period.to&&isTeam(row)).reduce((sum,row)=>sum+(Number(row[field])||0),0);
+function bpWeeklyTeamKey(row,teams){
+  // IM 2 tem prioridade: seus membros não podem ser contados novamente no
+  // time de Patrick ou Matheus caso a estrutura de supervisão mude.
+  const memberTeam=teams.find(team=>(team.members||[]).some(name=>bpNameContains(row.closerName,name)));
+  if(memberTeam)return memberTeam.key;
+  return teams.find(team=>team.supervisor&&bpNameContains(row.supervisorName,team.supervisor))?.key||null;
+}
+function bpWeeklySalesAmount(team,period,field,teams,month){
+  // S1 pode começar no mês anterior. Ele só deve trazer dias do mês exibido,
+  // para que a coluna MÊS reconcilie com o acompanhamento mensal.
+  return (dataset.closerSalesDaily||[]).filter(row=>row.month===month&&row.date>=period.from&&row.date<=period.to&&bpWeeklyTeamKey(row,teams)===team.key).reduce((sum,row)=>sum+(Number(row[field])||0),0);
 }
 function bpWeeklyRateRow(label,values,target,{total=false}={}){const rates=values.map((value,index)=>target[index]===0?null:value/target[index]),amount=values.reduce((sum,value)=>sum+value,0),targetAmount=target.reduce((sum,value)=>sum+value,0);return `<tr class="${total?'bp-weekly-total ':''}bp-weekly-rate"><th scope="row">${escapeHTML(label)}</th>${rates.map(value=>`<td>${bpPercent(value)}</td>`).join('')}<td>${bpPercent(targetAmount===0?null:amount/targetAmount)}</td></tr>`;}
 function bpRenderWeekly(month){
   const config=window.BUSINESS_PLAN.weeklyCloserPlan?.[month];
   if(!config){bpWeekly.innerHTML=`<div class="empty-state">A distribuição semanal de meta ainda não foi cadastrada para ${escapeHTML(bpMonthLabel(month))}.</div>`;return;}
   const periods=bpWeeklyPeriods(month);
-  const teams=config.teams.map(team=>({...team,realized:periods.map(period=>bpWeeklySalesAmount(team,period,'salesAmount')),paid:periods.map(period=>bpWeeklySalesAmount(team,period,'paidAmount'))}));
+  const teams=config.teams.map(team=>({...team,realized:periods.map(period=>bpWeeklySalesAmount(team,period,'salesAmount',config.teams,month)),paid:periods.map(period=>bpWeeklySalesAmount(team,period,'paidAmount',config.teams,month))}));
   const totalFor=key=>periods.map((_,index)=>teams.reduce((sum,team)=>sum+team[key][index],0));
   const targets=totalFor('targets'),realized=totalFor('realized'),paid=totalFor('paid');
   const section=(title,rows,total,kind)=>`<tr class="bp-weekly-section"><th colspan="7">${title}</th></tr>${rows.map(team=>bpWeeklyRow(team.short||team.label.split(' — ')[0],team[kind],{kind})).join('')}${bpWeeklyRow('TOTAL',total,{total:true,kind})}`;

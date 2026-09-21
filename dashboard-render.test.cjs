@@ -35,6 +35,8 @@ assert.match(roots['#bp-weekly'].innerHTML,/META/);
 assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?115\.036,00/);
 assert.match(roots['#bp-weekly'].innerHTML,/REALIZADO · VENDAS \(R\$\)/);
 assert.match(roots['#bp-weekly'].innerHTML,/GAP · % PAGO VS META/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?136\.062,00/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?92\.268,00/);
 assert.match(roots['#bp-table'].innerHTML,/Vendas pagas/);
 assert.match(roots['#bp-table'].innerHTML,/Pago \(R\$\)/);
 assert.doesNotMatch(roots['#bp-weekly'].innerHTML,/NaN|undefined/);
