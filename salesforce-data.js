@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-21T07:30:22.3941173Z",
-  "startedAt": "2026-09-21T07:28:30.9924386Z",
+  "extractedAt": "2026-09-21T08:30:27.9990302Z",
+  "startedAt": "2026-09-21T08:28:29.2148916Z",
   "asOfDate": "2026-09-21",
   "range": {
     "start": "2019-01",
@@ -76,10 +76,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
+    "appointments": "2015-10-30",
     "connections": "2007-07-24",
     "pipeline": "1899-12-30",
-    "sales": "2019-02-04",
-    "appointments": "2015-10-30"
+    "sales": "2019-02-04"
   },
   "warnings": [
     "2023: 4 oportunidades de pipeline sem valor; Pipeline dos grupos afetados ficam indisponíveis.",
