@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-21T02:28:59.2983724Z",
-  "startedAt": "2026-09-21T02:27:02.1404118Z",
-  "asOfDate": "2026-09-20",
+  "extractedAt": "2026-09-21T03:29:35.9594143Z",
+  "startedAt": "2026-09-21T03:27:39.6619520Z",
+  "asOfDate": "2026-09-21",
   "range": {
     "start": "2019-01",
     "end": "2027-12"
@@ -76,9 +76,9 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "pipeline": "1899-12-30",
     "appointments": "2015-10-30",
     "connections": "2007-07-24",
+    "pipeline": "1899-12-30",
     "sales": "2019-02-04"
   },
   "warnings": [
@@ -290,7 +290,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 8859,
+      "records": 8860,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -5831,7 +5831,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 51719,
-      "appointments": 113,
+      "appointments": 114,
       "connections": 53,
       "sales": 23,
       "pipeline": null
@@ -52085,7 +52085,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 0,
-      "appointments": 0,
+      "appointments": 1,
       "connections": 0,
       "sales": 0,
       "pipeline": null
