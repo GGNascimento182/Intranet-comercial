@@ -14,7 +14,6 @@ if (@($config.supervisors).Count -ne 5) { throw 'A consulta deve incluir exatame
 $supervisorIds = ($config.supervisors | ForEach-Object { "'$($_.id)'" }) -join ','
 $supervisorPredicate = "HunterSupervisor__c IN ($supervisorIds)"
 $disconnectedPredicate = "(HunterSupervisor__c = null OR HunterSupervisor__c NOT IN ($supervisorIds))"
-$salePredicate = if ($config.excludeLostSales) { ' AND (IsClosed = false OR IsWon = true)' } else { '' }
 if ($StartYear -gt $EndYear) { throw 'Ano inicial posterior ao ano final.' }
 if (-not $SalesforceCli) {
   $command = Get-Command sf -ErrorAction SilentlyContinue
@@ -42,14 +41,15 @@ $batches = [Collections.Generic.List[object]]::new()
 $plans = @(
     @{key='appointments';object='Lead';date='ScheduleDate__c';predicate="ScheduleDate__c <= $today";aggregate='COUNT(Id) n'},
     @{key='connections';object='Opportunity';date='MeetingDate__c';predicate="DidTheMeetingTakePlace__c = 'Conectada' AND MeetingDate__c <= $today AND MeetingDate__c != 1899-12-30";aggregate='COUNT(Id) n'},
-    @{key='sales';object='Opportunity';date='Dia_da_venda__c';predicate="Dia_da_venda__c <= $today$salePredicate";aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"},
-    @{key='pipeline';object='Opportunity';date='CloseDate';predicate='IsClosed = false';aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"}
+    @{key='sales';object='Opportunity';date='CloseDate';predicate="IsWon = true AND CloseDate <= $today";aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"},
+    @{key='pipeline';object='Opportunity';date='CloseDate';predicate='IsClosed = false AND Closer__c != null';aggregate="COUNT(Id) n, COUNT($AmountField) valued, SUM($AmountField) amount"}
   )
 $availableYears = @{}
 $firstDates = @{}
 foreach ($plan in $plans) {
   Write-Host "Localizando histórico de $($plan.key)..."
-  $discovery = @(Invoke-SalesforceQuery "SELECT CALENDAR_YEAR($($plan.date)) y, COUNT(Id) n, MIN($($plan.date)) firstDate FROM $($plan.object) WHERE $($plan.date) != null AND $($plan.date) < $($EndYear+1)-01-01 AND $($plan.predicate) GROUP BY CALENDAR_YEAR($($plan.date))")
+  $discoveryStart = if ($StartYear -gt 0) { " AND $($plan.date) >= $StartYear-01-01" } else { '' }
+  $discovery = @(Invoke-SalesforceQuery "SELECT CALENDAR_YEAR($($plan.date)) y, COUNT(Id) n, MIN($($plan.date)) firstDate FROM $($plan.object) WHERE $($plan.date) != null$discoveryStart AND $($plan.date) < $($EndYear+1)-01-01 AND $($plan.predicate) GROUP BY CALENDAR_YEAR($($plan.date))")
   $availableYears[$plan.key] = @($discovery | ForEach-Object { [int]$_.y })
   $firstDates[$plan.key] = ($discovery.firstDate | Sort-Object | Select-Object -First 1)
 }
@@ -63,18 +63,29 @@ foreach ($year in $StartYear..$EndYear) {
   $start = "$year-01-01"; $end = "$($year+1)-01-01"
   foreach ($plan in $plans) {
     if ($year -gt $thisYear -and $plan.key -ne 'pipeline') { continue }
-    # Five supervisors x at most 366 days = 1830 groups, below Salesforce's aggregate group limit.
-    $group = "$($plan.date), HunterSupervisor__c, HunterSupervisor__r.Name"
-    $query = "SELECT $($plan.date), HunterSupervisor__c, HunterSupervisor__r.Name, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) AND $supervisorPredicate GROUP BY $group"
-    $disconnectedQuery = "SELECT $($plan.date), $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) AND $disconnectedPredicate GROUP BY $($plan.date)"
     Write-Host "Consultando $($plan.key) / $year..."
-    $selectedRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $query) } else { @() }
-    $disconnectedRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $disconnectedQuery) } else { @() }
-    foreach ($record in $disconnectedRecords) {
-      $record | Add-Member -NotePropertyName HunterSupervisor__c -NotePropertyValue 'DISCONNECTED' -Force
-      $record | Add-Member -NotePropertyName Name -NotePropertyValue 'Desligados' -Force
+    if ($plan.key -eq 'pipeline') {
+      # Pipeline é uma visão global do funil de Closers. Não pode ser limitado
+      # ao supervisor de Hunter que originou a oportunidade.
+      $query = "SELECT $($plan.date), $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) GROUP BY $($plan.date)"
+      $records = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $query) } else { @() }
+      foreach ($record in $records) {
+        $record | Add-Member -NotePropertyName HunterSupervisor__c -NotePropertyValue 'DISCONNECTED' -Force
+        $record | Add-Member -NotePropertyName Name -NotePropertyValue 'Pipeline dos Closers' -Force
+      }
+    } else {
+      # Five supervisors x at most 366 days = 1830 groups, below Salesforce's aggregate group limit.
+      $group = "$($plan.date), HunterSupervisor__c, HunterSupervisor__r.Name"
+      $query = "SELECT $($plan.date), HunterSupervisor__c, HunterSupervisor__r.Name, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) AND $supervisorPredicate GROUP BY $group"
+      $disconnectedQuery = "SELECT $($plan.date), $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) AND $disconnectedPredicate GROUP BY $($plan.date)"
+      $selectedRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $query) } else { @() }
+      $disconnectedRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $disconnectedQuery) } else { @() }
+      foreach ($record in $disconnectedRecords) {
+        $record | Add-Member -NotePropertyName HunterSupervisor__c -NotePropertyValue 'DISCONNECTED' -Force
+        $record | Add-Member -NotePropertyName Name -NotePropertyValue 'Desligados' -Force
+      }
+      $records = @($selectedRecords) + @($disconnectedRecords)
     }
-    $records = @($selectedRecords) + @($disconnectedRecords)
     $batches.Add(@{year=$year;metric=$plan.key;dateField=$plan.date;records=$records})
   }
 }

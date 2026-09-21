@@ -36,7 +36,10 @@ function build(payload){
         if(!Number.isFinite(total))throw Error('Soma monetária inválida.');
         if(record.valued>0&&record.amount===null)throw Error('Soma monetária ausente.');
         amount+=total;
-        row[batch.metric==='sales'?'revenue':'pipeline']=absent?null:total;
+        // SUM(Amount) do Salesforce ignora valores vazios. Mantemos esse total
+        // para que a receita e o pipeline reflitam a soma do campo Amount,
+        // registrando a ressalva de qualidade sem esconder o indicador.
+        row[batch.metric==='sales'?'revenue':'pipeline']=total;
         if(batch.metric==='sales')row.sales=record.n;
       }else row[batch.metric]=record.n;
     }
@@ -48,7 +51,7 @@ function build(payload){
       for(const metric of batch.metric==='sales'?['sales','revenue']:[batch.metric])coverage.push({month,metric,complete:!payload.firstDates||(!!first&&month>=first),partialPeriod:month===currentMonth&&metric!=='pipeline'});
     }
     audits.push({year:batch.year,metric:batch.metric,records:count,knownAmount:amount,missingAmounts:missing});
-    if(missing)warnings.push(`${batch.year}: ${missing} oportunidades de ${batch.metric==='sales'?'venda':'pipeline'} sem valor; ${batch.metric==='sales'?'Receita e TM':'Pipeline'} dos grupos afetados ficam indisponíveis.`);
+    if(missing)warnings.push(`${batch.year}: ${missing} oportunidades de ${batch.metric==='sales'?'venda':'pipeline'} sem Amount; a soma considera esses registros como zero.`);
   }
   if(payload.connectedWithoutDate)warnings.push(`${payload.connectedWithoutDate} oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.`);
   if(payload.invalidMeetingDates)warnings.push(`${payload.invalidMeetingDates} reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico.`);
@@ -65,11 +68,11 @@ function build(payload){
     rules:{ticketApproved:true,amountField:payload.amountField,supervisorAttribution:'current_record_field',
       appointments:'Lead: COUNT(Id), mês de ScheduleDate__c, incluindo convertidos',
       connections:"Opportunity: DidTheMeetingTakePlace__c = 'Conectada', mês de MeetingDate__c; uma contagem por oportunidade",
-      sales:`Opportunity: Dia_da_venda__c preenchida${payload.excludeLostSales?', excluindo IsClosed = true e IsWon = false':''}, por Data da venda; sem filtro de pagamento`,
-      excludeLostSales:payload.excludeLostSales,saleDateField:'Dia_da_venda__c',
-      revenue:`SUM(Opportunity.${payload.amountField}) nas vendas registradas pela Data da venda, sem filtro de pagamento`,
-      ticket:'Valor total de vendas / quantidade de vendas, mesmo período e exclusões',
-      pipelineHistory:'currently_open_by_expected_close_month',pipeline:'Opportunity: IsClosed = false, mês de CloseDate'},
+      sales:'Opportunity: IsWon = true, por CloseDate',
+      excludeLostSales:true,saleDateField:'CloseDate',
+      revenue:`SUM(Opportunity.${payload.amountField}) em oportunidades ganhas (IsWon = true), por CloseDate`,
+      ticket:'Valor total de oportunidades ganhas / quantidade de oportunidades ganhas, no mesmo período',
+      pipelineHistory:'not_available',pipeline:'Opportunity: IsClosed = false e Closer__c preenchido, mês de CloseDate'},
     supervisors:payload.supervisors,displayGroups:[...payload.supervisors,{id:'DISCONNECTED',name:'Desligados'}],firstDates:payload.firstDates||{},warnings,audits,coverage,
     rows:[...monthly.values()].sort((a,b)=>a.month.localeCompare(b.month)||a.supervisorName.localeCompare(b.supervisorName,'pt-BR')),
     dailyRows:[...rows.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.supervisorName.localeCompare(b.supervisorName,'pt-BR'))});

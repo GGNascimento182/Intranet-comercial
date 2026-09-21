@@ -18,12 +18,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  refresh-salesforce:
+  refresh-data:
     # O push já contém os dados mais recentes. Agenda e execução manual os atualizam.
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    outputs:
-      salesforce-configured: ${{ steps.auth-state.outputs.configured }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -54,22 +52,31 @@ jobs:
       - name: Atualizar agregados do dashboard
         if: steps.auth-state.outputs.configured == 'true'
         run: pwsh -File ./sync-salesforce.ps1 -TargetOrg production
-      - name: Registrar snapshot atualizado
-        if: steps.auth-state.outputs.configured == 'true'
+      - name: Atualizar agregados do Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
-          if git diff --quiet -- salesforce-data.js; then
+          if [ -n "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            node ./sync-supabase-data.cjs
+          else
+            echo "O segredo SUPABASE_SERVICE_ROLE_KEY ainda não foi cadastrado; mantendo o snapshot atual."
+          fi
+      - name: Registrar snapshot atualizado
+        run: |
+          if git diff --quiet -- salesforce-data.js supabase-data.js; then
             echo "Sem alteracoes nos dados."
             exit 0
           fi
           git config user.name "Ideal Trends Dashboard"
           git config user.email "dashboard@idealtrends.com.br"
-          git add salesforce-data.js
-          git commit -m "Atualiza dados do Salesforce"
+          git add salesforce-data.js supabase-data.js
+          git commit -m "Atualiza snapshots comerciais"
           git push
 
   deploy:
-    needs: refresh-salesforce
-    if: ${{ always() && (github.event_name == 'push' || (needs.refresh-salesforce.result == 'success' && needs.refresh-salesforce.outputs.salesforce-configured == 'true')) }}
+    needs: refresh-data
+    if: ${{ always() && (github.event_name == 'push' || needs.refresh-data.result == 'success') }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

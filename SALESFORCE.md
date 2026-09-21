@@ -16,16 +16,16 @@ Exibimos os nomes definidos pela configuração, sem juntar usuários diferentes
 |---|---|---|
 | Agendamentos | Lead, incluindo convertidos, uma contagem por lead | `ScheduleDate__c` |
 | Conexões | Opportunity, `DidTheMeetingTakePlace__c = 'Conectada'`, uma contagem por oportunidade | `MeetingDate__c` |
-| Vendas | Opportunity com Data da venda; excluir `IsClosed = true AND IsWon = false` | `Dia_da_venda__c` |
-| Receita | Soma de `Amount` das mesmas vendas; não filtrar pelo pagamento | `Dia_da_venda__c` |
-| TM | Receita dividida pela quantidade de vendas do mesmo recorte | `Dia_da_venda__c` |
-| Pipeline | Opportunity, `IsClosed = false`, somar `Amount` | `CloseDate` previsto |
+| Vendas | Opportunity com `IsWon = true` | `CloseDate` |
+| Receita | Soma de `Amount` das oportunidades ganhas; não filtrar pelo pagamento | `CloseDate` |
+| TM | Receita dividida pela quantidade de oportunidades ganhas do mesmo recorte | `CloseDate` |
+| Pipeline | Opportunity com `IsClosed = false` e `Closer__c` preenchido, somar `Amount` | `CloseDate` previsto |
 
-As datas dos indicadores realizados não ultrapassam o dia da extração em America/Sao_Paulo. Datas futuras de venda não são tratadas como vendas realizadas. O mês em andamento é parcial. Pipeline inclui datas futuras. O campo `Data_de_Pagamento__c` não é usado para Receita nem para Vendas.
+As datas dos indicadores realizados não ultrapassam o dia da extração em America/Sao_Paulo. Datas futuras de fechamento não são tratadas como vendas realizadas. O mês em andamento é parcial. Pipeline inclui datas futuras. O campo `Data_de_Pagamento__c` não é usado para Receita nem para Vendas.
 
 A exclusão das atualmente perdidas foi confirmada pelo usuário. Logo, os meses passados podem mudar quando uma venda passa a perdida ou muda de supervisor. Não é um histórico imutável do estado que existia naquela época.
 
-O Pipeline segue o estado aberto na extração, incluindo fases como Carteira e Nutrição se o Salesforce as classifica como abertas. Uma venda registrada ainda aberta/aguardando pagamento pode aparecer também no Pipeline. Não é uma soma de indicadores mutuamente exclusivos.
+O Pipeline segue o estado aberto na extração apenas quando um Closer está atribuído. Uma venda registrada ainda aberta/aguardando pagamento pode aparecer também no Pipeline. Não é uma soma de indicadores mutuamente exclusivos.
 
 ## Grão diário e MTD
 
