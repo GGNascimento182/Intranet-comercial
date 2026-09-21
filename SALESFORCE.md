@@ -21,6 +21,8 @@ Exibimos os nomes definidos pela configuração, sem juntar usuários diferentes
 | TM | Receita dividida pela quantidade de oportunidades ganhas do mesmo recorte | `CloseDate` |
 | Pipeline | Opportunity com `IsClosed = false` e `Closer__c` preenchido, somar `Amount` | `CloseDate` previsto |
 
+No acompanhamento semanal do Business Plan, a carga também agrega vendas por data, Closer e `OppProjectSelection__c` (**Sel. Projeto**). **Ideal Marketing** usa o valor `IdealMarketing` e **Busca Cliente** usa `BuscaCliente`. Antes disso, IM 2 separa os Closers cadastrados em `business-plan-config.js`, evitando dupla contagem. As três linhas precisam reconciliar com os totais mensais de Vendas (R$) e Pago (R$).
+
 As datas dos indicadores realizados não ultrapassam o dia da extração em America/Sao_Paulo. Datas futuras de fechamento não são tratadas como vendas realizadas. O mês em andamento é parcial. Pipeline inclui datas futuras. O campo `Data_de_Pagamento__c` não é usado para Receita nem para Vendas.
 
 A exclusão das atualmente perdidas foi confirmada pelo usuário. Logo, os meses passados podem mudar quando uma venda passa a perdida ou muda de supervisor. Não é um histórico imutável do estado que existia naquela época.
@@ -50,6 +52,6 @@ No Pipeline, MTD filtra o dia previsto de fechamento; não reconstitui o saldo a
 
 ## Atualização e validação
 
-Execute `sync-salesforce.ps1` e recarregue a página. O script usa a CLI existente, obtém somente agregados (sem dados de clientes), valida a carga e substitui o arquivo de dados após sucesso. Não há credenciais no navegador, servidor web público nem sincronização automática agendada.
+Execute `sync-salesforce.ps1` e recarregue a página. O script usa a CLI existente, obtém somente agregados (sem dados de clientes), valida a carga e substitui o arquivo de dados após sucesso. No repositório publicado, o GitHub Actions executa essa mesma rotina a cada hora, desde que o segredo `SF_AUTH_URL` esteja configurado. Não há credenciais no navegador.
 
 Os testes cobrem exclusividade dos cinco supervisores, totais, ticket ponderado, ausência versus zero, datas futuras, extrações incompletas, MTD inclusive em meses curtos, filtros e renderização. Totais da primeira carga corrigida foram também reconciliados por uma consulta independente agrupada por fase no Salesforce.

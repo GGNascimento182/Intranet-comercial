@@ -12,7 +12,7 @@ O workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages
 4. Cadastre `SUPABASE_SERVICE_ROLE_KEY` como segredo do repositório e, opcionalmente, `SUPABASE_URL`. O padrão já aponta para o projeto atual. A chave é usada apenas no GitHub Actions e nunca é incluída no site ou nos commits.
 5. Atualize os agregados localmente com `./sync-salesforce.ps1` e `node ./sync-supabase-data.cjs`, revise os snapshots e faça o push quando necessário.
 
-O navegador continua recebendo apenas snapshots agregados. A atualização ocorre no GitHub Actions e publica uma nova versão quando os dados mudam.
+O navegador continua recebendo apenas snapshots agregados. A atualização ocorre no GitHub Actions a cada hora e publica uma nova versão quando os dados mudam. A mesma carga inclui o acompanhamento semanal do Business Plan: IM e BC são classificados pelo campo Salesforce **Sel. Projeto** (`OppProjectSelection__c`); os integrantes cadastrados de IM 2 têm prioridade sobre a classificação do projeto.
 
 ## Dados reais e recorte
 
