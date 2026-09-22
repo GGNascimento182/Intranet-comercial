@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-22T21:29:12.7924819Z",
-  "startedAt": "2026-09-22T21:28:04.8024923Z",
+  "extractedAt": "2026-09-22T22:29:26.7461690Z",
+  "startedAt": "2026-09-22T22:28:18.7919771Z",
   "asOfDate": "2026-09-22",
   "range": {
     "start": "2025-01",
@@ -80,14 +80,14 @@ window.SALESFORCE_DATA = {
   "firstDates": {
     "pipeline": "2025-01-01",
     "sales": "2025-01-01",
+    "connections": "2025-01-01",
     "appointments": "2025-03-11",
-    "totalSales": "2025-08-01",
-    "connections": "2025-01-01"
+    "totalSales": "2025-08-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1074 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3558 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3563 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 21 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4841,
+      "records": 4842,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -159,9 +159,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 4955,
+      "records": 4960,
       "knownAmount": 2717345.34,
-      "missingAmounts": 3558
+      "missingAmounts": 3563
     },
     {
       "year": 2027,
@@ -10216,7 +10216,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 27700,
       "appointments": 244,
-      "connections": 115,
+      "connections": 116,
       "sales": 13,
       "totalSales": 15,
       "totalRevenue": 33500,
@@ -38998,7 +38998,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 2000,
       "appointments": 20,
-      "connections": 7,
+      "connections": 8,
       "sales": 1,
       "totalSales": 0,
       "totalRevenue": 0,
