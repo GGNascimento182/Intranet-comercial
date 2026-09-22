@@ -2,8 +2,8 @@
   const definitions={
     hunter:[
       {key:'calledCnpjs',label:'CNPJs ligados',icon:'phone',tone:'blue'},
-      {key:'answeredCnpjs',label:'CNPJs atendidos',icon:'answered',tone:'purple'},
       {key:'calls',label:'Ligações efetuadas',icon:'phone',tone:'blue'},
+      {key:'answeredCnpjs',label:'CNPJs atendidos',icon:'answered',tone:'purple'},
       {key:'answeredCalls',label:'Ligações atendidas',icon:'answered',tone:'purple'},
       {key:'appointments',label:'Agendamentos',icon:'calendar',tone:'blue'},
       {key:'connections',label:'Conexões',icon:'link',tone:'purple'},

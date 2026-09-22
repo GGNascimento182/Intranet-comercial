@@ -28,11 +28,12 @@ const dayKey=(date,memberId,role)=>`${date}|${memberId}|${role}`;
 const isoDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}/.test(value)?value.slice(0,10):null;
 const normalized=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
 const currentMonthEnd=`${today.slice(0,7)}-${String(new Date(Date.UTC(+today.slice(0,4),+today.slice(5,7),0)).getUTCDate()).padStart(2,'0')}`;
+const answeredByDisposition=value=>!new Set(['não atendeu','nao atendeu','não conectou','nao conectou','perdido','false','busy','failed','no answer']).has(normalized(value));
 
 async function main(){
   const [membersRaw,tasks,meetingHunter,meetingCloser,sales,opportunities,goals]=await Promise.all([
     fetchAll('team_member',{select:'id,sf_user_id,display_name,role,supervisor_id,status,is_leader,leads_role,extension',order:'display_name.asc'}),
-    fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_duration_seconds,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
+    fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_duration_seconds,call_disposition,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
     fetchAll('fact_meeting_daily',{select:'date,hunter_id,hunter_supervisor_id,scheduled,connected',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_closer_meeting_daily',{select:'date,closer_id,closer_supervisor_id,connected,new_meetings,follow_ups',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_sale_daily',{select:'date,closer_id,closer_supervisor_id,deals,amount,deals_paid,amount_paid,deals_pending,amount_pending',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
@@ -53,9 +54,12 @@ async function main(){
     return daily.get(key);
   };
   for(const task of tasks){
-    const member=bySfId.get(task.owner_id),rawDuration=task.call_duration_seconds,duration=Number(rawDuration);if(!member||member.role!=='hunter'||!task.activity_date||rawDuration===null||rawDuration===undefined||!Number.isFinite(duration)||duration<0)continue;
+    const member=bySfId.get(task.owner_id),rawDuration=task.call_duration_seconds,hasDuration=rawDuration!==null&&rawDuration!==undefined,duration=Number(rawDuration);if(!member||member.role!=='hunter'||!task.activity_date||(hasDuration&&(!Number.isFinite(duration)||duration<0)))continue;
     const row=ensure(task.activity_date,member,'hunter');row.calls++;
-    const isAnswered=duration!==0;if(isAnswered)row.answeredCalls++;
+    // A duração é a regra oficial. A sincronização atual do CRM tem tarefas
+    // antigas sem esse campo; nelas, preservamos o resultado registrado para
+    // não apagar vínculos de CNPJ enquanto a carga histórica é completada.
+    const isAnswered=hasDuration?duration!==0:answeredByDisposition(task.call_disposition);if(isAnswered)row.answeredCalls++;
     const target=task.who_id||task.what_id;if(target){const key=hash(target);if(!row.calledKeys.includes(key))row.calledKeys.push(key);if(isAnswered&&!row.answeredKeys.includes(key))row.answeredKeys.push(key);}
   }
   for(const item of meetingHunter){const member=bySfId.get(item.hunter_id);if(!member||member.role!=='hunter')continue;const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);}
@@ -70,7 +74,7 @@ async function main(){
     if(scheduledDate<=today&&outcome==='cancelada'&&reason==='nao compareceu')sum(ensure(scheduledDate,closer,'closer'),'noShows',1);
     if(scheduledDate>today&&!outcome)sum(ensure(scheduledDate,closer,'closer'),'futureMeetings',1);
   }
-  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',meetingResults:'Conexões por reunião realizada; no-show por cancelamento “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
+  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',meetingResults:'Conexões por reunião realizada; no-show por cancelamento “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);
