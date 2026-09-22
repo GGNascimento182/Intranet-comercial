@@ -89,9 +89,10 @@ foreach ($year in $StartYear..$EndYear) {
       $records = @($selectedRecords) + @($disconnectedRecords)
     }
     $batches.Add(@{year=$year;metric=$plan.key;dateField=$plan.date;records=$records})
-    if ($plan.key -in @('sales','totalSales')) {
-      # O BP semanal abre venda e pago por Closer, mas continua sendo uma carga
-      # agregada: não há nomes de oportunidades ou clientes no snapshot.
+    if ($plan.key -in @('sales','totalSales') -and $year -eq $thisYear) {
+      # O BP semanal só exibe o mês corrente. Restringir a abertura por
+      # Closer/Projeto ao ano corrente evita exceder o limite de agregados do
+      # Salesforce no histórico, sem afetar os indicadores mensais.
       $closerGroup = "$($plan.date), Closer__r.Name, CloserSupervisor__r.Name, OppProjectSelection__c"
       $closerQuery = "SELECT $($plan.date), Closer__r.Name closerName, CloserSupervisor__r.Name closerSupervisorName, OppProjectSelection__c project, $($plan.aggregate) FROM $($plan.object) WHERE $($plan.date) >= $start AND $($plan.date) < $end AND $($plan.predicate) GROUP BY $closerGroup"
       $closerRecords = if ($availableYears[$plan.key] -contains $year) { @(Invoke-SalesforceQuery $closerQuery) } else { @() }

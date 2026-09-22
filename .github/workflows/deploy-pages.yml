@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
   schedule:
-    # Executa no minuto 17 para evitar os picos do início de cada hora.
-    - cron: '17 * * * *'
+    # 07h17 a 20h17 em America/Sao_Paulo (UTC−3). Fora dessa janela, a
+    # carga fica pausada; o primeiro ciclo seguinte é às 07h17.
+    - cron: '17 10-23 * * *'
   workflow_dispatch:
 
 permissions:
@@ -51,7 +52,9 @@ jobs:
           rm auth-url.txt
       - name: Atualizar agregados do dashboard
         if: steps.auth-state.outputs.configured == 'true'
-        run: pwsh -File ./sync-salesforce.ps1 -TargetOrg production
+        # O painel histórico publicado começa em 2025. Manter o mesmo recorte
+        # reduz a carga horária e evita consultas desnecessárias desde 2019.
+        run: pwsh -File ./sync-salesforce.ps1 -TargetOrg production -StartYear 2025
       - name: Atualizar agregados do Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
