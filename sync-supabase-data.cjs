@@ -24,16 +24,19 @@ async function fetchAll(table,params={}){
 }
 const sum=(target,key,value)=>{target[key]=(target[key]||0)+(Number(value)||0);};
 const hash=value=>crypto.createHash('sha256').update(String(value)).digest('hex').slice(0,16);
-const answered=raw=>!new Set(['não atendeu','nao atendeu','não conectou','nao conectou','perdido','false','busy','failed','no answer']).has(String(raw??'').trim().toLocaleLowerCase('pt-BR'));
 const dayKey=(date,memberId,role)=>`${date}|${memberId}|${role}`;
+const isoDate=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2}/.test(value)?value.slice(0,10):null;
+const normalized=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
+const currentMonthEnd=`${today.slice(0,7)}-${String(new Date(Date.UTC(+today.slice(0,4),+today.slice(5,7),0)).getUTCDate()).padStart(2,'0')}`;
 
 async function main(){
-  const [membersRaw,tasks,meetingHunter,meetingCloser,sales,goals]=await Promise.all([
+  const [membersRaw,tasks,meetingHunter,meetingCloser,sales,opportunities,goals]=await Promise.all([
     fetchAll('team_member',{select:'id,sf_user_id,display_name,role,supervisor_id,status,is_leader,leads_role,extension',order:'display_name.asc'}),
-    fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_disposition,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
+    fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_duration_seconds,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
     fetchAll('fact_meeting_daily',{select:'date,hunter_id,hunter_supervisor_id,scheduled,connected',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_closer_meeting_daily',{select:'date,closer_id,closer_supervisor_id,connected,new_meetings,follow_ups',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_sale_daily',{select:'date,closer_id,closer_supervisor_id,deals,amount,deals_paid,amount_paid,deals_pending,amount_pending',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
+    fetchAll('sf_opportunity',{select:'id,hunter_id,closer_id,scheduled_date,meeting_outcome,cancellation_reason,sold_at,paid_at,amount',or:`(scheduled_date.gte.${start},sold_at.gte.${start},paid_at.gte.${start})`,order:'scheduled_date.asc'}),
     fetchAll('member_goal',{select:'member_id,month_start,goal_amount,goal_connections'})
   ]);
   const members=membersRaw.filter(member=>member.role==='hunter'||member.role==='closer').map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name,role:member.role,supervisorId:member.supervisor_id,status:member.status,extension:member.extension}));
@@ -46,19 +49,28 @@ async function main(){
   const daily=new Map();
   const ensure=(date,member,role,supervisorId=member?.supervisorId)=>{
     const key=dayKey(date,member.id,role);
-    if(!daily.has(key))daily.set(key,{date,month:date.slice(0,7),memberId:member.id,role,supervisorId,calledKeys:[],answeredKeys:[],calls:0,answeredCalls:0,appointments:0,connections:0,appointmentsReceived:0,soldDeals:0,soldAmount:0,paidDeals:0,paidAmount:0,pendingDeals:0,pendingAmount:0});
+    if(!daily.has(key))daily.set(key,{date,month:date.slice(0,7),memberId:member.id,role,supervisorId,calledKeys:[],answeredKeys:[],calls:0,answeredCalls:0,appointments:0,connections:0,noShows:0,futureMeetings:0,appointmentsReceived:0,soldDeals:0,soldAmount:0,paidDeals:0,paidAmount:0,pendingDeals:0,pendingAmount:0});
     return daily.get(key);
   };
   for(const task of tasks){
-    const member=bySfId.get(task.owner_id);if(!member||member.role!=='hunter'||!task.activity_date)continue;
+    const member=bySfId.get(task.owner_id),rawDuration=task.call_duration_seconds,duration=Number(rawDuration);if(!member||member.role!=='hunter'||!task.activity_date||rawDuration===null||rawDuration===undefined||!Number.isFinite(duration)||duration<0)continue;
     const row=ensure(task.activity_date,member,'hunter');row.calls++;
-    const isAnswered=answered(task.call_disposition);if(isAnswered)row.answeredCalls++;
+    const isAnswered=duration!==0;if(isAnswered)row.answeredCalls++;
     const target=task.who_id||task.what_id;if(target){const key=hash(target);if(!row.calledKeys.includes(key))row.calledKeys.push(key);if(isAnswered&&!row.answeredKeys.includes(key))row.answeredKeys.push(key);}
   }
   for(const item of meetingHunter){const member=bySfId.get(item.hunter_id);if(!member||member.role!=='hunter')continue;const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);}
   for(const item of meetingCloser){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'appointmentsReceived',(item.new_meetings||0)+(item.follow_ups||0));sum(row,'connections',item.connected);}
   for(const item of sales){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'soldDeals',item.deals);sum(row,'soldAmount',item.amount);sum(row,'paidDeals',item.deals_paid);sum(row,'paidAmount',item.amount_paid);sum(row,'pendingDeals',item.deals_pending);sum(row,'pendingAmount',item.amount_pending);}
-  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada',answeredCnpjs:'Mesmo vínculo distinto, excluindo disposições de falha/não atendimento',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
+  for(const item of opportunities){
+    const hunter=bySfId.get(item.hunter_id),amount=Number(item.amount)||0,soldDate=isoDate(item.sold_at),paidDate=isoDate(item.paid_at),scheduledDate=isoDate(item.scheduled_date);
+    if(hunter?.role==='hunter'&&soldDate&&soldDate>=start&&soldDate<=today){const row=ensure(soldDate,hunter,'hunter');sum(row,'soldDeals',1);sum(row,'soldAmount',amount);}
+    if(hunter?.role==='hunter'&&paidDate&&paidDate>=start&&paidDate<=today){const row=ensure(paidDate,hunter,'hunter');sum(row,'paidDeals',1);sum(row,'paidAmount',amount);}
+    const closer=bySfId.get(item.closer_id);if(closer?.role!=='closer'||!scheduledDate||scheduledDate<start||scheduledDate>currentMonthEnd)continue;
+    const outcome=normalized(item.meeting_outcome),reason=normalized(item.cancellation_reason);
+    if(scheduledDate<=today&&outcome==='cancelada'&&reason==='nao compareceu')sum(ensure(scheduledDate,closer,'closer'),'noShows',1);
+    if(scheduledDate>today&&!outcome)sum(ensure(scheduledDate,closer,'closer'),'futureMeetings',1);
+  }
+  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',meetingResults:'Conexões por reunião realizada; no-show por cancelamento “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);

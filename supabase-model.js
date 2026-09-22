@@ -6,11 +6,17 @@
       {key:'calls',label:'Ligações efetuadas',icon:'phone',tone:'blue'},
       {key:'answeredCalls',label:'Ligações atendidas',icon:'answered',tone:'purple'},
       {key:'appointments',label:'Agendamentos',icon:'calendar',tone:'blue'},
-      {key:'connections',label:'Conexões',icon:'link',tone:'purple'}
+      {key:'connections',label:'Conexões',icon:'link',tone:'purple'},
+      {key:'soldDeals',label:'Vendas',icon:'cart',tone:'orange'},
+      {key:'soldAmount',label:'Vendas (R$)',icon:'cart',tone:'orange',money:true},
+      {key:'paidDeals',label:'Pagos',icon:'money',tone:'green'},
+      {key:'paidAmount',label:'Pagos (R$)',icon:'money',tone:'green',money:true}
     ],
     closer:[
       {key:'appointmentsReceived',label:'Agendamentos recebidos',icon:'calendar',tone:'blue'},
-      {key:'connections',label:'Conexões',icon:'link',tone:'purple'},
+      {key:'connections',label:'Conexões — reuniões realizadas',icon:'link',tone:'purple',meetingResult:true},
+      {key:'noShows',label:'No Show',icon:'calendar',tone:'pink',meetingResult:true},
+      {key:'futureMeetings',label:'Reuniões futuras',icon:'calendar',tone:'slate',meetingResult:true},
       {key:'soldAmount',label:'Vendido',icon:'cart',tone:'orange',money:true},
       {key:'paidAmount',label:'Recebido (pago)',icon:'money',tone:'green',money:true},
       {key:'pendingAmount',label:'Aguardando pagamento',icon:'ticket',tone:'slate',money:true},
