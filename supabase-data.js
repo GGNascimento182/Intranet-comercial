@@ -2416,7 +2416,7 @@ window.SUPABASE_DATA = {
       "sfUserId": "005bL00000UAucLQAT",
       "name": "Kaio Miranda (histórico)",
       "role": "hunter",
-      "supervisorId": "unassigned-hunter",
+      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
       "status": "historical",
       "extension": null
     },
@@ -2493,14 +2493,14 @@ window.SUPABASE_DATA = {
         "name": "Samantha Jeronimo"
       },
       {
-        "id": "eacebc5a-b84a-4cff-848a-20a57d118784",
-        "sfUserId": "005bL0000092GukQAE",
-        "name": "Thais Leite"
-      },
-      {
         "id": "96fd36e7-ebc3-4bb9-be88-6fa547de0428",
         "sfUserId": "005bL00000FhaPOQAZ",
         "name": "Willian Cardoso"
+      },
+      {
+        "id": "757b45cb-d0a8-47e1-8921-47a467850e75",
+        "sfUserId": "005bL00000QexFJQAZ",
+        "name": "Matheus Porto"
       }
     ],
     "closer": [
@@ -228925,7 +228925,7 @@ window.SUPABASE_DATA = {
       "month": "2026-09",
       "memberId": "historical-hunter-005bL00000UAucLQAT",
       "role": "hunter",
-      "supervisorId": "unassigned-hunter",
+      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
       "calledKeys": [],
       "answeredKeys": [],
       "calls": 0,
@@ -237625,7 +237625,7 @@ window.SUPABASE_DATA = {
       "month": "2026-09",
       "memberId": "historical-hunter-005bL00000UAucLQAT",
       "role": "hunter",
-      "supervisorId": "unassigned-hunter",
+      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
       "calledKeys": [],
       "answeredKeys": [],
       "calls": 0,

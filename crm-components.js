@@ -23,8 +23,7 @@ customElements.define('crm-metric',CRMMetric);
 class CRMTeam extends HTMLElement{
   set data({supabase,month}){
     const defs=SupabaseData.definitions.hunter,cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
-    const supervisors=[...(supabase.supervisors?.hunter||[])];
-    if(supabase.members.some(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter'))supervisors.push({id:'unassigned-hunter',name:'Sem supervisor de Hunter'});
+    const supervisors=(supabase.supervisors?.hunter||[]).filter(supervisor=>!/^Thais Leite$/i.test(supervisor.name));
     const memberIds=id=>supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId===id).map(member=>member.id);
     const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`).join('');
     const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));

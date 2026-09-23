@@ -43,13 +43,19 @@ async function main(){
   const bySfId=new Map(members.filter(member=>member.sfUserId).map(member=>[member.sfUserId,member]));
   const leaders=membersRaw.filter(member=>member.is_leader);
   const supervisors={
-    hunter:leaders.filter(member=>member.leads_role==='hunter').map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name})),
+    // Thais não integra mais a visão de supervisão de Hunter.
+    hunter:leaders.filter(member=>member.leads_role==='hunter'&&!/^Thais Leite$/i.test(member.display_name)).map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name})),
     closer:leaders.filter(member=>member.leads_role==='closer'&&/^(Matheus|Patrick)\b/i.test(member.display_name)).map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name}))
   };
   const hunterSupervisorBySfId=new Map(supervisors.hunter.filter(supervisor=>supervisor.sfUserId).map(supervisor=>[supervisor.sfUserId,supervisor.id]));
+  const leaderBySfId=new Map(leaders.filter(leader=>leader.sf_user_id).map(leader=>[leader.sf_user_id,leader]));
   const historicalHunterBySfId=new Map();
   const historicalHunter=(sfUserId,supervisorSfId)=>{
-    const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||'unassigned-hunter';if(!sfUserId)return null;
+    const leader=leaderBySfId.get(supervisorSfId);
+    // Uma venda histórica de Hunter pode manter como líder alguém que hoje é
+    // Closer. Preservamos o vínculo original, sem criar "sem supervisor".
+    if(leader&&!supervisors.hunter.some(supervisor=>supervisor.id===leader.id))supervisors.hunter.push({id:leader.id,sfUserId:leader.sf_user_id,name:leader.display_name});
+    const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||leader?.id||null;if(!sfUserId||!supervisorId)return null;
     if(historicalHunterBySfId.has(sfUserId))return historicalHunterBySfId.get(sfUserId);
     const known=membersRaw.find(member=>member.sf_user_id===sfUserId),member={id:`historical-hunter-${sfUserId}`,sfUserId,name:`${known?.display_name||'Colaborador'} (histórico)`,role:'hunter',supervisorId,status:'historical',extension:null};
     members.push(member);historicalHunterBySfId.set(sfUserId,member);return member;
