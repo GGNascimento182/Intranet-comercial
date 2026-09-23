@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-22T23:28:26.1119584Z",
-  "startedAt": "2026-09-22T23:27:24.5377001Z",
-  "asOfDate": "2026-09-22",
+  "extractedAt": "2026-09-23T10:31:29.4512031Z",
+  "startedAt": "2026-09-23T10:30:22.4380122Z",
+  "asOfDate": "2026-09-23",
   "range": {
     "start": "2025-01",
     "end": "2027-12"
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2025-01-01",
-    "sales": "2025-01-01",
-    "pipeline": "2025-01-01",
     "appointments": "2025-03-11",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
+    "connections": "2025-01-01",
     "totalSales": "2025-08-01"
   },
   "warnings": [
