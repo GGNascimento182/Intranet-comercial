@@ -78,7 +78,15 @@ async function main(){
     const isAnswered=hasDuration?duration!==0:answeredByDisposition(task.call_disposition);if(isAnswered)row.answeredCalls++;
     const target=task.who_id||task.what_id;if(target){const key=hash(target);if(!row.calledKeys.includes(key))row.calledKeys.push(key);if(isAnswered&&!row.answeredKeys.includes(key))row.answeredKeys.push(key);}
   }
-  for(const item of meetingHunter){const member=bySfId.get(item.hunter_id);if(!member||member.role!=='hunter')continue;const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);}
+  for(const item of meetingHunter){
+    const assigned=bySfId.get(item.hunter_id);
+    // A tabela diária já registra quem era o supervisor no momento do
+    // agendamento. Quando o colaborador mudou de função ou foi inativado,
+    // manter esse vínculo histórico evita apagar seu resultado do time.
+    const member=assigned?.role==='hunter'?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
+    if(!member)continue;
+    const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);
+  }
   for(const item of meetingCloser){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'appointmentsReceived',(item.new_meetings||0)+(item.follow_ups||0));sum(row,'connections',item.connected);}
   for(const item of opportunities){
     const assignedHunter=bySfId.get(item.hunter_id),closer=bySfId.get(item.closer_id),amount=Number(item.amount)||0,soldDate=isoDate(item.sold_at),paidDate=isoDate(item.paid_at),scheduledDate=isoDate(item.scheduled_date),stage=normalized(item.stage_name);
