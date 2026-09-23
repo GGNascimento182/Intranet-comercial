@@ -1,5 +1,15 @@
-const formatMetric=(value,d)=>value===null?'—':new Intl.NumberFormat('pt-BR',d.money?{style:'currency',currency:'BRL',maximumFractionDigits:2}:{maximumFractionDigits:0}).format(value);
+const formatMetric=(value,d)=>value===null?'—':new Intl.NumberFormat('pt-BR',d.percent?{style:'percent',maximumFractionDigits:0}:d.money?{style:'currency',currency:'BRL',maximumFractionDigits:2}:{maximumFractionDigits:0}).format(value);
 const monthLabel=month=>new Intl.DateTimeFormat('pt-BR',{month:'short',year:'2-digit',timeZone:'UTC'}).format(new Date(`${month}-01T00:00:00Z`));
+function formatSupabaseMetric(supabase,month,role,definition,memberIds,cutoff=null){
+  const value=SupabaseData.valueFor(supabase,month,role,definition.key,memberIds,cutoff);
+  if(definition.shareOfAppointments){
+    const appointments=SupabaseData.valueFor(supabase,month,role,'appointmentsReceived',memberIds,cutoff);
+    return value===null||appointments===null?'—':`${formatMetric(value,{})} | ${appointments>0?Math.round((value/appointments)*100):0}%`;
+  }
+  if(!definition.volumeKey)return formatMetric(value,definition);
+  const volume=SupabaseData.valueFor(supabase,month,role,definition.volumeKey,memberIds,cutoff);
+  return value===null||volume===null?'—':`${formatMetric(value,definition)} (${formatMetric(volume,{})})`;
+}
 class CRMMetric extends HTMLElement{
   set data({definition:d,value,previous,secondary=null,plan=null}){
     const change=DashboardData.comparison(value,previous);
@@ -11,22 +21,13 @@ class CRMMetric extends HTMLElement{
 }
 customElements.define('crm-metric',CRMMetric);
 class CRMTeam extends HTMLElement{
-  set data({dataset,supabase,month}){
-    // Pipeline é exclusivamente a visão macro atual do funil de Closers.
-    const defs=DashboardData.definitions.filter(definition=>definition.key!=='pipeline');
-    const supervisors=dataset.displayGroups?new Map(dataset.displayGroups.map(s=>[s.id,s.name])):dataset.supervisors?new Map(dataset.supervisors.map(s=>[s.id,s.name])):new Map(dataset.rows.filter(r=>r.month===month).map(r=>[r.supervisorId,r.supervisorName||'Sem supervisor']));
-    const supMembers=id=>{
-      if(!supabase||id===undefined)return undefined;
-      if(id==='DISCONNECTED'){
-        const displayed=new Set((supabase.supervisors?.hunter||[]).map(supervisor=>supervisor.id));
-        return SupabaseData.membersFor(supabase,'hunter',{activeOnly:false}).filter(member=>!displayed.has(member.supervisorId)).map(member=>member.id);
-      }
-      const supervisor=supabase.supervisors?.hunter?.find(item=>item.sfUserId===id);
-      return supervisor?SupabaseData.membersFor(supabase,'hunter',{activeOnly:false,supervisorId:supervisor.id}).map(member=>member.id):[];
-    };
-    const metricValue=(id,d)=>d.key==='calls'?SupabaseData.valueFor(supabase,month,'hunter','calledCnpjs',supMembers(id)):d.key==='answered'?SupabaseData.valueFor(supabase,month,'hunter','answeredCnpjs',supMembers(id)):DashboardData.valueFor(dataset,month,d.key,id);
-    const cells=id=>defs.map(d=>`<td>${escapeHTML(formatMetric(metricValue(id,d),d))}</td>`).join('');
-    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Hunter" tabindex="0"><table><caption>Ligações representam CNPJs distintos no período. Os demais indicadores seguem a atribuição atual do Supervisor de Hunter.</caption><thead><tr><th scope="col">Supervisor de Hunter</th>${defs.map(d=>`<th scope="col">${escapeHTML(d.key==='calls'?'CNPJs ligados':d.key==='answered'?'CNPJs atendidos':d.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.size?[...supervisors].map(([id,name])=>`<tr><th scope="row">${escapeHTML(name)}</th>${cells(id)}</tr>`).join(''):`<tr><td colspan="${defs.length+1}" class="empty-state">Os times aparecerão após a conexão das fontes.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(undefined)}</tr></tfoot></table></div>`;
+  set data({supabase,month}){
+    const defs=SupabaseData.definitions.hunter,cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
+    const supervisors=(supabase.supervisors?.hunter||[]).filter(supervisor=>!/^Thais Leite\b/i.test(supervisor.name));
+    const memberIds=id=>SupabaseData.membersFor(supabase,'hunter',{supervisorId:id}).map(member=>member.id);
+    const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`).join('');
+    const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
+    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Hunter" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.</caption><thead><tr><th scope="col">Supervisor de Hunter</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Os times aparecerão após a conexão das fontes.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(totalIds)}</tr></tfoot></table></div>`;
   }
 }
 customElements.define('crm-team',CRMTeam);
@@ -35,9 +36,10 @@ class CRMCloserTeam extends HTMLElement{
     const defs=SupabaseData.definitions.closer;
     const cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
     const supervisors=supabase.supervisors?.closer||[];
-    const memberIds=id=>SupabaseData.membersFor(supabase,'closer',{activeOnly:false,supervisorId:id}).map(member=>member.id);
-    const cells=id=>defs.map(definition=>`<td>${escapeHTML(formatMetric(SupabaseData.valueFor(supabase,month,'closer',definition.key,id===undefined?undefined:memberIds(id),cutoff),definition))}</td>`).join('');
-    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Closer" tabindex="0"><table><caption>Somente Matheus e Patrick. Agendamentos recebidos somam reuniões novas e follow-ups. Gap devido compara o vendido com a meta proporcional aos dias úteis.</caption><thead><tr><th scope="col">Supervisor de Closer</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(supervisor.id)}</tr>`).join('')||'<tr><td colspan="7" class="empty-state">Snapshot do Supabase ainda não carregado.</td></tr>'}</tbody><tfoot><tr><th scope="row">Total</th>${cells(undefined)}</tr></tfoot></table></div>`;
+    const memberIds=id=>SupabaseData.membersFor(supabase,'closer',{supervisorId:id}).map(member=>member.id);
+    const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'closer',definition,ids,cutoff))}</td>`).join('');
+    const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
+    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Closer" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.</caption><thead><tr><th scope="col">Supervisor de Closer</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Snapshot do Supabase ainda não carregado.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(totalIds)}</tr></tfoot></table></div>`;
   }
 }
 customElements.define('crm-closer-team',CRMCloserTeam);
