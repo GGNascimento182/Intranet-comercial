@@ -12,12 +12,20 @@ const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFo
 const optionsFor=role=>SupabaseData.membersFor(supabaseDataset,role).map(member=>`<option value="${escapeHTML(member.id)}">${escapeHTML(member.name)}</option>`).join('');
 function valueCell(role,definition,memberId,month,cutoff=null){
   const value=SupabaseData.valueFor(supabaseDataset,month,role,definition.key,memberId,cutoff);
+  if(definition.shareOfAppointments){
+    const appointments=SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',memberId,cutoff);
+    return value===null||appointments===null?'—':`${performanceFormat(value,{})} | ${appointments>0?Math.round((value/appointments)*100):0}%`;
+  }
   if(!definition.volumeKey)return performanceFormat(value,definition);
   const volume=SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,memberId,cutoff);
   return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
 }
 function dailyValueCell(role,definition,memberId,date){
   const value=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.key,memberId);
+  if(definition.shareOfAppointments){
+    const appointments=SupabaseData.dailyValueFor(supabaseDataset,date,role,'appointmentsReceived',memberId);
+    return value===null||appointments===null?'—':`${performanceFormat(value,{})} | ${appointments>0?Math.round((value/appointments)*100):0}%`;
+  }
   if(!definition.volumeKey)return performanceFormat(value,definition);
   const volume=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.volumeKey,memberId);
   return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
@@ -30,13 +38,14 @@ function configurePerformance(){
 }
 function performanceTable(role,members,month){
   const defs=SupabaseData.definitions[role],cutoff=month===supabaseDataset.asOfDate?.slice(0,7)?supabaseDataset.asOfDate:null;
-  return `<div class="table-scroll"><table><thead><tr><th scope="col">Colaborador</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${defs.map(definition=>`<td>${escapeHTML(valueCell(role,definition,member.id,month,cutoff))}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody></table></div>`;
+  const ids=members.map(member=>member.id),total=members.length?`<tfoot><tr><th scope="row">Total</th>${defs.map(definition=>`<td>${escapeHTML(valueCell(role,definition,ids,month,cutoff))}</td>`).join('')}</tr></tfoot>`:'';
+  return `<div class="table-scroll"><table><thead><tr><th scope="col">Colaborador</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${defs.map(definition=>`<td>${escapeHTML(valueCell(role,definition,member.id,month,cutoff))}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody>${total}</table></div>`;
 }
 function renderPerformanceTeams(){
   const month=performanceMonth.value;if(!month)return;
   const roleSection=(role,title)=>{
     const allowed=(role==='closer'?supabaseDataset.supervisors.closer:supabaseDataset.supervisors.hunter).filter(supervisor=>role!=='hunter'||!/^Thais Leite\b/i.test(supervisor.name));
-    return `<section><h3 class="subsection-title">${escapeHTML(title)}</h3><div class="team-stack">${allowed.map(supervisor=>{const members=SupabaseData.membersFor(supabaseDataset,role,{supervisorId:supervisor.id});return `<details class="team-detail" open><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary>${performanceTable(role,members,month)}</details>`;}).join('')}</div></section>`;
+    return `<section><h3 class="subsection-title">${escapeHTML(title)}</h3><div class="team-stack">${allowed.map(supervisor=>{const members=SupabaseData.membersFor(supabaseDataset,role,{supervisorId:supervisor.id});return `<details class="team-detail"><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary>${performanceTable(role,members,month)}</details>`;}).join('')}</div></section>`;
   };
   performanceTeams.innerHTML=roleSection('hunter','Hunters')+roleSection('closer','Closers · Matheus e Patrick');
   performanceStatus.textContent=`Período: ${monthLabel(month)} · CNPJ ligado considera duração ≥ 0; atendido, duração diferente de 0. Snapshot do Supabase em ${supabaseDataset.extractedAt?new Date(supabaseDataset.extractedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'carga pendente'}.`;

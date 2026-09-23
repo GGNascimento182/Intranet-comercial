@@ -14,8 +14,8 @@
     ],
     closer:[
       {key:'appointmentsReceived',label:'Agendamentos recebidos',icon:'calendar',tone:'blue'},
-      {key:'connections',label:'Conexões',icon:'link',tone:'purple'},
-      {key:'noShows',label:'No Show',icon:'calendar',tone:'pink'},
+      {key:'connections',label:'Conexões',icon:'link',tone:'purple',shareOfAppointments:true},
+      {key:'noShows',label:'No Show',icon:'calendar',tone:'pink',shareOfAppointments:true},
       {key:'futureMeetings',label:'Reuniões futuras',icon:'calendar',tone:'slate'},
       {key:'soldAmount',label:'Vendido',icon:'cart',tone:'orange',money:true,volumeKey:'soldDeals'},
       {key:'conversion',label:'Conversão',icon:'trend',tone:'purple',percent:true},
