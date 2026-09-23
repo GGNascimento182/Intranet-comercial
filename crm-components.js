@@ -29,7 +29,7 @@ class CRMTeam extends HTMLElement{
     const prospectingCloserId='prospeccao-closer';
     const knownSupervisorIds=new Set((supabase.supervisors?.hunter||[]).map(supervisor=>supervisor.id));
     const prospectingMembers=supabase.members.filter(member=>member.role==='hunter'&&!hiddenSupervisorIds.has(member.supervisorId)&&(member.supervisorId===prospectingCloserId||member.supervisorId===matheusId||!member.supervisorId||(!knownSupervisorIds.has(member.supervisorId)&&member.supervisorId!=='unassigned-hunter')));
-    if(prospectingMembers.length||supabase.members.some(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter'))supervisors.push({id:prospectingCloserId,name:'Prospecção Closer'});
+    if((prospectingMembers.length||supabase.members.some(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter'))&&!supervisors.some(supervisor=>supervisor.id===prospectingCloserId))supervisors.push({id:prospectingCloserId,name:'Prospecção Closer'});
     const memberIds=id=>id===prospectingCloserId?prospectingMembers.concat(supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter')).map(member=>member.id):supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId===id).map(member=>member.id);
     const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`).join('');
     const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
