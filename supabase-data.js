@@ -2416,7 +2416,7 @@ window.SUPABASE_DATA = {
       "sfUserId": "005bL00000UAucLQAT",
       "name": "Kaio Miranda (histórico)",
       "role": "hunter",
-      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
+      "supervisorId": "prospeccao-closer",
       "status": "historical",
       "extension": null
     },
@@ -2498,9 +2498,9 @@ window.SUPABASE_DATA = {
         "name": "Willian Cardoso"
       },
       {
-        "id": "757b45cb-d0a8-47e1-8921-47a467850e75",
-        "sfUserId": "005bL00000QexFJQAZ",
-        "name": "Matheus Porto"
+        "id": "prospeccao-closer",
+        "sfUserId": null,
+        "name": "Prospecção Closer"
       }
     ],
     "closer": [
@@ -228925,7 +228925,7 @@ window.SUPABASE_DATA = {
       "month": "2026-09",
       "memberId": "historical-hunter-005bL00000UAucLQAT",
       "role": "hunter",
-      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
+      "supervisorId": "prospeccao-closer",
       "calledKeys": [],
       "answeredKeys": [],
       "calls": 0,
@@ -237625,7 +237625,7 @@ window.SUPABASE_DATA = {
       "month": "2026-09",
       "memberId": "historical-hunter-005bL00000UAucLQAT",
       "role": "hunter",
-      "supervisorId": "757b45cb-d0a8-47e1-8921-47a467850e75",
+      "supervisorId": "prospeccao-closer",
       "calledKeys": [],
       "answeredKeys": [],
       "calls": 0,

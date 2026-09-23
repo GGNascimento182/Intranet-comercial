@@ -49,13 +49,16 @@ async function main(){
   };
   const hunterSupervisorBySfId=new Map(supervisors.hunter.filter(supervisor=>supervisor.sfUserId).map(supervisor=>[supervisor.sfUserId,supervisor.id]));
   const leaderBySfId=new Map(leaders.filter(leader=>leader.sf_user_id).map(leader=>[leader.sf_user_id,leader]));
+  const prospectingCloserSupervisor={id:'prospeccao-closer',sfUserId:null,name:'Prospecção Closer'};
   const historicalHunterBySfId=new Map();
   const historicalHunter=(sfUserId,supervisorSfId)=>{
     const leader=leaderBySfId.get(supervisorSfId);
-    // Uma venda histórica de Hunter pode manter como líder alguém que hoje é
-    // Closer. Preservamos o vínculo original, sem criar "sem supervisor".
-    if(leader&&!supervisors.hunter.some(supervisor=>supervisor.id===leader.id))supervisors.hunter.push({id:leader.id,sfUserId:leader.sf_user_id,name:leader.display_name});
-    const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||leader?.id||null;if(!sfUserId||!supervisorId)return null;
+    // Vendas históricas de Hunter ligadas a uma liderança que hoje é de
+    // Closer são consolidadas na origem correta, sem exibir o Closer como
+    // supervisor de Hunter.
+    const isCloserLeader=leader?.leads_role==='closer';
+    if(isCloserLeader&&!supervisors.hunter.some(supervisor=>supervisor.id===prospectingCloserSupervisor.id))supervisors.hunter.push(prospectingCloserSupervisor);
+    const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||(isCloserLeader?prospectingCloserSupervisor.id:null);if(!sfUserId||!supervisorId)return null;
     if(historicalHunterBySfId.has(sfUserId))return historicalHunterBySfId.get(sfUserId);
     const known=membersRaw.find(member=>member.sf_user_id===sfUserId),member={id:`historical-hunter-${sfUserId}`,sfUserId,name:`${known?.display_name||'Colaborador'} (histórico)`,role:'hunter',supervisorId,status:'historical',extension:null};
     members.push(member);historicalHunterBySfId.set(sfUserId,member);return member;
