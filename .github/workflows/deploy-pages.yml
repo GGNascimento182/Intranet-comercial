@@ -20,8 +20,9 @@ concurrency:
 
 jobs:
   refresh-data:
-    # O push já contém os dados mais recentes. Agenda e execução manual os atualizam.
-    if: github.event_name != 'push'
+    # Atualiza também após um push humano, para que correções de regra reflitam
+    # imediatamente. O commit gerado pelo próprio robô não reinicia o ciclo.
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
