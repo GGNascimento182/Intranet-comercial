@@ -28,7 +28,7 @@ roots['crm-team']=new (registry.get('crm-team'))();
 roots['crm-closer-team']=new (registry.get('crm-closer-team'))();
 for(const file of ['crm-app.js','business-plan.js'])vm.runInContext(fs.readFileSync(`${__dirname}/${file}`,'utf8'),context,{filename:file});
 assert.equal(roots['#macro-metrics'].children.length,0);
-assert.equal(roots['#history-metrics'].children.length,7);
+assert.equal(roots['#history-metrics'].children.length,8);
 assert.match(roots['crm-team'].innerHTML,/Desligados/);
 assert.match(roots['#bp-table'].innerHTML,/Diagnóstico/);
 assert.match(roots['#bp-weekly'].innerHTML,/META/);

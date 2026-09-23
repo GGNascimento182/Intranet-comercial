@@ -22,6 +22,25 @@ function dashboardMetric(month,key,supervisorId=undefined,cutoff=null){
   }
   return DashboardData.valueFor(dataset,month,key,supervisorId,cutoff);
 }
+const overviewDefinitions=[
+  {key:'calls',label:'Ligações efetuadas',icon:'phone',tone:'blue',source:'supabase'},
+  {key:'answeredCalls',label:'Ligações atendidas',icon:'answered',tone:'purple',source:'supabase',rate:['answeredCalls','calls'],rateLabel:'atendidas'},
+  {key:'appointments',label:'Agendamentos',icon:'calendar',tone:'blue',rate:['appointments','answeredCalls'],rateLabel:'agendados'},
+  {key:'connections',label:'Conexões',icon:'link',tone:'purple',rate:['connections','appointments'],rateLabel:'conexões'},
+  {key:'totalSales',label:'Vendas',icon:'cart',tone:'orange',rate:['totalSales','connections'],rateLabel:'vendas'},
+  {key:'totalRevenue',label:'Vendas (R$)',icon:'money',tone:'orange',money:true},
+  {key:'sales',label:'Pago',icon:'cart',tone:'green'},
+  {key:'revenue',label:'Pago (R$)',icon:'money',tone:'green',money:true}
+];
+function overviewMetric(month,key,cutoff=null){
+  if(key==='calls'||key==='answeredCalls')return SupabaseData.valueFor(supabaseDataset,month,'hunter',key,undefined,cutoff);
+  return DashboardData.valueFor(dataset,month,key,undefined,cutoff);
+}
+function overviewRate(month,definition,cutoff=null){
+  if(!definition.rate)return null;
+  const [numeratorKey,denominatorKey]=definition.rate,numerator=overviewMetric(month,numeratorKey,cutoff),denominator=overviewMetric(month,denominatorKey,cutoff);
+  return numerator===null||denominator===null||denominator===0?null:numerator/denominator;
+}
 const planKey={revenue:'revenue',calls:'calls',answered:null,appointments:'appointments',connections:'meetings',sales:'sales',ticket:'ticket'};
 function planComparison(month,definition,value){
   if(definition.key==='pipeline')return null;
@@ -44,11 +63,12 @@ function renderHistory(){
   const day=mtd?Number(historyCutoff.value):null,partial=dataset.coverage.some(c=>c.month===month&&c.partialPeriod);
   const periodLabel=mtd?`MTD · até o ${day}º dia útil`:partial?'Mês parcial até a extração':'Mês completo';
   const history=document.querySelector('#history-metrics');history.replaceChildren();
-  DashboardData.definitions.filter(definition=>definition.key!=='pipeline').forEach(definition=>{
+  overviewDefinitions.forEach(definition=>{
     const card=document.createElement('monthly-history');
-    card.data={definition,periodLabel,comparable:mtd||!partial,points:months.map(m=>{const cutoff=mtd?DashboardData.businessDayCutoff(m,day,dataset):null;return {month:m,value:dashboardMetric(m,definition.key,undefined,cutoff)};})};history.append(card);
+    const cutoff=mtd?DashboardData.businessDayCutoff(month,day,dataset):null,rate=overviewRate(month,definition,cutoff);
+    card.data={definition,periodLabel,comparable:mtd||!partial,conversion:rate===null?null:`${(rate*100).toLocaleString('pt-BR',{maximumFractionDigits:1})}% ${definition.rateLabel}`,points:months.map(m=>{const pointCutoff=mtd?DashboardData.businessDayCutoff(m,day,dataset):null;return {month:m,value:overviewMetric(m,definition.key,pointCutoff)};})};history.append(card);
   });
-  document.querySelector('#history-period').textContent=`${monthLabel(months[0])} a ${monthLabel(month)} · ${mtd?`MTD: até o ${day}º dia útil de cada mês`:'meses completos; mês da extração pode estar parcial'} · Pipeline restrito à visão atual`;
+  document.querySelector('#history-period').textContent=`${monthLabel(months[0])} a ${monthLabel(month)} · ${mtd?`MTD: até o ${day}º dia útil de cada mês`:'meses completos; mês da extração pode estar parcial'}`;
 }
 function renderDashboard(){
   if(!monthInput.validity.valid||!monthInput.value)return;
