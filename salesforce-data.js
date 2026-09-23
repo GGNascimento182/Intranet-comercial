@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-23T10:31:29.4512031Z",
-  "startedAt": "2026-09-23T10:30:22.4380122Z",
+  "extractedAt": "2026-09-23T11:31:09.9719726Z",
+  "startedAt": "2026-09-23T11:30:01.6937297Z",
   "asOfDate": "2026-09-23",
   "range": {
     "start": "2025-01",
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
-    "pipeline": "2025-01-01",
-    "sales": "2025-01-01",
     "connections": "2025-01-01",
+    "pipeline": "2025-01-01",
+    "appointments": "2025-03-11",
+    "sales": "2025-01-01",
     "totalSales": "2025-08-01"
   },
   "warnings": [
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4844,
+      "records": 4845,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10264,7 +10264,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 36471,
       "appointments": 142,
-      "connections": 65,
+      "connections": 66,
       "sales": 17,
       "totalSales": 25,
       "totalRevenue": 56976,
@@ -39037,7 +39037,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 3500,
       "appointments": 16,
-      "connections": 7,
+      "connections": 8,
       "sales": 2,
       "totalSales": 1,
       "totalRevenue": 1750,
