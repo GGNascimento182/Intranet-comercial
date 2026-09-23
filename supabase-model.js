@@ -14,11 +14,12 @@
     ],
     closer:[
       {key:'appointmentsReceived',label:'Agendamentos recebidos',icon:'calendar',tone:'blue'},
-      {key:'connections',label:'Conexões — reuniões realizadas',icon:'link',tone:'purple',meetingResult:true},
-      {key:'noShows',label:'No Show',icon:'calendar',tone:'pink',meetingResult:true},
-      {key:'futureMeetings',label:'Reuniões futuras',icon:'calendar',tone:'slate',meetingResult:true},
-      {key:'soldAmount',label:'Vendido',icon:'cart',tone:'orange',money:true},
-      {key:'paidAmount',label:'Recebido (pago)',icon:'money',tone:'green',money:true},
+      {key:'connections',label:'Conexões',icon:'link',tone:'purple'},
+      {key:'noShows',label:'No Show',icon:'calendar',tone:'pink'},
+      {key:'futureMeetings',label:'Reuniões futuras',icon:'calendar',tone:'slate'},
+      {key:'soldAmount',label:'Vendido',icon:'cart',tone:'orange',money:true,volumeKey:'soldDeals'},
+      {key:'conversion',label:'Conversão',icon:'trend',tone:'purple',percent:true},
+      {key:'paidAmount',label:'Recebido (pago)',icon:'money',tone:'green',money:true,volumeKey:'paidDeals'},
       {key:'pendingAmount',label:'Aguardando pagamento',icon:'ticket',tone:'slate',money:true},
       {key:'gapDue',label:'Gap devido',icon:'trend',tone:'pink',money:true}
     ]
@@ -55,12 +56,19 @@
       const field=key==='calledCnpjs'?'calledKeys':'answeredKeys';
       return new Set(rows.flatMap(row=>row[field]||[])).size;
     }
+    if(key==='futureMeetings')return Math.max(0,valueFor(data,month,role,'appointmentsReceived',memberIds,cutoffDate)-valueFor(data,month,role,'connections',memberIds,cutoffDate)-valueFor(data,month,role,'noShows',memberIds,cutoffDate));
+    if(key==='conversion'){
+      const connections=valueFor(data,month,role,'connections',memberIds,cutoffDate),soldDeals=valueFor(data,month,role,'soldDeals',memberIds,cutoffDate);
+      return connections>0?soldDeals/connections:0;
+    }
     if(key==='gapDue')return Math.max(0,goalFor(data,month,memberIds,cutoffDate)-valueFor(data,month,role,'soldAmount',memberIds,cutoffDate));
     return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
   }
   function dailyValueFor(data,date,role,key,memberId){
     const rows=data.dailyRows.filter(row=>row.date===date&&row.role===role&&row.memberId===memberId);
     if(key==='calledCnpjs'||key==='answeredCnpjs'){const field=key==='calledCnpjs'?'calledKeys':'answeredKeys';return new Set(rows.flatMap(row=>row[field]||[])).size;}
+    if(key==='futureMeetings')return Math.max(0,dailyValueFor(data,date,role,'appointmentsReceived',memberId)-dailyValueFor(data,date,role,'connections',memberId)-dailyValueFor(data,date,role,'noShows',memberId));
+    if(key==='conversion'){const connections=dailyValueFor(data,date,role,'connections',memberId),soldDeals=dailyValueFor(data,date,role,'soldDeals',memberId);return connections>0?soldDeals/connections:0;}
     if(key==='gapDue')return valueFor(data,date.slice(0,7),role,key,memberId,date);
     return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
   }

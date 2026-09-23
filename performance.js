@@ -8,26 +8,19 @@ const dailyRole=document.querySelector('#daily-role');
 const dailyPerson=document.querySelector('#daily-person');
 const dailyMonth=document.querySelector('#daily-month');
 
-const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFormat('pt-BR',definition.money?{style:'currency',currency:'BRL',maximumFractionDigits:0}:{maximumFractionDigits:0}).format(value);
+const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFormat('pt-BR',definition.percent?{style:'percent',maximumFractionDigits:0}:definition.money?{style:'currency',currency:'BRL',maximumFractionDigits:0}:{maximumFractionDigits:0}).format(value);
 const optionsFor=role=>SupabaseData.membersFor(supabaseDataset,role).map(member=>`<option value="${escapeHTML(member.id)}">${escapeHTML(member.name)}</option>`).join('');
-const cutoffFor=(definition,cutoff)=>definition.key==='futureMeetings'?null:cutoff;
-function meetingResultFormat(value,total){
-  if(value===null)return '—';
-  const percentage=total>0?Math.round((value/total)*100):0;
-  return `${performanceFormat(value,{})} | ${percentage}%`;
-}
 function valueCell(role,definition,memberId,month,cutoff=null){
-  const effectiveCutoff=cutoffFor(definition,cutoff);
-  const value=SupabaseData.valueFor(supabaseDataset,month,role,definition.key,memberId,effectiveCutoff);
-  if(!definition.meetingResult)return performanceFormat(value,definition);
-  const total=SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',memberId,effectiveCutoff);
-  return meetingResultFormat(value,total);
+  const value=SupabaseData.valueFor(supabaseDataset,month,role,definition.key,memberId,cutoff);
+  if(!definition.volumeKey)return performanceFormat(value,definition);
+  const volume=SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,memberId,cutoff);
+  return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
 }
 function dailyValueCell(role,definition,memberId,date){
   const value=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.key,memberId);
-  if(!definition.meetingResult)return performanceFormat(value,definition);
-  const total=SupabaseData.dailyValueFor(supabaseDataset,date,role,'appointmentsReceived',memberId);
-  return meetingResultFormat(value,total);
+  if(!definition.volumeKey)return performanceFormat(value,definition);
+  const volume=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.volumeKey,memberId);
+  return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
 }
 function configurePerformance(){
   const month=supabaseDataset.asOfDate?.slice(0,7)||currentMonth;
