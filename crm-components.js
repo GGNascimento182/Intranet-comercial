@@ -23,8 +23,9 @@ customElements.define('crm-metric',CRMMetric);
 class CRMTeam extends HTMLElement{
   set data({supabase,month}){
     const defs=SupabaseData.definitions.hunter,cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
-    const supervisors=(supabase.supervisors?.hunter||[]).filter(supervisor=>!/^Thais Leite\b/i.test(supervisor.name));
-    const memberIds=id=>SupabaseData.membersFor(supabase,'hunter',{supervisorId:id}).map(member=>member.id);
+    const supervisors=[...(supabase.supervisors?.hunter||[])];
+    if(supabase.members.some(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter'))supervisors.push({id:'unassigned-hunter',name:'Sem supervisor de Hunter'});
+    const memberIds=id=>supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId===id).map(member=>member.id);
     const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`).join('');
     const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
     this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Hunter" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.</caption><thead><tr><th scope="col">Supervisor de Hunter</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Os times aparecerão após a conexão das fontes.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(totalIds)}</tr></tfoot></table></div>`;

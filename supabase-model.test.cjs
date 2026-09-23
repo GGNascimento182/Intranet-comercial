@@ -25,3 +25,8 @@ for(const role of ['hunter','closer']){
 const called=api.valueFor(dataset,month,'hunter','calledCnpjs');
 const calls=api.valueFor(dataset,month,'hunter','calls');
 assert.ok(called<=calls,'CNPJs distintos não podem exceder o total de ligações');
+
+const hunterIds=dataset.members.filter(member=>member.role==='hunter').map(member=>member.id);
+for(const key of ['soldDeals','soldAmount','paidDeals','paidAmount']){
+  assert.equal(api.valueFor(dataset,month,'hunter',key,hunterIds,dataset.asOfDate),api.valueFor(dataset,month,'closer',key,undefined,dataset.asOfDate),`${key} precisa reconciliar Hunter e Closer`);
+}

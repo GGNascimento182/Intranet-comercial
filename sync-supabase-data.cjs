@@ -31,13 +31,12 @@ const currentMonthEnd=`${today.slice(0,7)}-${String(new Date(Date.UTC(+today.sli
 const answeredByDisposition=value=>!new Set(['não atendeu','nao atendeu','não conectou','nao conectou','perdido','false','busy','failed','no answer']).has(normalized(value));
 
 async function main(){
-  const [membersRaw,tasks,meetingHunter,meetingCloser,sales,opportunities,goals]=await Promise.all([
+  const [membersRaw,tasks,meetingHunter,meetingCloser,opportunities,goals]=await Promise.all([
     fetchAll('team_member',{select:'id,sf_user_id,display_name,role,supervisor_id,status,is_leader,leads_role,extension',order:'display_name.asc'}),
     fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_duration_seconds,call_disposition,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
     fetchAll('fact_meeting_daily',{select:'date,hunter_id,hunter_supervisor_id,scheduled,connected',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_closer_meeting_daily',{select:'date,closer_id,closer_supervisor_id,connected,new_meetings,follow_ups',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
-    fetchAll('fact_sale_daily',{select:'date,closer_id,closer_supervisor_id,deals,amount,deals_paid,amount_paid,deals_pending,amount_pending',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
-    fetchAll('sf_opportunity',{select:'id,hunter_id,closer_id,scheduled_date,meeting_outcome,cancellation_reason,sold_at,paid_at,amount',or:`(scheduled_date.gte.${start},sold_at.gte.${start},paid_at.gte.${start})`,order:'scheduled_date.asc'}),
+    fetchAll('sf_opportunity',{select:'id,hunter_id,hunter_supervisor_id,closer_id,scheduled_date,meeting_outcome,cancellation_reason,stage_name,sold_at,paid_at,amount',or:`(scheduled_date.gte.${start},sold_at.gte.${start},paid_at.gte.${start})`,order:'scheduled_date.asc'}),
     fetchAll('member_goal',{select:'member_id,month_start,goal_amount,goal_connections'})
   ]);
   const members=membersRaw.filter(member=>member.role==='hunter'||member.role==='closer').map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name,role:member.role,supervisorId:member.supervisor_id,status:member.status,extension:member.extension}));
@@ -46,6 +45,14 @@ async function main(){
   const supervisors={
     hunter:leaders.filter(member=>member.leads_role==='hunter').map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name})),
     closer:leaders.filter(member=>member.leads_role==='closer'&&/^(Matheus|Patrick)\b/i.test(member.display_name)).map(member=>({id:member.id,sfUserId:member.sf_user_id,name:member.display_name}))
+  };
+  const hunterSupervisorBySfId=new Map(supervisors.hunter.filter(supervisor=>supervisor.sfUserId).map(supervisor=>[supervisor.sfUserId,supervisor.id]));
+  const historicalHunterBySfId=new Map();
+  const historicalHunter=(sfUserId,supervisorSfId)=>{
+    const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||'unassigned-hunter';if(!sfUserId)return null;
+    if(historicalHunterBySfId.has(sfUserId))return historicalHunterBySfId.get(sfUserId);
+    const known=membersRaw.find(member=>member.sf_user_id===sfUserId),member={id:`historical-hunter-${sfUserId}`,sfUserId,name:`${known?.display_name||'Colaborador'} (histórico)`,role:'hunter',supervisorId,status:'historical',extension:null};
+    members.push(member);historicalHunterBySfId.set(sfUserId,member);return member;
   };
   const daily=new Map();
   const ensure=(date,member,role,supervisorId=member?.supervisorId)=>{
@@ -64,17 +71,21 @@ async function main(){
   }
   for(const item of meetingHunter){const member=bySfId.get(item.hunter_id);if(!member||member.role!=='hunter')continue;const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);}
   for(const item of meetingCloser){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'appointmentsReceived',(item.new_meetings||0)+(item.follow_ups||0));sum(row,'connections',item.connected);}
-  for(const item of sales){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'soldDeals',item.deals);sum(row,'soldAmount',item.amount);sum(row,'paidDeals',item.deals_paid);sum(row,'paidAmount',item.amount_paid);sum(row,'pendingDeals',item.deals_pending);sum(row,'pendingAmount',item.amount_pending);}
   for(const item of opportunities){
-    const hunter=bySfId.get(item.hunter_id),amount=Number(item.amount)||0,soldDate=isoDate(item.sold_at),paidDate=isoDate(item.paid_at),scheduledDate=isoDate(item.scheduled_date);
-    if(hunter?.role==='hunter'&&soldDate&&soldDate>=start&&soldDate<=today){const row=ensure(soldDate,hunter,'hunter');sum(row,'soldDeals',1);sum(row,'soldAmount',amount);}
-    if(hunter?.role==='hunter'&&paidDate&&paidDate>=start&&paidDate<=today){const row=ensure(paidDate,hunter,'hunter');sum(row,'paidDeals',1);sum(row,'paidAmount',amount);}
-    const closer=bySfId.get(item.closer_id);if(closer?.role!=='closer'||!scheduledDate||scheduledDate<start||scheduledDate>currentMonthEnd)continue;
+    const assignedHunter=bySfId.get(item.hunter_id),closer=bySfId.get(item.closer_id),amount=Number(item.amount)||0,soldDate=isoDate(item.sold_at),paidDate=isoDate(item.paid_at),scheduledDate=isoDate(item.scheduled_date),stage=normalized(item.stage_name);
+    const isSold=stage==='fechado ganho'||stage==='aguardando pagamento',isPaid=stage==='fechado ganho',isPending=stage==='aguardando pagamento';
+    const hunter=isSold?(assignedHunter?.role==='hunter'?assignedHunter:historicalHunter(item.hunter_id,item.hunter_supervisor_id)):null;
+    for(const [member,role] of [[hunter,'hunter'],[closer,'closer']]){
+      if(!member||member.role!==role)continue;
+      if(isSold&&soldDate&&soldDate>=start&&soldDate<=today){const row=ensure(soldDate,member,role);sum(row,'soldDeals',1);sum(row,'soldAmount',amount);if(isPending){sum(row,'pendingDeals',1);sum(row,'pendingAmount',amount);}}
+      if(isPaid&&paidDate&&paidDate>=start&&paidDate<=today){const row=ensure(paidDate,member,role);sum(row,'paidDeals',1);sum(row,'paidAmount',amount);}
+    }
+    if(closer?.role!=='closer'||!scheduledDate||scheduledDate<start||scheduledDate>currentMonthEnd)continue;
     const outcome=normalized(item.meeting_outcome),reason=normalized(item.cancellation_reason);
     if(scheduledDate<=today&&outcome==='cancelada'&&reason==='nao compareceu')sum(ensure(scheduledDate,closer,'closer'),'noShows',1);
     if(scheduledDate>today&&!outcome)sum(ensure(scheduledDate,closer,'closer'),'futureMeetings',1);
   }
-  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',meetingResults:'Conexões por reunião realizada; no-show por cancelamento “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
+  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',sales:'Fechado Ganho ou Aguardando pagamento, por Dia da venda; pago somente em Fechado Ganho, por data de pagamento',appointmentsReceived:'Reuniões novas + follow-ups atribuídos ao closer',meetingResults:'Conexões por reunião realizada; no-show por cancelamento “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);
