@@ -53,12 +53,6 @@ function renderHistory(){
 function renderDashboard(){
   if(!monthInput.validity.valid||!monthInput.value)return;
   const month=monthInput.value,previous=DashboardData.monthsThrough(month).at(-2),partial=dataset.coverage.some(c=>c.month===month&&c.partialPeriod);
-  const macro=document.querySelector('#macro-metrics');macro.replaceChildren();
-  DashboardData.definitions.forEach(definition=>{
-    const value=dashboardMetric(month,definition.key),card=document.createElement('crm-metric');
-    const secondary=definition.key==='calls'?{value:formatMetric(SupabaseData.valueFor(supabaseDataset,month,'hunter','calls'),definition),label:'ligações no total'}:definition.key==='answered'?{value:formatMetric(SupabaseData.valueFor(supabaseDataset,month,'hunter','answeredCalls'),definition),label:'ligações atendidas no total'}:null;
-    card.data={definition,value,secondary,plan:planComparison(month,definition,value),previous:partial||definition.key==='pipeline'?null:dashboardMetric(previous,definition.key)};macro.append(card);
-  });
   document.querySelector('crm-team').data={dataset,supabase:supabaseDataset,month};
   document.querySelector('crm-closer-team').data={supabase:supabaseDataset,month};
   const sfTime=dataset.extractedAt?new Date(dataset.extractedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'aguardando carga';

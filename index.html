@@ -27,9 +27,9 @@
     </header>
     <p id="connection-status" class="connection-status view-page" data-view="dashboard" role="status" aria-live="polite"></p>
     <details class="source-details view-page" data-view="dashboard"><summary>Critérios e qualidade dos dados</summary><div id="source-details"></div></details>
-    <section class="panel view-page" aria-labelledby="macro-title" id="dashboard" data-view="dashboard">
-      <header class="section-header"><span class="section-icon"><ui-icon name="activity"></ui-icon></span><div><h2 id="macro-title">Visão Macro</h2><p>Resultados gerais da operação comercial</p></div></header>
-      <div class="metrics-grid" id="macro-metrics"></div>
+    <section class="panel history-panel view-page" aria-labelledby="history-title" id="historico" data-view="dashboard">
+      <header class="section-header"><span class="section-icon"><ui-icon name="trend"></ui-icon></span><div><h2 id="history-title">Visão Geral</h2><p id="history-period">Períodos mensais</p></div><div class="history-controls"><label>Período <select id="history-mode"><option value="mtd" selected>MTD · mesmo dia útil</option><option value="month">Mês completo</option></select></label><label id="cutoff-label">Até o <input id="history-cutoff" type="number" min="1" max="31" value="1" aria-label="Posição do dia útil no mês">º dia útil</label><label>Gráfico <select id="chart-style"><option value="area">Área</option><option value="line">Linha</option></select></label></div></header>
+      <div class="history-grid" id="history-metrics"></div>
     </section>
     <section class="panel view-page" aria-labelledby="team-title" id="times" data-view="dashboard">
       <header class="section-header"><span class="section-icon"><ui-icon name="users"></ui-icon></span><div><h2 id="team-title">Desempenho por Time</h2><p>Visões independentes para Hunter e Closer</p></div></header>
@@ -37,10 +37,6 @@
         <section aria-labelledby="hunter-team-title"><h3 id="hunter-team-title" class="subsection-title">Supervisor de Hunter</h3><crm-team></crm-team></section>
         <section aria-labelledby="closer-team-title"><h3 id="closer-team-title" class="subsection-title">Supervisor de Closer</h3><crm-closer-team></crm-closer-team></section>
       </div>
-    </section>
-    <section class="panel history-panel view-page" aria-labelledby="history-title" id="historico" data-view="dashboard">
-      <header class="section-header"><span class="section-icon"><ui-icon name="trend"></ui-icon></span><div><h2 id="history-title">Evolução Histórica por Indicador</h2><p id="history-period">Períodos mensais</p></div><div class="history-controls"><label>Período <select id="history-mode"><option value="mtd" selected>MTD · mesmo dia útil</option><option value="month">Mês completo</option></select></label><label id="cutoff-label">Até o <input id="history-cutoff" type="number" min="1" max="31" value="1" aria-label="Posição do dia útil no mês">º dia útil</label><label>Gráfico <select id="chart-style"><option value="area">Área</option><option value="line">Linha</option></select></label></div></header>
-      <div class="history-grid" id="history-metrics"></div>
     </section>
     <section class="view-page bp-page" id="business-plan" data-view="business-plan" hidden aria-labelledby="bp-title">
       <header class="page-header page-header-view"><div><h1 id="bp-title">Business Plan</h1><p>Plano, ritmo até o mesmo dia útil e realizado da operação</p></div><div class="period-controls"><label class="period-chip" for="bp-month"><ui-icon name="calendar"></ui-icon>Mês <input type="month" id="bp-month" required></label></div></header>
