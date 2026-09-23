@@ -50,7 +50,9 @@ async function main(){
   const hunterSupervisorBySfId=new Map(supervisors.hunter.filter(supervisor=>supervisor.sfUserId).map(supervisor=>[supervisor.sfUserId,supervisor.id]));
   const leaderBySfId=new Map(leaders.filter(leader=>leader.sf_user_id).map(leader=>[leader.sf_user_id,leader]));
   const prospectingCloserSupervisor={id:'prospeccao-closer',sfUserId:null,name:'Prospecção Closer'};
-  const historicalHunterBySfId=new Map();
+  // A mesma pessoa pode ter passado por mais de uma supervisão. A chave
+  // também inclui o supervisor histórico para não misturar períodos/times.
+  const historicalHunterByKey=new Map();
   const historicalHunter=(sfUserId,supervisorSfId)=>{
     const leader=leaderBySfId.get(supervisorSfId);
     // Vendas históricas de Hunter ligadas a uma liderança que hoje é de
@@ -59,9 +61,13 @@ async function main(){
     const isCloserLeader=leader?.leads_role==='closer';
     if(isCloserLeader&&!supervisors.hunter.some(supervisor=>supervisor.id===prospectingCloserSupervisor.id))supervisors.hunter.push(prospectingCloserSupervisor);
     const supervisorId=hunterSupervisorBySfId.get(supervisorSfId)||(isCloserLeader?prospectingCloserSupervisor.id:null);if(!sfUserId||!supervisorId)return null;
-    if(historicalHunterBySfId.has(sfUserId))return historicalHunterBySfId.get(sfUserId);
+    const historicalKey=`${sfUserId}|${supervisorId}`;
+    if(historicalHunterByKey.has(historicalKey))return historicalHunterByKey.get(historicalKey);
     const known=membersRaw.find(member=>member.sf_user_id===sfUserId),member={id:`historical-hunter-${sfUserId}`,sfUserId,name:`${known?.display_name||'Colaborador'} (histórico)`,role:'hunter',supervisorId,status:'historical',extension:null};
-    members.push(member);historicalHunterBySfId.set(sfUserId,member);return member;
+    // O id precisa representar a combinação pessoa/time; assim as linhas
+    // históricas de uma transferência não se fundem com o time atual.
+    member.id=`historical-hunter-${sfUserId}-${supervisorId}`;
+    members.push(member);historicalHunterByKey.set(historicalKey,member);return member;
   };
   const daily=new Map();
   const ensure=(date,member,role,supervisorId=member?.supervisorId)=>{
@@ -79,11 +85,11 @@ async function main(){
     const target=task.who_id||task.what_id;if(target){const key=hash(target);if(!row.calledKeys.includes(key))row.calledKeys.push(key);if(isAnswered&&!row.answeredKeys.includes(key))row.answeredKeys.push(key);}
   }
   for(const item of meetingHunter){
-    const assigned=bySfId.get(item.hunter_id);
+    const assigned=bySfId.get(item.hunter_id),historicalSupervisorId=hunterSupervisorBySfId.get(item.hunter_supervisor_id);
     // A tabela diária já registra quem era o supervisor no momento do
     // agendamento. Quando o colaborador mudou de função ou foi inativado,
     // manter esse vínculo histórico evita apagar seu resultado do time.
-    const member=assigned?.role==='hunter'?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
+    const member=assigned?.role==='hunter'&&assigned.supervisorId===historicalSupervisorId?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
     if(!member)continue;
     const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);
   }
