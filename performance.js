@@ -7,9 +7,10 @@ const closerPerson=document.querySelector('#closer-person');
 const dailyRole=document.querySelector('#daily-role');
 const dailyPerson=document.querySelector('#daily-person');
 const dailyMonth=document.querySelector('#daily-month');
-const indicatorHistoryRole=document.querySelector('#indicator-history-role');
-const indicatorHistoryMetric=document.querySelector('#indicator-history-metric');
-const indicatorPeopleHistory=document.querySelector('#indicator-people-history');
+const hunterIndicatorHistoryMetric=document.querySelector('#hunter-indicator-history-metric');
+const closerIndicatorHistoryMetric=document.querySelector('#closer-indicator-history-metric');
+const hunterIndicatorPeopleHistory=document.querySelector('#hunter-indicator-people-history');
+const closerIndicatorPeopleHistory=document.querySelector('#closer-indicator-people-history');
 
 const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFormat('pt-BR',definition.percent?{style:'percent',maximumFractionDigits:0}:definition.money?{style:'currency',currency:'BRL',maximumFractionDigits:0}:{maximumFractionDigits:0}).format(value);
 const optionsFor=role=>SupabaseData.membersFor(supabaseDataset,role).map(member=>`<option value="${escapeHTML(member.id)}">${escapeHTML(member.name)}</option>`).join('');
@@ -78,20 +79,40 @@ function averageIndicatorCell(role,definition,memberIds,months){
   if(definition.volumeKey){const volume=volumes.length?volumes.reduce((sum,value)=>sum+value,0)/volumes.length:null;return volume===null?'—':`${performanceFormat(mean,definition)} (${performanceFormat(volume,{})})`;}
   return performanceFormat(mean,definition);
 }
-function refreshIndicatorMetricOptions(){
-  const definitions=SupabaseData.definitions[indicatorHistoryRole.value],selected=indicatorHistoryMetric.value;
-  indicatorHistoryMetric.innerHTML=definitions.map(definition=>`<option value="${escapeHTML(definition.key)}">${escapeHTML(definition.label)}</option>`).join('');
-  if(definitions.some(definition=>definition.key===selected))indicatorHistoryMetric.value=selected;
+function totalIndicatorCell(role,definition,memberIds,months){
+  const ids=Array.isArray(memberIds)?memberIds:[memberIds],values=months.map(month=>SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids)).filter(value=>value!==null);
+  if(!values.length)return '—';
+  if(definition.percent){
+    const connections=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'connections',ids)||0),0);
+    const soldDeals=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'soldDeals',ids)||0),0);
+    return connections>0?performanceFormat(soldDeals/connections,definition):'—';
+  }
+  const total=values.reduce((sum,value)=>sum+value,0);
+  if(definition.shareOfAppointments){
+    const appointments=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',ids)||0),0);
+    return `${performanceFormat(total,{})} | ${appointments>0?Math.round((total/appointments)*100):0}%`;
+  }
+  if(definition.volumeKey){
+    const volume=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,ids)||0),0);
+    return `${performanceFormat(total,definition)} (${performanceFormat(volume,{})})`;
+  }
+  return performanceFormat(total,definition);
+}
+function refreshIndicatorMetricOptions(role,select){
+  const definitions=SupabaseData.definitions[role],selected=select.value;
+  select.innerHTML=definitions.map(definition=>`<option value="${escapeHTML(definition.key)}">${escapeHTML(definition.label)}</option>`).join('');
+  if(definitions.some(definition=>definition.key===selected))select.value=selected;
 }
 function indicatorPeopleTable(role,supervisor,definition,months){
   const members=SupabaseData.membersFor(supabaseDataset,role,{supervisorId:supervisor.id}),ids=members.map(member=>member.id);
-  return `<details class="team-detail"><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary><div class="table-scroll"><table class="matrix-table indicator-people-table"><thead><tr><th scope="col">Colaborador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}<th scope="col">Média</th></tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${months.map(month=>`<td>${escapeHTML(valueCell(role,definition,member.id,month))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,member.id,months))}</td></tr>`).join('')||`<tr><td colspan="${months.length+2}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody><tfoot><tr><th scope="row">Média do time</th>${months.map(month=>`<td>${escapeHTML(averageIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,ids,months))}</td></tr></tfoot></table></div></details>`;
+  return `<details class="team-detail"><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary><div class="table-scroll"><table class="matrix-table indicator-people-table"><thead><tr><th scope="col">Colaborador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}<th scope="col">Média</th></tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${months.map(month=>`<td>${escapeHTML(valueCell(role,definition,member.id,month))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,member.id,months))}</td></tr>`).join('')||`<tr><td colspan="${months.length+2}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody><tfoot><tr><th scope="row">Média do time</th>${months.map(month=>`<td>${escapeHTML(averageIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,ids,months))}</td></tr><tr><th scope="row">Total do time</th>${months.map(month=>`<td>${escapeHTML(totalIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(totalIndicatorCell(role,definition,ids,months))}</td></tr></tfoot></table></div></details>`;
 }
-function renderIndicatorPeopleHistory(){
-  const role=indicatorHistoryRole.value,definition=SupabaseData.definitions[role].find(item=>item.key===indicatorHistoryMetric.value),months=indicatorHistoryMonths();if(!definition||!months.length){indicatorPeopleHistory.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
+function renderIndicatorPeopleHistory(role,select,target){
+  const definition=SupabaseData.definitions[role].find(item=>item.key===select.value),months=indicatorHistoryMonths();if(!definition||!months.length){target.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
   const supervisors=(supabaseDataset.supervisors?.[role]||[]).filter(supervisor=>role!=='hunter'||!/^Thais Leite\b/i.test(supervisor.name));
-  indicatorPeopleHistory.innerHTML=supervisors.map(supervisor=>indicatorPeopleTable(role,supervisor,definition,months)).join('')||'<div class="empty-state">Nenhum time disponível.</div>';
+  target.innerHTML=supervisors.map(supervisor=>indicatorPeopleTable(role,supervisor,definition,months)).join('')||'<div class="empty-state">Nenhum time disponível.</div>';
 }
+function renderAllIndicatorPeopleHistory(){renderIndicatorPeopleHistory('hunter',hunterIndicatorHistoryMetric,hunterIndicatorPeopleHistory);renderIndicatorPeopleHistory('closer',closerIndicatorHistoryMetric,closerIndicatorPeopleHistory);}
 function refreshDailyPeople(){dailyPerson.innerHTML=optionsFor(dailyRole.value);}
 function renderDaily(){
   const role=dailyRole.value,memberId=dailyPerson.value,month=dailyMonth.value;if(!memberId||!month)return;
@@ -99,8 +120,8 @@ function renderDaily(){
   const dates=Array.from({length:days},(_,index)=>`${month}-${String(index+1).padStart(2,'0')}`);
   document.querySelector('#daily-history').innerHTML=`<div class="table-scroll"><table class="matrix-table daily-matrix"><thead><tr><th scope="col">Indicador</th>${dates.map(date=>`<th scope="col">${date.slice(8)}</th>`).join('')}</tr></thead><tbody>${defs.map(definition=>`<tr><th scope="row">${escapeHTML(definition.label)}</th>${dates.map(date=>`<td>${escapeHTML(dailyValueCell(role,definition,memberId,date))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
-function renderPerformance(){renderPerformanceTeams();renderPersonHistory();renderIndicatorPeopleHistory();renderDaily();}
+function renderPerformance(){renderPerformanceTeams();renderPersonHistory();renderAllIndicatorPeopleHistory();renderDaily();}
 performanceMonth.addEventListener('change',renderPerformance);personHistoryMode.addEventListener('change',renderPersonHistory);hunterPerson.addEventListener('change',renderPersonHistory);closerPerson.addEventListener('change',renderPersonHistory);
 dailyRole.addEventListener('change',()=>{refreshDailyPeople();renderDaily();});dailyPerson.addEventListener('change',renderDaily);dailyMonth.addEventListener('change',renderDaily);
-indicatorHistoryRole.addEventListener('change',()=>{refreshIndicatorMetricOptions();renderIndicatorPeopleHistory();});indicatorHistoryMetric.addEventListener('change',renderIndicatorPeopleHistory);
-configurePerformance();refreshIndicatorMetricOptions();renderPerformance();
+hunterIndicatorHistoryMetric.addEventListener('change',()=>renderIndicatorPeopleHistory('hunter',hunterIndicatorHistoryMetric,hunterIndicatorPeopleHistory));closerIndicatorHistoryMetric.addEventListener('change',()=>renderIndicatorPeopleHistory('closer',closerIndicatorHistoryMetric,closerIndicatorPeopleHistory));
+configurePerformance();refreshIndicatorMetricOptions('hunter',hunterIndicatorHistoryMetric);refreshIndicatorMetricOptions('closer',closerIndicatorHistoryMetric);renderPerformance();
