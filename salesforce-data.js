@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-24T21:08:00.3683792Z",
-  "startedAt": "2026-09-24T21:07:08.7610128Z",
+  "extractedAt": "2026-09-24T21:17:51.2918800Z",
+  "startedAt": "2026-09-24T21:16:44.4434846Z",
   "asOfDate": "2026-09-24",
   "range": {
     "start": "2025-01",
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2025-01-01",
-    "totalSales": "2025-08-01",
-    "appointments": "2025-03-11",
     "pipeline": "2025-01-01",
+    "connections": "2025-01-01",
+    "appointments": "2025-03-11",
+    "totalSales": "2025-08-01",
     "sales": "2025-01-01"
   },
   "warnings": [
@@ -131,14 +131,14 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9063,
+      "records": 9064,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4899,
+      "records": 4900,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10326,7 +10326,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 31200,
       "appointments": 272,
-      "connections": 135,
+      "connections": 136,
       "sales": 14,
       "totalSales": 17,
       "totalRevenue": 37100,
@@ -10349,7 +10349,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28678,
-      "appointments": 309,
+      "appointments": 310,
       "connections": 155,
       "sales": 14,
       "totalSales": 20,
@@ -39160,7 +39160,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 3500,
       "appointments": 14,
-      "connections": 10,
+      "connections": 11,
       "sales": 1,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -39237,7 +39237,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
-      "appointments": 22,
+      "appointments": 23,
       "connections": 3,
       "sales": 0,
       "totalSales": 2,
