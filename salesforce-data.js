@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-24T19:33:32.1746886Z",
-  "startedAt": "2026-09-24T19:32:26.3077667Z",
+  "extractedAt": "2026-09-24T19:47:00.1221724Z",
+  "startedAt": "2026-09-24T19:45:51.7853085Z",
   "asOfDate": "2026-09-24",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
+    "totalSales": "2025-08-01",
+    "appointments": "2025-03-11",
     "sales": "2025-01-01",
     "pipeline": "2025-01-01",
-    "appointments": "2025-03-11",
-    "connections": "2025-01-01",
-    "totalSales": "2025-08-01"
+    "connections": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -131,7 +131,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9054,
+      "records": 9055,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10338,7 +10338,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28678,
-      "appointments": 304,
+      "appointments": 305,
       "connections": 149,
       "sales": 14,
       "totalSales": 20,
@@ -38620,7 +38620,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 22692
+      "pipeline": 20493
     },
     {
       "date": "2026-09-14",
@@ -39239,7 +39239,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
-      "appointments": 17,
+      "appointments": 18,
       "connections": 2,
       "sales": 0,
       "totalSales": 2,
@@ -39283,7 +39283,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 67948
+      "pipeline": 65948
     },
     {
       "date": "2026-09-26",
@@ -39335,7 +39335,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 8870
+      "pipeline": 11069
     },
     {
       "date": "2026-09-30",
@@ -39348,7 +39348,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 15470
+      "pipeline": 17470
     },
     {
       "date": "2026-10-01",
