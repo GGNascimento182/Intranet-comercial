@@ -74,7 +74,7 @@ function renderDashboard(){
   if(!monthInput.validity.valid||!monthInput.value)return;
   const month=monthInput.value,previous=DashboardData.monthsThrough(month).at(-2),partial=dataset.coverage.some(c=>c.month===month&&c.partialPeriod);
   document.querySelector('crm-team').data={dataset,supabase:supabaseDataset,month};
-  document.querySelector('crm-closer-team').data={supabase:supabaseDataset,month};
+  document.querySelector('crm-closer-team').data={dataset,supabase:supabaseDataset,month};
   const sfTime=dataset.extractedAt?new Date(dataset.extractedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'aguardando carga';
   const sbTime=supabaseDataset.extractedAt?new Date(supabaseDataset.extractedAt).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'}):'aguardando carga';
   document.querySelector('#connection-status').textContent=`Salesforce: ${sfTime} · Supabase: ${sbTime}. ${partial?'Mês parcial até a extração. ':''}“—” indica dado ausente ou incompleto.`;

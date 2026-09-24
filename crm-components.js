@@ -10,6 +10,14 @@ function formatSupabaseMetric(supabase,month,role,definition,memberIds,cutoff=nu
   const volume=SupabaseData.valueFor(supabase,month,role,definition.volumeKey,memberIds,cutoff);
   return value===null||volume===null?'—':`${formatMetric(value,definition)} (${formatMetric(volume,{})})`;
 }
+const salesforceFinancialFields={soldDeals:'totalSales',soldAmount:'totalRevenue',paidDeals:'sales',paidAmount:'revenue'};
+const teamSourceIsNewer=(dataset,supabase)=>!!dataset?.asOfDate&&String(dataset.asOfDate)>String(supabase?.asOfDate||'');
+const teamTextKey=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
+function formatSalesforceFinancial(rows,definition){
+  const field=salesforceFinancialFields[definition.key];
+  if(!field)return null;
+  return formatMetric(rows.reduce((sum,row)=>sum+(Number(row[field])||0),0),definition);
+}
 class CRMMetric extends HTMLElement{
   set data({definition:d,value,previous,secondary=null,plan=null}){
     const change=DashboardData.comparison(value,previous);
@@ -21,7 +29,7 @@ class CRMMetric extends HTMLElement{
 }
 customElements.define('crm-metric',CRMMetric);
 class CRMTeam extends HTMLElement{
-  set data({supabase,month}){
+  set data({dataset,supabase,month}){
     const defs=SupabaseData.definitions.hunter,cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
     const hiddenSupervisorIds=new Set(['eacebc5a-b84a-4cff-848a-20a57d118784',...(supabase.supervisors?.hunter||[]).filter(supervisor=>/^Thais Leite$/i.test(supervisor.name)).map(supervisor=>supervisor.id)]);
     const matheusId=(supabase.supervisors?.hunter||[]).find(supervisor=>/^Matheus Porto$/i.test(supervisor.name))?.id;
@@ -31,21 +39,32 @@ class CRMTeam extends HTMLElement{
     const prospectingMembers=supabase.members.filter(member=>member.role==='hunter'&&!hiddenSupervisorIds.has(member.supervisorId)&&(member.supervisorId===prospectingCloserId||member.supervisorId===matheusId||!member.supervisorId||(!knownSupervisorIds.has(member.supervisorId)&&member.supervisorId!=='unassigned-hunter')));
     if((prospectingMembers.length||supabase.members.some(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter'))&&!supervisors.some(supervisor=>supervisor.id===prospectingCloserId))supervisors.push({id:prospectingCloserId,name:'Prospecção Closer'});
     const memberIds=id=>id===prospectingCloserId?prospectingMembers.concat(supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId==='unassigned-hunter')).map(member=>member.id):supabase.members.filter(member=>member.role==='hunter'&&member.supervisorId===id).map(member=>member.id);
-    const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`).join('');
+    const useSalesforceFinancials=teamSourceIsNewer(dataset,supabase);
+    const salesforceRows=(dataset?.rows||[]).filter(row=>row.month===month);
+    const supervisorById=new Map(supervisors.map(supervisor=>[supervisor.id,supervisor]));
+    const publishedSalesforceIds=new Set(supervisors.filter(supervisor=>supervisor.id!==prospectingCloserId).map(supervisor=>supervisor.sfUserId).filter(Boolean));
+    const salesforceRowsFor=id=>id==='__total__'?salesforceRows:id===prospectingCloserId?salesforceRows.filter(row=>!publishedSalesforceIds.has(row.supervisorId)):salesforceRows.filter(row=>row.supervisorId===supervisorById.get(id)?.sfUserId);
+    const cells=(id,ids)=>defs.map(definition=>{const financial=useSalesforceFinancials?formatSalesforceFinancial(salesforceRowsFor(id),definition):null;return `<td>${escapeHTML(financial??formatSupabaseMetric(supabase,month,'hunter',definition,ids,cutoff))}</td>`;}).join('');
     const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
-    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Hunter" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.</caption><thead><tr><th scope="col">Supervisor de Hunter</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Os times aparecerão após a conexão das fontes.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(totalIds)}</tr></tfoot></table></div>`;
+    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Hunter" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.${useSalesforceFinancials?' Vendas e pagos usam o corte mais recente do Salesforce.':''}</caption><thead><tr><th scope="col">Supervisor de Hunter</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(supervisor.id,memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Os times aparecerão após a conexão das fontes.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells('__total__',totalIds)}</tr></tfoot></table></div>`;
   }
 }
 customElements.define('crm-team',CRMTeam);
 class CRMCloserTeam extends HTMLElement{
-  set data({supabase,month}){
+  set data({dataset,supabase,month}){
     const defs=SupabaseData.definitions.closer;
     const cutoff=month===supabase.asOfDate?.slice(0,7)?supabase.asOfDate:null;
     const supervisors=supabase.supervisors?.closer||[];
     const memberIds=id=>SupabaseData.membersFor(supabase,'closer',{supervisorId:id}).map(member=>member.id);
-    const cells=ids=>defs.map(definition=>`<td>${escapeHTML(formatSupabaseMetric(supabase,month,'closer',definition,ids,cutoff))}</td>`).join('');
+    const useSalesforceFinancials=teamSourceIsNewer(dataset,supabase);
+    const memberSupervisorByName=new Map(supabase.members.filter(member=>member.role==='closer').map(member=>[teamTextKey(member.name),member.supervisorId]));
+    const supervisorByName=new Map(supervisors.map(supervisor=>[teamTextKey(supervisor.name),supervisor.id]));
+    const closerRows=(dataset?.closerSalesDaily||[]).filter(row=>row.month===month);
+    const closerRowSupervisorId=row=>memberSupervisorByName.get(teamTextKey(row.closerName))||supervisorByName.get(teamTextKey(row.supervisorName))||null;
+    const salesforceRowsFor=id=>id==='__total__'?closerRows:closerRows.filter(row=>closerRowSupervisorId(row)===id);
+    const cells=(id,ids)=>defs.map(definition=>{const financial=useSalesforceFinancials?formatSalesforceFinancial(salesforceRowsFor(id),definition):null;return `<td>${escapeHTML(financial??formatSupabaseMetric(supabase,month,'closer',definition,ids,cutoff))}</td>`;}).join('');
     const totalIds=supervisors.flatMap(supervisor=>memberIds(supervisor.id));
-    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Closer" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.</caption><thead><tr><th scope="col">Supervisor de Closer</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Snapshot do Supabase ainda não carregado.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells(totalIds)}</tr></tfoot></table></div>`;
+    this.innerHTML=`<div class="table-scroll" role="region" aria-label="Indicadores por Supervisor de Closer" tabindex="0"><table><caption>Consolidado por time, com os mesmos indicadores individuais exibidos na página Performance.${useSalesforceFinancials?' Vendas e pagos usam o corte mais recente do Salesforce.':''}</caption><thead><tr><th scope="col">Supervisor de Closer</th>${defs.map(definition=>`<th scope="col">${escapeHTML(definition.label)}</th>`).join('')}</tr></thead><tbody>${supervisors.map(supervisor=>`<tr><th scope="row">${escapeHTML(supervisor.name)}</th>${cells(supervisor.id,memberIds(supervisor.id))}</tr>`).join('')||`<tr><td colspan="${defs.length+1}" class="empty-state">Snapshot do Supabase ainda não carregado.</td></tr>`}</tbody><tfoot><tr><th scope="row">Total</th>${cells('__total__',totalIds)}</tr></tfoot></table></div>`;
   }
 }
 customElements.define('crm-closer-team',CRMCloserTeam);
