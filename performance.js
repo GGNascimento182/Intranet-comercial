@@ -26,6 +26,16 @@ function valueCell(role,definition,memberId,month,cutoff=null){
   const volume=SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,memberId,cutoff);
   return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
 }
+function historyValueCell(role,definition,memberId,month,cutoff=null){
+  const value=SupabaseData.historyValueFor(supabaseDataset,month,role,definition.key,memberId,cutoff);
+  if(definition.shareOfAppointments){
+    const appointments=SupabaseData.historyValueFor(supabaseDataset,month,role,'appointmentsReceived',memberId,cutoff);
+    return value===null||appointments===null?'—':`${performanceFormat(value,{})} | ${appointments>0?Math.round((value/appointments)*100):0}%`;
+  }
+  if(!definition.volumeKey)return performanceFormat(value,definition);
+  const volume=SupabaseData.historyValueFor(supabaseDataset,month,role,definition.volumeKey,memberId,cutoff);
+  return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
+}
 function dailyValueCell(role,definition,memberId,date){
   const value=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.key,memberId);
   if(definition.shareOfAppointments){
@@ -34,6 +44,16 @@ function dailyValueCell(role,definition,memberId,date){
   }
   if(!definition.volumeKey)return performanceFormat(value,definition);
   const volume=SupabaseData.dailyValueFor(supabaseDataset,date,role,definition.volumeKey,memberId);
+  return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
+}
+function historyDailyValueCell(role,definition,memberId,date){
+  const value=SupabaseData.historyDailyValueFor(supabaseDataset,date,role,definition.key,memberId);
+  if(definition.shareOfAppointments){
+    const appointments=SupabaseData.historyDailyValueFor(supabaseDataset,date,role,'appointmentsReceived',memberId);
+    return value===null||appointments===null?'—':`${performanceFormat(value,{})} | ${appointments>0?Math.round((value/appointments)*100):0}%`;
+  }
+  if(!definition.volumeKey)return performanceFormat(value,definition);
+  const volume=SupabaseData.historyDailyValueFor(supabaseDataset,date,role,definition.volumeKey,memberId);
   return value===null||volume===null?'—':`${performanceFormat(value,definition)} (${performanceFormat(volume,{})})`;
 }
 function configurePerformance(){
@@ -60,7 +80,7 @@ function monthsTo(selected){const year=selected.slice(0,4);return Array.from({le
 function historyTable(role,memberId){
   const months=monthsTo(performanceMonth.value),mtd=personHistoryMode.value==='mtd',ordinal=dataset.asOfDate?DashboardData.businessDayOrdinal(dataset.asOfDate,dataset):1;
   const defs=SupabaseData.definitions[role];
-  return `<div class="table-scroll"><table class="matrix-table"><thead><tr><th scope="col">Indicador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}</tr></thead><tbody>${defs.map(definition=>`<tr><th scope="row">${escapeHTML(definition.label)}</th>${months.map(month=>{const cutoff=mtd?DashboardData.businessDayCutoff(month,ordinal,dataset):null;return `<td>${escapeHTML(valueCell(role,definition,memberId,month,cutoff))}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="table-scroll"><table class="matrix-table"><thead><tr><th scope="col">Indicador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}</tr></thead><tbody>${defs.map(definition=>`<tr><th scope="row">${escapeHTML(definition.label)}</th>${months.map(month=>{const cutoff=mtd?DashboardData.businessDayCutoff(month,ordinal,dataset):null;return `<td>${escapeHTML(historyValueCell(role,definition,memberId,month,cutoff))}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function renderPersonHistory(){document.querySelector('#hunter-history').innerHTML=historyTable('hunter',hunterPerson.value);document.querySelector('#closer-history').innerHTML=historyTable('closer',closerPerson.value);}
 function indicatorHistoryMonths(){
@@ -68,12 +88,12 @@ function indicatorHistoryMonths(){
   for(let cursor=first;cursor<=last;){months.push(cursor);const [year,number]=cursor.split('-').map(Number);cursor=`${number===12?year+1:year}-${String(number===12?1:number+1).padStart(2,'0')}`;}
   return months;
 }
-function averageIndicatorCell(role,definition,memberIds,months){
+function averageIndicatorCell(role,definition,memberIds,months,valueFor=SupabaseData.valueFor){
   const ids=Array.isArray(memberIds)?memberIds:[memberIds],values=[],volumes=[],appointments=[];
   months.forEach(month=>ids.forEach(id=>{
-    const value=SupabaseData.valueFor(supabaseDataset,month,role,definition.key,id);if(value!==null)values.push(value);
-    if(definition.volumeKey){const volume=SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,id);if(volume!==null)volumes.push(volume);}
-    if(definition.shareOfAppointments){const total=SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',id);if(total!==null)appointments.push(total);}
+    const value=valueFor(supabaseDataset,month,role,definition.key,id);if(value!==null)values.push(value);
+    if(definition.volumeKey){const volume=valueFor(supabaseDataset,month,role,definition.volumeKey,id);if(volume!==null)volumes.push(volume);}
+    if(definition.shareOfAppointments){const total=valueFor(supabaseDataset,month,role,'appointmentsReceived',id);if(total!==null)appointments.push(total);}
   }));
   if(!values.length)return '—';
   const mean=values.reduce((sum,value)=>sum+value,0)/values.length;
@@ -81,41 +101,41 @@ function averageIndicatorCell(role,definition,memberIds,months){
   if(definition.volumeKey){const volume=volumes.length?volumes.reduce((sum,value)=>sum+value,0)/volumes.length:null;return volume===null?'—':`${performanceFormat(mean,definition)} (${performanceFormat(volume,{})})`;}
   return performanceFormat(mean,definition);
 }
-function totalIndicatorCell(role,definition,memberIds,months){
-  const ids=Array.isArray(memberIds)?memberIds:[memberIds],values=months.map(month=>SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids)).filter(value=>value!==null);
+function totalIndicatorCell(role,definition,memberIds,months,valueFor=SupabaseData.valueFor){
+  const ids=Array.isArray(memberIds)?memberIds:[memberIds],values=months.map(month=>valueFor(supabaseDataset,month,role,definition.key,ids)).filter(value=>value!==null);
   if(!values.length)return '—';
   if(definition.percent){
-    const connections=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'connections',ids)||0),0);
-    const soldDeals=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'soldDeals',ids)||0),0);
+    const connections=months.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,'connections',ids)||0),0);
+    const soldDeals=months.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,'soldDeals',ids)||0),0);
     return connections>0?performanceFormat(soldDeals/connections,definition):'—';
   }
   const total=values.reduce((sum,value)=>sum+value,0);
   if(definition.shareOfAppointments){
-    const appointments=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',ids)||0),0);
+    const appointments=months.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,'appointmentsReceived',ids)||0),0);
     return `${performanceFormat(total,{})} | ${appointments>0?Math.round((total/appointments)*100):0}%`;
   }
   if(definition.volumeKey){
-    const volume=months.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,ids)||0),0);
+    const volume=months.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,definition.volumeKey,ids)||0),0);
     return `${performanceFormat(total,definition)} (${performanceFormat(volume,{})})`;
   }
   return performanceFormat(total,definition);
 }
-function averageTeamTotalCell(role,definition,memberIds,months){
-  const ids=Array.isArray(memberIds)?memberIds:[memberIds],validMonths=months.filter(month=>SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids)!==null);
+function averageTeamTotalCell(role,definition,memberIds,months,valueFor=SupabaseData.valueFor){
+  const ids=Array.isArray(memberIds)?memberIds:[memberIds],validMonths=months.filter(month=>valueFor(supabaseDataset,month,role,definition.key,ids)!==null);
   if(!validMonths.length)return '—';
-  if(definition.percent)return totalIndicatorCell(role,definition,ids,validMonths);
+  if(definition.percent)return totalIndicatorCell(role,definition,ids,validMonths,valueFor);
   const divisor=validMonths.length;
   if(definition.shareOfAppointments){
-    const result=validMonths.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids)||0),0);
-    const appointments=validMonths.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,'appointmentsReceived',ids)||0),0);
+    const result=validMonths.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,definition.key,ids)||0),0);
+    const appointments=validMonths.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,'appointmentsReceived',ids)||0),0);
     return `${performanceFormat(result/divisor,{})} | ${appointments>0?Math.round((result/appointments)*100):0}%`;
   }
   if(definition.volumeKey){
-    const amount=validMonths.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids)||0),0);
-    const volume=validMonths.reduce((sum,month)=>sum+(SupabaseData.valueFor(supabaseDataset,month,role,definition.volumeKey,ids)||0),0);
+    const amount=validMonths.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,definition.key,ids)||0),0);
+    const volume=validMonths.reduce((sum,month)=>sum+(valueFor(supabaseDataset,month,role,definition.volumeKey,ids)||0),0);
     return `${performanceFormat(amount/divisor,definition)} (${performanceFormat(volume/divisor,{})})`;
   }
-  const values=validMonths.map(month=>SupabaseData.valueFor(supabaseDataset,month,role,definition.key,ids));
+  const values=validMonths.map(month=>valueFor(supabaseDataset,month,role,definition.key,ids));
   return performanceFormat(values.reduce((sum,value)=>sum+value,0)/divisor,definition);
 }
 function refreshIndicatorMetricOptions(role,select){
@@ -125,7 +145,8 @@ function refreshIndicatorMetricOptions(role,select){
 }
 function indicatorPeopleTable(role,supervisor,definition,months,isOpen=false){
   const members=SupabaseData.membersFor(supabaseDataset,role,{supervisorId:supervisor.id}),ids=members.map(member=>member.id);
-  return `<details class="team-detail" data-supervisor-id="${escapeHTML(supervisor.id)}"${isOpen?' open':''}><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary><div class="table-scroll"><table class="matrix-table indicator-people-table"><thead><tr><th scope="col">Colaborador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}<th scope="col">Média</th><th scope="col">Total</th></tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${months.map(month=>`<td>${escapeHTML(valueCell(role,definition,member.id,month))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,member.id,months))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,member.id,months))}</td></tr>`).join('')||`<tr><td colspan="${months.length+3}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody><tfoot><tr><th scope="row">Média do time</th>${months.map(month=>`<td>${escapeHTML(averageIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,ids,months))}</td><td>—</td></tr><tr><th scope="row">Total do time</th>${months.map(month=>`<td>${escapeHTML(totalIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageTeamTotalCell(role,definition,ids,months))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,ids,months))}</td></tr></tfoot></table></div></details>`;
+  const historyValueFor=SupabaseData.historyValueFor;
+  return `<details class="team-detail" data-supervisor-id="${escapeHTML(supervisor.id)}"${isOpen?' open':''}><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary><div class="table-scroll"><table class="matrix-table indicator-people-table"><thead><tr><th scope="col">Colaborador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}<th scope="col">Média</th><th scope="col">Total</th></tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${months.map(month=>`<td>${escapeHTML(historyValueCell(role,definition,member.id,month))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,member.id,months,historyValueFor))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,member.id,months,historyValueFor))}</td></tr>`).join('')||`<tr><td colspan="${months.length+3}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody><tfoot><tr><th scope="row">Média do time</th>${months.map(month=>`<td>${escapeHTML(averageIndicatorCell(role,definition,ids,[month],historyValueFor))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,ids,months,historyValueFor))}</td><td>—</td></tr><tr><th scope="row">Total do time</th>${months.map(month=>`<td>${escapeHTML(totalIndicatorCell(role,definition,ids,[month],historyValueFor))}</td>`).join('')}<td>${escapeHTML(averageTeamTotalCell(role,definition,ids,months,historyValueFor))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,ids,months,historyValueFor))}</td></tr></tfoot></table></div></details>`;
 }
 function renderIndicatorPeopleHistory(role,select,target){
   const definition=indicatorHistoryDefinitions(role).find(item=>item.key===select.value),months=indicatorHistoryMonths();if(!definition||!months.length){target.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
@@ -141,7 +162,7 @@ function renderDaily(){
   const role=dailyRole.value,memberId=dailyPerson.value,month=dailyMonth.value;if(!memberId||!month)return;
   const days=new Date(Date.UTC(+month.slice(0,4),+month.slice(5,7),0)).getUTCDate(),defs=SupabaseData.definitions[role];
   const dates=Array.from({length:days},(_,index)=>`${month}-${String(index+1).padStart(2,'0')}`);
-  document.querySelector('#daily-history').innerHTML=`<div class="table-scroll"><table class="matrix-table daily-matrix"><thead><tr><th scope="col">Indicador</th>${dates.map(date=>`<th scope="col">${date.slice(8)}</th>`).join('')}</tr></thead><tbody>${defs.map(definition=>`<tr><th scope="row">${escapeHTML(definition.label)}</th>${dates.map(date=>`<td>${escapeHTML(dailyValueCell(role,definition,memberId,date))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  document.querySelector('#daily-history').innerHTML=`<div class="table-scroll"><table class="matrix-table daily-matrix"><thead><tr><th scope="col">Indicador</th>${dates.map(date=>`<th scope="col">${date.slice(8)}</th>`).join('')}</tr></thead><tbody>${defs.map(definition=>`<tr><th scope="row">${escapeHTML(definition.label)}</th>${dates.map(date=>`<td>${escapeHTML(historyDailyValueCell(role,definition,memberId,date))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function renderPerformance(){renderPerformanceTeams();renderPersonHistory();renderAllIndicatorPeopleHistory();renderDaily();}
 performanceMonth.addEventListener('change',renderPerformance);personHistoryMode.addEventListener('change',renderPersonHistory);hunterPerson.addEventListener('change',renderPersonHistory);closerPerson.addEventListener('change',renderPersonHistory);

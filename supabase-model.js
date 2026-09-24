@@ -42,6 +42,16 @@
     const ids=selectedIds(data,role,memberIds),end=cutoffDate||monthEnd(month);
     return data.dailyRows.filter(row=>row.role===role&&ids.has(row.memberId)&&row.date.startsWith(month)&&row.date<=end);
   }
+  const crossRoleHistoryKeys=new Set(['soldDeals','soldAmount','paidDeals','paidAmount','pendingDeals','pendingAmount']);
+  function historicalMemberIds(data,memberIds){
+    const ids=selectedIds(data,'hunter',memberIds),sfUserIds=new Set(data.members.filter(member=>ids.has(member.id)&&member.sfUserId).map(member=>member.sfUserId));
+    return new Set(data.members.filter(member=>ids.has(member.id)||(member.sfUserId&&sfUserIds.has(member.sfUserId))).map(member=>member.id));
+  }
+  function historyRowsFor(data,month,role,key,memberIds,cutoffDate=null){
+    if(!validMonth(month))return [];
+    const ids=historicalMemberIds(data,memberIds),end=cutoffDate||monthEnd(month),allRoles=crossRoleHistoryKeys.has(key);
+    return data.dailyRows.filter(row=>(allRoles||row.role===role)&&ids.has(row.memberId)&&row.date.startsWith(month)&&row.date<=end);
+  }
   function goalFor(data,month,memberIds,cutoffDate=null){
     const ids=selectedIds(data,'closer',memberIds);
     const full=(data.goals||[]).filter(goal=>goal.month===month&&ids.has(goal.memberId)).reduce((sum,goal)=>sum+(goal.amount||0),0);
@@ -64,6 +74,21 @@
     if(key==='gapDue')return Math.max(0,goalFor(data,month,memberIds,cutoffDate)-valueFor(data,month,role,'soldAmount',memberIds,cutoffDate));
     return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
   }
+  function historyValueFor(data,month,role,key,memberIds=undefined,cutoffDate=null){
+    if(data.range&&(month<data.range.start||month>data.range.end))return null;
+    const rows=historyRowsFor(data,month,role,key,memberIds,cutoffDate);
+    if(key==='calledCnpjs'||key==='answeredCnpjs'){
+      const field=key==='calledCnpjs'?'calledKeys':'answeredKeys';
+      return new Set(rows.flatMap(row=>row[field]||[])).size;
+    }
+    if(key==='futureMeetings')return Math.max(0,historyValueFor(data,month,role,'appointmentsReceived',memberIds,cutoffDate)-historyValueFor(data,month,role,'connections',memberIds,cutoffDate)-historyValueFor(data,month,role,'noShows',memberIds,cutoffDate));
+    if(key==='conversion'){
+      const connections=historyValueFor(data,month,role,'connections',memberIds,cutoffDate),soldDeals=historyValueFor(data,month,role,'soldDeals',memberIds,cutoffDate);
+      return connections>0?soldDeals/connections:0;
+    }
+    if(key==='gapDue')return Math.max(0,goalFor(data,month,memberIds,cutoffDate)-historyValueFor(data,month,role,'soldAmount',memberIds,cutoffDate));
+    return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
+  }
   function dailyValueFor(data,date,role,key,memberId){
     const rows=data.dailyRows.filter(row=>row.date===date&&row.role===role&&row.memberId===memberId);
     if(key==='calledCnpjs'||key==='answeredCnpjs'){const field=key==='calledCnpjs'?'calledKeys':'answeredKeys';return new Set(rows.flatMap(row=>row[field]||[])).size;}
@@ -72,7 +97,17 @@
     if(key==='gapDue')return valueFor(data,date.slice(0,7),role,key,memberId,date);
     return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
   }
+  function historyDailyValueFor(data,date,role,key,memberId){
+    const current=data.members.find(member=>member.id===memberId),ids=historicalMemberIds(data,memberId),allRoles=crossRoleHistoryKeys.has(key);
+    if(!current)return null;
+    const rows=data.dailyRows.filter(row=>row.date===date&&(allRoles||row.role===role)&&ids.has(row.memberId));
+    if(key==='calledCnpjs'||key==='answeredCnpjs'){const field=key==='calledCnpjs'?'calledKeys':'answeredKeys';return new Set(rows.flatMap(row=>row[field]||[])).size;}
+    if(key==='futureMeetings')return Math.max(0,historyDailyValueFor(data,date,role,'appointmentsReceived',memberId)-historyDailyValueFor(data,date,role,'connections',memberId)-historyDailyValueFor(data,date,role,'noShows',memberId));
+    if(key==='conversion'){const connections=historyDailyValueFor(data,date,role,'connections',memberId),soldDeals=historyDailyValueFor(data,date,role,'soldDeals',memberId);return connections>0?soldDeals/connections:0;}
+    if(key==='gapDue')return historyValueFor(data,date.slice(0,7),role,key,memberId,date);
+    return rows.reduce((sum,row)=>sum+(Number.isFinite(row[key])?row[key]:0),0);
+  }
   function supervisorGroups(data,role){return (data.supervisors?.[role]||[]).map(supervisor=>({...supervisor,members:membersFor(data,role,{supervisorId:supervisor.id})}));}
-  const api={definitions,validate,membersFor,supervisorGroups,valueFor,dailyValueFor,monthEnd};
+  const api={definitions,validate,membersFor,supervisorGroups,valueFor,historyValueFor,dailyValueFor,historyDailyValueFor,monthEnd};
   if(typeof module!=='undefined')module.exports=api;else root.SupabaseData=api;
 })(globalThis);

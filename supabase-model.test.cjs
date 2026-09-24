@@ -30,3 +30,18 @@ const hunterIds=dataset.members.filter(member=>member.role==='hunter').map(membe
 for(const key of ['soldDeals','soldAmount','paidDeals','paidAmount']){
   assert.equal(api.valueFor(dataset,month,'hunter',key,hunterIds,dataset.asOfDate),api.valueFor(dataset,month,'closer',key,undefined,dataset.asOfDate),`${key} precisa reconciliar Hunter e Closer`);
 }
+
+const historyFixture={
+  range:{start:'2026-01',end:'2026-12'},
+  members:[
+    {id:'closer-atual',sfUserId:'005-person',role:'closer',status:'active'},
+    {id:'hunter-historico',sfUserId:'005-person',role:'hunter',status:'historical'}
+  ],
+  dailyRows:[
+    {date:'2026-01-10',memberId:'hunter-historico',role:'hunter',soldDeals:1,soldAmount:2000,paidDeals:1,paidAmount:2000,connections:1},
+    {date:'2026-01-12',memberId:'closer-atual',role:'closer',appointmentsReceived:1,connections:1,soldDeals:1,soldAmount:3000,paidDeals:0,paidAmount:0}
+  ],
+  goals:[]
+};
+assert.equal(api.historyValueFor(historyFixture,'2026-01','closer','soldAmount','closer-atual'),5000,'vendas históricas acompanham o identificador da pessoa');
+assert.equal(api.historyValueFor(historyFixture,'2026-01','closer','appointmentsReceived','closer-atual'),1,'métricas de reunião preservam a função do evento');
