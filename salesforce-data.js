@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-24T22:30:15.2797108Z",
-  "startedAt": "2026-09-24T22:29:21.1469890Z",
+  "extractedAt": "2026-09-24T23:29:08.6698533Z",
+  "startedAt": "2026-09-24T23:28:00.7046129Z",
   "asOfDate": "2026-09-24",
   "range": {
     "start": "2025-01",
@@ -79,15 +79,15 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "totalSales": "2025-08-01",
-    "connections": "2025-01-01",
     "appointments": "2025-03-11",
     "pipeline": "2025-01-01",
+    "connections": "2025-01-01",
     "sales": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1070 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3589 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3603 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 21 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -159,9 +159,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5020,
+      "records": 5034,
       "knownAmount": 2789466.34,
-      "missingAmounts": 3589
+      "missingAmounts": 3603
     },
     {
       "year": 2027,
@@ -10302,7 +10302,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 4101,
-      "appointments": 85,
+      "appointments": 83,
       "connections": 31,
       "sales": 2,
       "totalSales": 3,
@@ -10350,7 +10350,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 6467,
-      "appointments": 41,
+      "appointments": 43,
       "connections": 25,
       "sales": 3,
       "totalSales": 3,
@@ -39200,7 +39200,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 4,
+      "appointments": 2,
       "connections": 0,
       "sales": 0,
       "totalSales": 0,
@@ -39239,7 +39239,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 0,
-      "appointments": 1,
+      "appointments": 3,
       "connections": 2,
       "sales": 0,
       "totalSales": 0,
