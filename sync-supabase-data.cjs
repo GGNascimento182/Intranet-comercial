@@ -85,11 +85,11 @@ async function main(){
     const target=task.who_id||task.what_id;if(target){const key=hash(target);if(!row.calledKeys.includes(key))row.calledKeys.push(key);if(isAnswered&&!row.answeredKeys.includes(key))row.answeredKeys.push(key);}
   }
   for(const item of meetingHunter){
-    const assigned=bySfId.get(item.hunter_id),historicalSupervisorId=hunterSupervisorBySfId.get(item.hunter_supervisor_id);
-    // A tabela diária já registra quem era o supervisor no momento do
-    // agendamento. Quando o colaborador mudou de função ou foi inativado,
-    // manter esse vínculo histórico evita apagar seu resultado do time.
-    const member=assigned?.role==='hunter'&&assigned.supervisorId===historicalSupervisorId?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
+    const assigned=bySfId.get(item.hunter_id);
+    // Para as análises históricas, o resultado individual acompanha a pessoa
+    // e o seu líder atual no Salesforce. A supervisão que existia no dia do
+    // evento não cria uma segunda linha nem esconde o histórico do time atual.
+    const member=assigned?.role==='hunter'?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
     if(!member)continue;
     const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);
   }
