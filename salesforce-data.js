@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-24T20:21:54.7618947Z",
-  "startedAt": "2026-09-24T20:20:58.9903190Z",
+  "extractedAt": "2026-09-24T20:24:13.6237338Z",
+  "startedAt": "2026-09-24T20:23:07.5764811Z",
   "asOfDate": "2026-09-24",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
+    "pipeline": "2025-01-01",
     "connections": "2025-01-01",
-    "sales": "2025-01-01",
-    "totalSales": "2025-08-01",
     "appointments": "2025-03-11",
-    "pipeline": "2025-01-01"
+    "totalSales": "2025-08-01",
+    "sales": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -131,7 +131,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9060,
+      "records": 9059,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10338,7 +10338,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 28678,
-      "appointments": 308,
+      "appointments": 307,
       "connections": 150,
       "sales": 14,
       "totalSales": 20,
@@ -38290,7 +38290,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
-      "appointments": 20,
+      "appointments": 19,
       "connections": 7,
       "sales": 0,
       "totalSales": 0,
