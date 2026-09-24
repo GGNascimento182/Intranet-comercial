@@ -79,8 +79,28 @@ jobs:
           git push
 
   deploy:
+    # Uma alteração de interface não deve esperar a sincronização completa do
+    # Salesforce/Supabase. Se a carga gerar um novo snapshot, o push do bot
+    # dispara uma nova publicação em seguida.
+    if: github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy-after-refresh:
     needs: refresh-data
-    if: ${{ always() && (github.event_name == 'push' || needs.refresh-data.result == 'success') }}
+    if: ${{ github.event_name != 'push' && needs.refresh-data.result == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
