@@ -97,10 +97,10 @@ async function main(){
   for(const item of opportunities){
     const assignedHunter=bySfId.get(item.hunter_id),closer=bySfId.get(item.closer_id),amount=Number(item.amount)||0,recordedSoldDate=isoDate(item.sold_at),paidDate=isoDate(item.paid_at),scheduledDate=isoDate(item.scheduled_date),stage=normalized(item.stage_name);
     const isSold=stage==='fechado ganho'||stage==='aguardando pagamento',isPaid=stage==='fechado ganho',isPending=stage==='aguardando pagamento';
-    // Parte da carga histórica não possui sold_at. Para não esconder essas
-    // vendas da competência mensal, usa a data de pagamento somente quando a
-    // data de venda estiver ausente; a data de venda sempre prevalece.
-    const soldDate=recordedSoldDate||paidDate;
+    // A data de venda é a fonte principal. Em registros históricos sem ela,
+    // a competência da venda passa a ser a data em que a reunião ocorreu.
+    // Pagamentos continuam, intencionalmente, na respectiva data de pagamento.
+    const soldDate=recordedSoldDate||scheduledDate;
     const hunter=isSold?(assignedHunter?.role==='hunter'?assignedHunter:historicalHunter(item.hunter_id,item.hunter_supervisor_id)):null;
     for(const [member,role] of [[hunter,'hunter'],[closer,'closer']]){
       if(!member||member.role!==role)continue;
@@ -112,7 +112,7 @@ async function main(){
     if(scheduledDate<=today&&outcome==='cancelada'&&reason==='nao compareceu')sum(ensure(scheduledDate,closer,'closer'),'noShows',1);
     if(scheduledDate>today&&!outcome)sum(ensure(scheduledDate,closer,'closer'),'futureMeetings',1);
   }
-  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',sales:'Fechado Ganho ou Aguardando pagamento, por data da venda; se a carga histórica não trouxer data da venda, usa a data de pagamento como contingência. Pago somente em Fechado Ganho, por data de pagamento',appointmentsReceived:'Agendamentos recebidos e conexões por data da reunião',meetingResults:'No-show por data da reunião cancelada como “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
+  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',sales:'Fechado Ganho ou Aguardando pagamento, pela data da venda; sem data da venda na carga histórica, usa a data da reunião. Pago somente em Fechado Ganho, por data de pagamento',appointmentsReceived:'Agendamentos recebidos e conexões por data da reunião',meetingResults:'No-show por data da reunião cancelada como “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);
