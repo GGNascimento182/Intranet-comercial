@@ -11,6 +11,7 @@ const hunterIndicatorHistoryMetric=document.querySelector('#hunter-indicator-his
 const closerIndicatorHistoryMetric=document.querySelector('#closer-indicator-history-metric');
 const hunterIndicatorPeopleHistory=document.querySelector('#hunter-indicator-people-history');
 const closerIndicatorPeopleHistory=document.querySelector('#closer-indicator-people-history');
+const indicatorHistoryOpenTeams={hunter:new Set(),closer:new Set()};
 
 const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFormat('pt-BR',definition.percent?{style:'percent',maximumFractionDigits:0}:definition.money?{style:'currency',currency:'BRL',maximumFractionDigits:0}:{maximumFractionDigits:0}).format(value);
 const optionsFor=role=>SupabaseData.membersFor(supabaseDataset,role).map(member=>`<option value="${escapeHTML(member.id)}">${escapeHTML(member.name)}</option>`).join('');
@@ -129,8 +130,10 @@ function indicatorPeopleTable(role,supervisor,definition,months,isOpen=false){
 function renderIndicatorPeopleHistory(role,select,target){
   const definition=indicatorHistoryDefinitions(role).find(item=>item.key===select.value),months=indicatorHistoryMonths();if(!definition||!months.length){target.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
   const supervisors=(supabaseDataset.supervisors?.[role]||[]).filter(supervisor=>role!=='hunter'||!/^Thais Leite\b/i.test(supervisor.name));
-  const expanded=new Set([...target.querySelectorAll('details.team-detail[open][data-supervisor-id]')].map(team=>team.dataset.supervisorId));
+  const expanded=indicatorHistoryOpenTeams[role];
+  target.querySelectorAll('details.team-detail[open][data-supervisor-id]').forEach(team=>expanded.add(team.dataset.supervisorId));
   target.innerHTML=supervisors.map(supervisor=>indicatorPeopleTable(role,supervisor,definition,months,expanded.has(supervisor.id))).join('')||'<div class="empty-state">Nenhum time disponível.</div>';
+  target.querySelectorAll('details.team-detail[data-supervisor-id]').forEach(team=>team.addEventListener('toggle',()=>{const id=team.dataset.supervisorId;if(team.open)expanded.add(id);else expanded.delete(id);}));
 }
 function renderAllIndicatorPeopleHistory(){renderIndicatorPeopleHistory('hunter',hunterIndicatorHistoryMetric,hunterIndicatorPeopleHistory);renderIndicatorPeopleHistory('closer',closerIndicatorHistoryMetric,closerIndicatorPeopleHistory);}
 function refreshDailyPeople(){dailyPerson.innerHTML=optionsFor(dailyRole.value);}
