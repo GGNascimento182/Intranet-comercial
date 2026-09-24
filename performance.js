@@ -14,6 +14,7 @@ const closerIndicatorPeopleHistory=document.querySelector('#closer-indicator-peo
 
 const performanceFormat=(value,definition)=>value===null?'—':new Intl.NumberFormat('pt-BR',definition.percent?{style:'percent',maximumFractionDigits:0}:definition.money?{style:'currency',currency:'BRL',maximumFractionDigits:0}:{maximumFractionDigits:0}).format(value);
 const optionsFor=role=>SupabaseData.membersFor(supabaseDataset,role).map(member=>`<option value="${escapeHTML(member.id)}">${escapeHTML(member.name)}</option>`).join('');
+const indicatorHistoryDefinitions=role=>SupabaseData.definitions[role].filter(definition=>role!=='closer'||!['futureMeetings','pendingAmount','gapDue'].includes(definition.key));
 function valueCell(role,definition,memberId,month,cutoff=null){
   const value=SupabaseData.valueFor(supabaseDataset,month,role,definition.key,memberId,cutoff);
   if(definition.shareOfAppointments){
@@ -117,7 +118,7 @@ function averageTeamTotalCell(role,definition,memberIds,months){
   return performanceFormat(values.reduce((sum,value)=>sum+value,0)/divisor,definition);
 }
 function refreshIndicatorMetricOptions(role,select){
-  const definitions=SupabaseData.definitions[role],selected=select.value;
+  const definitions=indicatorHistoryDefinitions(role),selected=select.value;
   select.innerHTML=definitions.map(definition=>`<option value="${escapeHTML(definition.key)}">${escapeHTML(definition.label)}</option>`).join('');
   if(definitions.some(definition=>definition.key===selected))select.value=selected;
 }
@@ -126,7 +127,7 @@ function indicatorPeopleTable(role,supervisor,definition,months){
   return `<details class="team-detail"><summary>${escapeHTML(supervisor.name)} <span>${members.length} pessoas</span></summary><div class="table-scroll"><table class="matrix-table indicator-people-table"><thead><tr><th scope="col">Colaborador</th>${months.map(month=>`<th scope="col">${escapeHTML(monthLabel(month))}</th>`).join('')}<th scope="col">Média</th><th scope="col">Total</th></tr></thead><tbody>${members.map(member=>`<tr><th scope="row">${escapeHTML(member.name)}</th>${months.map(month=>`<td>${escapeHTML(valueCell(role,definition,member.id,month))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,member.id,months))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,member.id,months))}</td></tr>`).join('')||`<tr><td colspan="${months.length+3}" class="empty-state">Nenhum colaborador ativo neste time.</td></tr>`}</tbody><tfoot><tr><th scope="row">Média do time</th>${months.map(month=>`<td>${escapeHTML(averageIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageIndicatorCell(role,definition,ids,months))}</td><td>—</td></tr><tr><th scope="row">Total do time</th>${months.map(month=>`<td>${escapeHTML(totalIndicatorCell(role,definition,ids,[month]))}</td>`).join('')}<td>${escapeHTML(averageTeamTotalCell(role,definition,ids,months))}</td><td>${escapeHTML(totalIndicatorCell(role,definition,ids,months))}</td></tr></tfoot></table></div></details>`;
 }
 function renderIndicatorPeopleHistory(role,select,target){
-  const definition=SupabaseData.definitions[role].find(item=>item.key===select.value),months=indicatorHistoryMonths();if(!definition||!months.length){target.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
+  const definition=indicatorHistoryDefinitions(role).find(item=>item.key===select.value),months=indicatorHistoryMonths();if(!definition||!months.length){target.innerHTML='<div class="empty-state">Selecione um período de 2026 para consultar o histórico.</div>';return;}
   const supervisors=(supabaseDataset.supervisors?.[role]||[]).filter(supervisor=>role!=='hunter'||!/^Thais Leite\b/i.test(supervisor.name));
   target.innerHTML=supervisors.map(supervisor=>indicatorPeopleTable(role,supervisor,definition,months)).join('')||'<div class="empty-state">Nenhum time disponível.</div>';
 }
