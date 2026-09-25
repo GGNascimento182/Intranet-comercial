@@ -79,9 +79,8 @@ jobs:
           git push
 
   deploy:
-    # Uma alteração de interface não deve esperar a sincronização completa do
-    # Salesforce/Supabase. Se a carga gerar um novo snapshot, o push do bot
-    # dispara uma nova publicação em seguida.
+    # Mantém a publicação imediata de alterações de interface. A publicação
+    # definitiva, já com o snapshot atualizado, é feita em deploy-after-refresh.
     if: github.event_name == 'push'
     environment:
       name: github-pages
@@ -100,7 +99,9 @@ jobs:
 
   deploy-after-refresh:
     needs: refresh-data
-    if: ${{ github.event_name != 'push' && needs.refresh-data.result == 'success' }}
+    # O deploy só começa depois da carga. Isso evita publicar a versão que
+    # estava no checkout antes de o Supabase/Salesforce concluir a atualização.
+    if: ${{ needs.refresh-data.result == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
