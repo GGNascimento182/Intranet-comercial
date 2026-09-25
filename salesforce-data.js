@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-25T20:51:15.1061772Z",
-  "startedAt": "2026-09-25T20:50:14.2848475Z",
+  "extractedAt": "2026-09-25T21:30:46.4677106Z",
+  "startedAt": "2026-09-25T21:29:37.3025846Z",
   "asOfDate": "2026-09-25",
   "range": {
     "start": "2025-01",
@@ -79,10 +79,10 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "sales": "2025-01-01",
-    "connections": "2025-01-01",
-    "pipeline": "2025-01-01",
     "totalSales": "2025-08-01",
-    "appointments": "2025-03-11"
+    "connections": "2025-01-01",
+    "appointments": "2025-03-11",
+    "pipeline": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -131,14 +131,14 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9122,
+      "records": 9124,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4921,
+      "records": 4922,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -159,8 +159,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5009,
-      "knownAmount": 2790878.34,
+      "records": 5010,
+      "knownAmount": 2793678.34,
       "missingAmounts": 3579
     },
     {
@@ -9897,7 +9897,7 @@ window.SALESFORCE_DATA = {
       "sales": 3,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 262259
+      "pipeline": 260036
     },
     {
       "month": "2026-03",
@@ -10324,12 +10324,12 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 4101,
-      "appointments": 92,
+      "appointments": 93,
       "connections": 34,
       "sales": 2,
       "totalSales": 3,
       "totalRevenue": 7101,
-      "pipeline": 605143.75
+      "pipeline": 610166.75
     },
     {
       "month": "2026-09",
@@ -10372,7 +10372,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 6467,
-      "appointments": 50,
+      "appointments": 51,
       "connections": 31,
       "sales": 3,
       "totalSales": 4,
@@ -10385,7 +10385,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 45438,
       "appointments": 168,
-      "connections": 80,
+      "connections": 81,
       "sales": 21,
       "totalSales": 28,
       "totalRevenue": 62943,
@@ -28203,7 +28203,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 6788
+      "pipeline": 4565
     },
     {
       "date": "2026-03-25",
@@ -39287,7 +39287,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 9,
+      "appointments": 10,
       "connections": 2,
       "sales": 0,
       "totalSales": 0,
@@ -39326,7 +39326,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 0,
-      "appointments": 7,
+      "appointments": 8,
       "connections": 2,
       "sales": 0,
       "totalSales": 1,
@@ -39340,7 +39340,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Willian Cardoso",
       "revenue": 2878,
       "appointments": 8,
-      "connections": 2,
+      "connections": 3,
       "sales": 1,
       "totalSales": 1,
       "totalRevenue": 2878,
@@ -39383,7 +39383,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 67605
+      "pipeline": 69828
     },
     {
       "date": "2026-09-29",
@@ -39396,7 +39396,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 36235
+      "pipeline": 39035
     },
     {
       "date": "2026-09-30",
