@@ -145,6 +145,14 @@ async function main(){
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);
+  // Cada carga recebe uma URL própria no HTML. Assim o GitHub Pages e o
+  // navegador não reutilizam o snapshot anterior mantido em cache.
+  const indexPath=path.join(__dirname,'index.html');
+  const index=fs.readFileSync(indexPath,'utf8');
+  const snapshotVersion=output.extractedAt.replace(/\D/g,'');
+  const updatedIndex=index.replace(/supabase-data\.js\?v=[^"]+/,`supabase-data.js?v=${snapshotVersion}`);
+  if(updatedIndex===index)throw new Error('Não foi possível versionar o snapshot do Supabase no index.html.');
+  fs.writeFileSync(indexPath,updatedIndex);
   console.log(JSON.stringify({status:'loaded',extractedAt:output.extractedAt,asOfDate:today,members:members.length,days:output.dailyRows.length,supervisors},null,2));
 }
 main().catch(error=>{console.error(error.message);process.exitCode=1;});
