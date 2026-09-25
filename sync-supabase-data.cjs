@@ -31,10 +31,11 @@ const currentMonthEnd=`${today.slice(0,7)}-${String(new Date(Date.UTC(+today.sli
 const answeredByDisposition=value=>!new Set(['não atendeu','nao atendeu','não conectou','nao conectou','perdido','false','busy','failed','no answer']).has(normalized(value));
 
 async function main(){
-  const [membersRaw,tasks,pabxDailyCalls,meetingHunter,meetingCloser,opportunities,goals]=await Promise.all([
+  const [membersRaw,tasks,pabxDailyCalls,leads,meetingHunter,meetingCloser,opportunities,goals]=await Promise.all([
     fetchAll('team_member',{select:'id,sf_user_id,display_name,role,supervisor_id,status,is_leader,leads_role,extension',order:'display_name.asc'}),
     fetchAll('sf_task',{select:'id,owner_id,who_id,what_id,call_duration_seconds,call_disposition,activity_date',subtype:'eq.Call',and:`(activity_date.gte.${start},activity_date.lte.${today})`,order:'activity_date.asc'}),
     fetchAll('pabx_daily_call',{select:'day,team_member_id,total_calls,answered',and:`(day.gte.${start},day.lte.${today})`,order:'day.asc'}),
+    fetchAll('sf_lead',{select:'id,hunter_id,hunter_supervisor_id,scheduled_date',and:`(scheduled_date.gte.${start},scheduled_date.lte.${today})`,order:'scheduled_date.asc'}),
     fetchAll('fact_meeting_daily',{select:'date,hunter_id,hunter_supervisor_id,scheduled,connected',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('fact_closer_meeting_daily',{select:'date,closer_id,closer_supervisor_id,connected,new_meetings,follow_ups',and:`(date.gte.${start},date.lte.${today})`,order:'date.asc'}),
     fetchAll('sf_opportunity',{select:'id,hunter_id,hunter_supervisor_id,closer_id,scheduled_date,meeting_outcome,cancellation_reason,stage_name,won_at,paid_at,amount',or:`(scheduled_date.gte.${start},won_at.gte.${start},paid_at.gte.${start})`,order:'scheduled_date.asc'}),
@@ -105,6 +106,14 @@ async function main(){
     const calls=Number(item.total_calls),answered=Number(item.answered);if(!Number.isFinite(calls)||calls<0||!Number.isFinite(answered)||answered<0)continue;
     const row=ensure(item.day,member,'hunter');sum(row,'calls',calls);sum(row,'answeredCalls',answered);
   }
+  // A Torre de Controle considera agendamento no Lead, inclusive antes de a
+  // conversão gerar uma Opportunity. Uma linha por Lead agendado.
+  for(const item of leads){
+    const assigned=bySfId.get(item.hunter_id);
+    const member=assigned?.role==='hunter'?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
+    const scheduledDate=isoDate(item.scheduled_date);if(!member||!scheduledDate)continue;
+    sum(ensure(scheduledDate,member,'hunter'),'appointments',1);
+  }
   for(const item of meetingHunter){
     const assigned=bySfId.get(item.hunter_id);
     // Para as análises históricas, o resultado individual acompanha a pessoa
@@ -112,7 +121,7 @@ async function main(){
     // evento não cria uma segunda linha nem esconde o histórico do time atual.
     const member=assigned?.role==='hunter'?assigned:historicalHunter(item.hunter_id,item.hunter_supervisor_id);
     if(!member)continue;
-    const row=ensure(item.date,member,'hunter');sum(row,'appointments',item.scheduled);sum(row,'connections',item.connected);
+    const row=ensure(item.date,member,'hunter');sum(row,'connections',item.connected);
   }
   for(const item of meetingCloser){const member=bySfId.get(item.closer_id);if(!member||member.role!=='closer')continue;const row=ensure(item.date,member,'closer');sum(row,'appointmentsReceived',(item.new_meetings||0)+(item.follow_ups||0));sum(row,'connections',item.connected);}
   for(const item of opportunities){
@@ -132,7 +141,7 @@ async function main(){
     if(scheduledDate<=today&&outcome==='cancelada'&&reason==='nao compareceu')sum(ensure(scheduledDate,closer,'closer'),'noShows',1);
     if(scheduledDate>today&&!outcome)sum(ensure(scheduledDate,closer,'closer'),'futureMeetings',1);
   }
-  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',calls:'PABX: total de discagens registradas em total_calls',answeredCalls:'PABX: discagens atendidas, com duração maior que zero, registradas em answered',sales:'Fechado Ganho ou Aguardando pagamento, pela data em que a oportunidade foi marcada como Ganho. Pago somente em Fechado Ganho, por data de pagamento',appointmentsReceived:'Agendamentos recebidos e conexões por data da reunião',meetingResults:'No-show por data da reunião cancelada como “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
+  const output={schemaVersion:1,source:'Supabase (snapshot agregado)',extractedAt:new Date().toISOString(),asOfDate:today,range:{start:start.slice(0,7),end:today.slice(0,7)},rules:{calledCnpjs:'COUNT DISTINCT do vínculo CRM (WhoId; fallback WhatId) nas tarefas de chamada com duração maior ou igual a zero',answeredCnpjs:'Mesmo vínculo distinto nas chamadas com duração diferente de zero; usa o resultado registrado apenas em tarefas históricas sem duração',calls:'PABX: total de discagens registradas em total_calls',answeredCalls:'PABX: discagens atendidas, com duração maior que zero, registradas em answered',appointments:'Lead agendado, por data de agendamento; inclui Leads ainda não convertidos em Opportunity',sales:'Fechado Ganho ou Aguardando pagamento, pela data em que a oportunidade foi marcada como Ganho. Pago somente em Fechado Ganho, por data de pagamento',appointmentsReceived:'Agendamentos recebidos e conexões por data da reunião',meetingResults:'No-show por data da reunião cancelada como “Não compareceu”; futuras por agendamento posterior à data da carga sem resultado',gapDue:'Meta mensal proporcional aos dias úteis menos valor vendido, limitado a zero'},members,supervisors,goals:goals.map(goal=>({memberId:goal.member_id,month:String(goal.month_start).slice(0,7),amount:Number(goal.goal_amount)||0,connections:Number(goal.goal_connections)||0})),dailyRows:[...daily.values()].sort((a,b)=>a.date.localeCompare(b.date)||a.memberId.localeCompare(b.memberId))};
   const target=path.join(__dirname,'supabase-data.js'),temp=`${target}.tmp`;
   fs.writeFileSync(temp,'// Snapshot agregado do Supabase. Sem credenciais ou dados pessoais de clientes.\nwindow.SUPABASE_DATA = '+JSON.stringify(output,null,2)+';\n');
   fs.renameSync(temp,target);
