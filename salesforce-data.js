@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-25T11:31:01.1635772Z",
-  "startedAt": "2026-09-25T11:30:14.1241041Z",
+  "extractedAt": "2026-09-25T12:37:34.1822358Z",
+  "startedAt": "2026-09-25T12:36:27.8457265Z",
   "asOfDate": "2026-09-25",
   "range": {
     "start": "2025-01",
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
     "sales": "2025-01-01",
-    "connections": "2025-01-01",
+    "appointments": "2025-03-11",
     "totalSales": "2025-08-01",
+    "connections": "2025-01-01",
     "pipeline": "2025-01-01"
   },
   "warnings": [
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 4902,
+      "records": 4903,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10351,7 +10351,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Thais Leite",
       "revenue": 6467,
       "appointments": 43,
-      "connections": 25,
+      "connections": 26,
       "sales": 3,
       "totalSales": 3,
       "totalRevenue": 6467,
@@ -39240,7 +39240,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Thais Leite",
       "revenue": 0,
       "appointments": 3,
-      "connections": 2,
+      "connections": 3,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -39270,7 +39270,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 77814
+      "pipeline": 70332
     },
     {
       "date": "2026-09-26",
@@ -39309,7 +39309,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 23256
+      "pipeline": 30738
     },
     {
       "date": "2026-09-29",
