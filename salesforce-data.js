@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-25T20:41:02.2288799Z",
-  "startedAt": "2026-09-25T20:39:56.4102738Z",
+  "extractedAt": "2026-09-25T20:44:51.8930193Z",
+  "startedAt": "2026-09-25T20:43:49.0380622Z",
   "asOfDate": "2026-09-25",
   "range": {
     "start": "2025-01",
@@ -79,9 +79,9 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "pipeline": "2025-01-01",
-    "connections": "2025-01-01",
-    "sales": "2025-01-01",
     "totalSales": "2025-08-01",
+    "sales": "2025-01-01",
+    "connections": "2025-01-01",
     "appointments": "2025-03-11"
   },
   "warnings": [
@@ -124,8 +124,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2025,
       "metric": "pipeline",
-      "records": 2151,
-      "knownAmount": 1374093.1,
+      "records": 2150,
+      "knownAmount": 1372243.1,
       "missingAmounts": 1069
     },
     {
@@ -159,8 +159,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5007,
-      "knownAmount": 2789028.34,
+      "records": 5008,
+      "knownAmount": 2790878.34,
       "missingAmounts": 3578
     },
     {
@@ -9549,7 +9549,7 @@ window.SALESFORCE_DATA = {
       "sales": 20,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 230223.9
+      "pipeline": 228373.9
     },
     {
       "month": "2025-10",
@@ -10329,7 +10329,7 @@ window.SALESFORCE_DATA = {
       "sales": 2,
       "totalSales": 3,
       "totalRevenue": 7101,
-      "pipeline": 603293.75
+      "pipeline": 605143.75
     },
     {
       "month": "2026-09",
@@ -20559,7 +20559,7 @@ window.SALESFORCE_DATA = {
       "sales": 1,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 21875.5
+      "pipeline": 20025.5
     },
     {
       "date": "2025-10-27",
@@ -39383,7 +39383,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 65755
+      "pipeline": 67605
     },
     {
       "date": "2026-09-29",
