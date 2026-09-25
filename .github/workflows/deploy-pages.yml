@@ -78,25 +78,6 @@ jobs:
           git commit -m "Atualiza snapshots comerciais"
           git push
 
-  deploy:
-    # Mantém a publicação imediata de alterações de interface. A publicação
-    # definitiva, já com o snapshot atualizado, é feita em deploy-after-refresh.
-    if: github.event_name == 'push'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - id: deployment
-        uses: actions/deploy-pages@v4
-
   deploy-after-refresh:
     needs: refresh-data
     # O deploy só começa depois da carga. Isso evita publicar a versão que
