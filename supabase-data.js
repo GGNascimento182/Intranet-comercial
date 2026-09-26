@@ -2,7 +2,7 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-09-26T18:33:49.334Z",
+  "extractedAt": "2026-09-26T19:28:06.168Z",
   "asOfDate": "2026-09-26",
   "range": {
     "start": "2025-01",
@@ -315679,7 +315679,7 @@ window.SUPABASE_DATA = {
       "calls": 0,
       "answeredCalls": 0,
       "appointments": 0,
-      "connections": 0,
+      "connections": 1,
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
@@ -315955,7 +315955,7 @@ window.SUPABASE_DATA = {
       "calls": 0,
       "answeredCalls": 0,
       "appointments": 0,
-      "connections": 1,
+      "connections": 2,
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 3,
