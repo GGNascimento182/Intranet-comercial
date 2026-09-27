@@ -2,8 +2,8 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-09-26T23:29:26.512Z",
-  "asOfDate": "2026-09-26",
+  "extractedAt": "2026-09-27T10:30:32.683Z",
+  "asOfDate": "2026-09-27",
   "range": {
     "start": "2025-01",
     "end": "2026-09"
@@ -22946,10 +22946,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 1200,
-      "paidDeals": 1,
-      "paidAmount": 1200,
+      "soldDeals": 2,
+      "soldAmount": 2400,
+      "paidDeals": 2,
+      "paidAmount": 2400,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23188,10 +23188,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 0,
-      "soldAmount": 0,
-      "paidDeals": 0,
-      "paidAmount": 0,
+      "soldDeals": 1,
+      "soldAmount": 1350,
+      "paidDeals": 1,
+      "paidAmount": 1350,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23232,10 +23232,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 1702,
-      "paidDeals": 1,
-      "paidAmount": 1702,
+      "soldDeals": 2,
+      "soldAmount": 2902,
+      "paidDeals": 2,
+      "paidAmount": 2902,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23430,10 +23430,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 2,
-      "soldDeals": 2,
-      "soldAmount": 4700,
-      "paidDeals": 2,
-      "paidAmount": 4700,
+      "soldDeals": 1,
+      "soldAmount": 2350,
+      "paidDeals": 1,
+      "paidAmount": 2350,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23654,10 +23654,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 2,
-      "soldAmount": 3780,
-      "paidDeals": 2,
-      "paidAmount": 3780,
+      "soldDeals": 1,
+      "soldAmount": 1890,
+      "paidDeals": 1,
+      "paidAmount": 1890,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23676,10 +23676,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 2,
-      "soldAmount": 2200,
-      "paidDeals": 2,
-      "paidAmount": 2200,
+      "soldDeals": 1,
+      "soldAmount": 1100,
+      "paidDeals": 1,
+      "paidAmount": 1100,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23742,10 +23742,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 3,
-      "soldAmount": 3550,
-      "paidDeals": 3,
-      "paidAmount": 3550,
+      "soldDeals": 2,
+      "soldAmount": 2450,
+      "paidDeals": 2,
+      "paidAmount": 2450,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23764,10 +23764,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 3,
-      "soldAmount": 3550,
-      "paidDeals": 3,
-      "paidAmount": 3550,
+      "soldDeals": 2,
+      "soldAmount": 2450,
+      "paidDeals": 2,
+      "paidAmount": 2450,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -23962,10 +23962,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 2,
-      "soldAmount": 4700,
-      "paidDeals": 2,
-      "paidAmount": 4700,
+      "soldDeals": 1,
+      "soldAmount": 2350,
+      "paidDeals": 1,
+      "paidAmount": 2350,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -32080,10 +32080,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 2,
-      "soldAmount": 3600,
-      "paidDeals": 2,
-      "paidAmount": 3600,
+      "soldDeals": 1,
+      "soldAmount": 1800,
+      "paidDeals": 1,
+      "paidAmount": 1800,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -41574,7 +41574,7 @@ window.SUPABASE_DATA = {
       "calls": 0,
       "answeredCalls": 0,
       "appointments": 1,
-      "connections": 2,
+      "connections": 1,
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
@@ -62472,10 +62472,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 2,
-      "soldAmount": 3100,
-      "paidDeals": 2,
-      "paidAmount": 3100,
+      "soldDeals": 3,
+      "soldAmount": 4600,
+      "paidDeals": 3,
+      "paidAmount": 4600,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -62538,10 +62538,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 1500,
-      "paidDeals": 1,
-      "paidAmount": 1500,
+      "soldDeals": 2,
+      "soldAmount": 3000,
+      "paidDeals": 2,
+      "paidAmount": 3000,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -77265,7 +77265,7 @@ window.SUPABASE_DATA = {
       "answeredCalls": 0,
       "appointments": 0,
       "connections": 2,
-      "noShows": 1,
+      "noShows": 2,
       "futureMeetings": 0,
       "appointmentsReceived": 1,
       "soldDeals": 0,
@@ -78104,10 +78104,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 2,
-      "soldDeals": 1,
-      "soldAmount": 2350,
-      "paidDeals": 1,
-      "paidAmount": 2350,
+      "soldDeals": 0,
+      "soldAmount": 0,
+      "paidDeals": 0,
+      "paidAmount": 0,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -78148,10 +78148,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 2350,
-      "paidDeals": 1,
-      "paidAmount": 2350,
+      "soldDeals": 0,
+      "soldAmount": 0,
+      "paidDeals": 0,
+      "paidAmount": 0,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -117203,7 +117203,7 @@ window.SUPABASE_DATA = {
       "answeredCalls": 0,
       "appointments": 0,
       "connections": 1,
-      "noShows": 19,
+      "noShows": 15,
       "futureMeetings": 0,
       "appointmentsReceived": 1,
       "soldDeals": 0,
@@ -117357,7 +117357,7 @@ window.SUPABASE_DATA = {
       "answeredCalls": 0,
       "appointments": 0,
       "connections": 2,
-      "noShows": 4,
+      "noShows": 3,
       "futureMeetings": 0,
       "appointmentsReceived": 2,
       "soldDeals": 0,
@@ -117423,7 +117423,7 @@ window.SUPABASE_DATA = {
       "answeredCalls": 0,
       "appointments": 0,
       "connections": 0,
-      "noShows": 10,
+      "noShows": 9,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
       "soldDeals": 0,
@@ -117467,7 +117467,7 @@ window.SUPABASE_DATA = {
       "answeredCalls": 0,
       "appointments": 0,
       "connections": 2,
-      "noShows": 9,
+      "noShows": 7,
       "futureMeetings": 0,
       "appointmentsReceived": 2,
       "soldDeals": 0,
@@ -118442,10 +118442,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 0,
-      "soldAmount": 0,
-      "paidDeals": 0,
-      "paidAmount": 0,
+      "soldDeals": 1,
+      "soldAmount": 2150,
+      "paidDeals": 1,
+      "paidAmount": 2150,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -151843,10 +151843,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 3,
-      "soldAmount": 4100,
-      "paidDeals": 3,
-      "paidAmount": 4100,
+      "soldDeals": 2,
+      "soldAmount": 2800,
+      "paidDeals": 2,
+      "paidAmount": 2800,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
@@ -223704,12 +223704,12 @@ window.SUPABASE_DATA = {
       "role": "hunter",
       "supervisorId": "b5d18b92-bb47-4a87-92d0-da7457aa2dac",
       "calledKeys": [
-        "badd3cd2be2d17ee",
-        "98de3396778a6246"
+        "98de3396778a6246",
+        "badd3cd2be2d17ee"
       ],
       "answeredKeys": [
-        "badd3cd2be2d17ee",
-        "98de3396778a6246"
+        "98de3396778a6246",
+        "badd3cd2be2d17ee"
       ],
       "calls": 0,
       "answeredCalls": 0,
@@ -226029,15 +226029,15 @@ window.SUPABASE_DATA = {
       "supervisorId": "b5d18b92-bb47-4a87-92d0-da7457aa2dac",
       "calledKeys": [
         "3527234755c2d1bd",
-        "79f3053aa3423b23",
         "24b0f92a6a9a70e8",
-        "e90e4cb2b923cb54"
+        "e90e4cb2b923cb54",
+        "79f3053aa3423b23"
       ],
       "answeredKeys": [
         "3527234755c2d1bd",
-        "79f3053aa3423b23",
         "24b0f92a6a9a70e8",
-        "e90e4cb2b923cb54"
+        "e90e4cb2b923cb54",
+        "79f3053aa3423b23"
       ],
       "calls": 0,
       "answeredCalls": 0,
@@ -227247,10 +227247,10 @@ window.SUPABASE_DATA = {
         "4acaabbce6d31f6e",
         "0f7707dabaa3bd1e",
         "2dee2f9918612044",
-        "af729011ec3f188b",
-        "43e83f8100f3a868",
         "6b1718af8a7fef7b",
-        "2dbbd0b89458dfac"
+        "2dbbd0b89458dfac",
+        "af729011ec3f188b",
+        "43e83f8100f3a868"
       ],
       "answeredKeys": [
         "ae8c2f6fa0a11967",
@@ -227262,10 +227262,10 @@ window.SUPABASE_DATA = {
         "4acaabbce6d31f6e",
         "0f7707dabaa3bd1e",
         "2dee2f9918612044",
-        "af729011ec3f188b",
-        "43e83f8100f3a868",
         "6b1718af8a7fef7b",
-        "2dbbd0b89458dfac"
+        "2dbbd0b89458dfac",
+        "af729011ec3f188b",
+        "43e83f8100f3a868"
       ],
       "calls": 0,
       "answeredCalls": 0,
@@ -256695,17 +256695,17 @@ window.SUPABASE_DATA = {
       "supervisorId": "76a0ea83-32e7-4e1e-93fd-31d435c581a6",
       "calledKeys": [
         "d6922ea5c4f53853",
-        "d1d4ecb980a42488",
         "1f9eb1c34f4a1bf4",
         "5a87751effd3eeab",
-        "9f179e1e662731c2"
+        "9f179e1e662731c2",
+        "d1d4ecb980a42488"
       ],
       "answeredKeys": [
         "d6922ea5c4f53853",
-        "d1d4ecb980a42488",
         "1f9eb1c34f4a1bf4",
         "5a87751effd3eeab",
-        "9f179e1e662731c2"
+        "9f179e1e662731c2",
+        "d1d4ecb980a42488"
       ],
       "calls": 0,
       "answeredCalls": 0,
@@ -257279,13 +257279,13 @@ window.SUPABASE_DATA = {
       "supervisorId": "b5d18b92-bb47-4a87-92d0-da7457aa2dac",
       "calledKeys": [
         "a2aa619998223ac6",
-        "03760be623a51d30",
-        "82c32ca1e78d65d7"
+        "82c32ca1e78d65d7",
+        "03760be623a51d30"
       ],
       "answeredKeys": [
         "a2aa619998223ac6",
-        "03760be623a51d30",
-        "82c32ca1e78d65d7"
+        "82c32ca1e78d65d7",
+        "03760be623a51d30"
       ],
       "calls": 0,
       "answeredCalls": 0,
@@ -293767,9 +293767,9 @@ window.SUPABASE_DATA = {
         "0b836dad507a2e63",
         "33052403a92420fc",
         "898d6aae812dd766",
-        "71fa6b49da379efb",
         "397724911e79f6f0",
-        "93ff31c521513a51"
+        "93ff31c521513a51",
+        "71fa6b49da379efb"
       ],
       "answeredKeys": [
         "93ff31c521513a51"
@@ -311535,9 +311535,9 @@ window.SUPABASE_DATA = {
         "ce62370dd730a2b8",
         "47f6855d4104335b",
         "1e500bcdc36fd99f",
-        "2d8123bbe939c78a",
         "59c145ea54547aba",
-        "3f6eb478e835b49e"
+        "3f6eb478e835b49e",
+        "2d8123bbe939c78a"
       ],
       "answeredKeys": [
         "e483d5889036967e",
@@ -311611,9 +311611,9 @@ window.SUPABASE_DATA = {
         "ce62370dd730a2b8",
         "47f6855d4104335b",
         "1e500bcdc36fd99f",
-        "2d8123bbe939c78a",
         "59c145ea54547aba",
-        "3f6eb478e835b49e"
+        "3f6eb478e835b49e",
+        "2d8123bbe939c78a"
       ],
       "calls": 142,
       "answeredCalls": 110,
@@ -312340,10 +312340,10 @@ window.SUPABASE_DATA = {
         "6b6a14b5789bc8f5",
         "127de2bf6aeb360c",
         "8f4b95376a11dcbc",
-        "ff40414a6fad6ae1",
         "bc4b6b6a84db34b0",
         "6cafbb396090b07c",
-        "a4ebbb2fcada4246"
+        "a4ebbb2fcada4246",
+        "ff40414a6fad6ae1"
       ],
       "answeredKeys": [
         "7c5fb7bb448589a6",
@@ -312365,10 +312365,10 @@ window.SUPABASE_DATA = {
         "6b6a14b5789bc8f5",
         "127de2bf6aeb360c",
         "8f4b95376a11dcbc",
-        "ff40414a6fad6ae1",
         "bc4b6b6a84db34b0",
         "6cafbb396090b07c",
-        "a4ebbb2fcada4246"
+        "a4ebbb2fcada4246",
+        "ff40414a6fad6ae1"
       ],
       "calls": 93,
       "answeredCalls": 77,
@@ -314576,8 +314576,8 @@ window.SUPABASE_DATA = {
       "calledKeys": [
         "726593af86d9d964",
         "dce38f53bfac6b35",
-        "6e3b720f102423cc",
-        "2ac536a638fab676"
+        "2ac536a638fab676",
+        "6e3b720f102423cc"
       ],
       "answeredKeys": [
         "726593af86d9d964",
