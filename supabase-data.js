@@ -2,7 +2,7 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-09-27T11:29:56.240Z",
+  "extractedAt": "2026-09-27T12:36:12.422Z",
   "asOfDate": "2026-09-27",
   "range": {
     "start": "2025-01",
