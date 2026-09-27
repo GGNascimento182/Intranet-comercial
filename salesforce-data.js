@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-27T12:36:04.8856401Z",
-  "startedAt": "2026-09-27T12:35:07.8737306Z",
+  "extractedAt": "2026-09-27T13:30:01.2253626Z",
+  "startedAt": "2026-09-27T13:28:53.6431520Z",
   "asOfDate": "2026-09-27",
   "range": {
     "start": "2025-01",
@@ -79,15 +79,15 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "connections": "2025-01-01",
-    "sales": "2025-01-01",
-    "pipeline": "2025-01-01",
     "appointments": "2025-03-11",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
     "totalSales": "2025-08-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1069 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3579 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3581 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 23 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -159,9 +159,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5019,
+      "records": 5021,
       "knownAmount": 2814055.34,
-      "missingAmounts": 3579
+      "missingAmounts": 3581
     },
     {
       "year": 2027,
