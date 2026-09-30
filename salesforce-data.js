@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-09-30T14:38:01.9625605Z",
-  "startedAt": "2026-09-30T14:37:04.6125892Z",
+  "extractedAt": "2026-09-30T15:37:23.5134438Z",
+  "startedAt": "2026-09-30T15:36:16.3566854Z",
   "asOfDate": "2026-09-30",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "totalSales": "2025-08-01",
-    "connections": "2025-01-01",
-    "sales": "2025-01-01",
     "appointments": "2025-03-11",
-    "pipeline": "2025-01-01"
+    "totalSales": "2025-08-01",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
+    "connections": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5000,
+      "records": 5001,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -152,8 +152,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "totalSales",
-      "records": 335,
-      "knownAmount": 690709.5499999999,
+      "records": 336,
+      "knownAmount": 691709.5499999999,
       "missingAmounts": 0
     },
     {
@@ -2641,6 +2641,17 @@ window.SALESFORCE_DATA = {
       "salesAmount": 0,
       "paidSales": 1,
       "paidAmount": 2964
+    },
+    {
+      "date": "2026-03-20",
+      "month": "2026-03",
+      "closerName": "Ana Caroline",
+      "supervisorName": "Daniele Canavesi",
+      "project": "IdealMarketing",
+      "sales": 1,
+      "salesAmount": 1000,
+      "paidSales": 0,
+      "paidAmount": 0
     },
     {
       "date": "2026-03-20",
@@ -10060,8 +10071,8 @@ window.SALESFORCE_DATA = {
       "appointments": 103,
       "connections": 20,
       "sales": 3,
-      "totalSales": 0,
-      "totalRevenue": 0,
+      "totalSales": 1,
+      "totalRevenue": 1000,
       "pipeline": 264382
     },
     {
@@ -10526,7 +10537,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 49985,
       "appointments": 375,
-      "connections": 189,
+      "connections": 190,
       "sales": 25,
       "totalSales": 28,
       "totalRevenue": 55784,
@@ -28054,8 +28065,8 @@ window.SALESFORCE_DATA = {
       "appointments": 10,
       "connections": 1,
       "sales": 0,
-      "totalSales": 0,
-      "totalRevenue": 0,
+      "totalSales": 1,
+      "totalRevenue": 1000,
       "pipeline": 9150
     },
     {
@@ -39700,7 +39711,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 4500,
       "appointments": 4,
-      "connections": 2,
+      "connections": 3,
       "sales": 2,
       "totalSales": 1,
       "totalRevenue": 2500,
