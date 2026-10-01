@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-01T10:35:17.8786167Z",
-  "startedAt": "2026-10-01T10:34:09.8068619Z",
+  "extractedAt": "2026-10-01T11:33:50.7073417Z",
+  "startedAt": "2026-10-01T11:32:45.7858754Z",
   "asOfDate": "2026-10-01",
   "range": {
     "start": "2025-01",
@@ -79,8 +79,8 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "pipeline": "2025-01-01",
-    "sales": "2025-01-01",
     "appointments": "2025-03-11",
+    "sales": "2025-01-01",
     "totalSales": "2025-08-01",
     "connections": "2025-01-01"
   },
@@ -10738,7 +10738,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 9967,
-      "appointments": 59,
+      "appointments": 58,
       "connections": 39,
       "sales": 5,
       "totalSales": 6,
@@ -10779,6 +10779,18 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 1,
       "totalRevenue": 2500,
+      "pipeline": 0
+    },
+    {
+      "month": "2026-10",
+      "supervisorId": "005bL0000092GukQAE",
+      "supervisorName": "Thais Leite",
+      "revenue": 0,
+      "appointments": 1,
+      "connections": 0,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
       "pipeline": 0
     },
     {
@@ -39795,7 +39807,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL0000092GukQAE",
       "supervisorName": "Thais Leite",
       "revenue": 0,
-      "appointments": 3,
+      "appointments": 2,
       "connections": 3,
       "sales": 0,
       "totalSales": 0,
@@ -39969,6 +39981,19 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 1,
       "totalRevenue": 2500,
+      "pipeline": 0
+    },
+    {
+      "date": "2026-10-01",
+      "month": "2026-10",
+      "supervisorId": "005bL0000092GukQAE",
+      "supervisorName": "Thais Leite",
+      "revenue": 0,
+      "appointments": 1,
+      "connections": 0,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
       "pipeline": 0
     },
     {
