@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-02T22:32:40.3356441Z",
-  "startedAt": "2026-10-02T22:31:32.4529030Z",
+  "extractedAt": "2026-10-02T23:29:56.3313559Z",
+  "startedAt": "2026-10-02T23:28:49.3201491Z",
   "asOfDate": "2026-10-02",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "sales": "2025-01-01",
-    "appointments": "2025-03-11",
     "pipeline": "2025-01-01",
+    "totalSales": "2025-08-01",
+    "appointments": "2025-03-11",
     "connections": "2025-01-01",
-    "totalSales": "2025-08-01"
+    "sales": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -9196,8 +9196,8 @@ window.SALESFORCE_DATA = {
       "closerName": "Felipe da Silva",
       "supervisorName": "Matheus Porto",
       "project": "BuscaCliente",
-      "sales": 2,
-      "salesAmount": 3100,
+      "sales": 1,
+      "salesAmount": 1600,
       "paidSales": 1,
       "paidAmount": 1600
     },
@@ -9273,21 +9273,10 @@ window.SALESFORCE_DATA = {
       "closerName": "Natalia Cardoso",
       "supervisorName": "Patrick Araújo",
       "project": "IdealMarketing",
-      "sales": 1,
-      "salesAmount": 2500,
-      "paidSales": 1,
-      "paidAmount": 2500
-    },
-    {
-      "date": "2026-09-30",
-      "month": "2026-09",
-      "closerName": "Natalia Cardoso",
-      "supervisorName": "Patrick Araújo",
-      "project": "BuscaCliente",
-      "sales": 1,
-      "salesAmount": 1850,
-      "paidSales": 1,
-      "paidAmount": 1850
+      "sales": 2,
+      "salesAmount": 4350,
+      "paidSales": 2,
+      "paidAmount": 4350
     },
     {
       "date": "2026-09-30",
@@ -9328,8 +9317,8 @@ window.SALESFORCE_DATA = {
       "closerName": "Felipe da Silva",
       "supervisorName": "Matheus Porto",
       "project": "BuscaCliente",
-      "sales": 0,
-      "salesAmount": 0,
+      "sales": 1,
+      "salesAmount": 1500,
       "paidSales": 1,
       "paidAmount": 1500
     },
@@ -10720,8 +10709,8 @@ window.SALESFORCE_DATA = {
       "appointments": 189,
       "connections": 111,
       "sales": 35,
-      "totalSales": 36,
-      "totalRevenue": 79485,
+      "totalSales": 35,
+      "totalRevenue": 77985,
       "pipeline": 0
     },
     {
@@ -10780,8 +10769,8 @@ window.SALESFORCE_DATA = {
       "appointments": 7,
       "connections": 5,
       "sales": 1,
-      "totalSales": 1,
-      "totalRevenue": 3120,
+      "totalSales": 2,
+      "totalRevenue": 4620,
       "pipeline": 0
     },
     {
@@ -39969,8 +39958,8 @@ window.SALESFORCE_DATA = {
       "appointments": 8,
       "connections": 5,
       "sales": 6,
-      "totalSales": 7,
-      "totalRevenue": 16340,
+      "totalSales": 6,
+      "totalRevenue": 14840,
       "pipeline": 0
     },
     {
@@ -40034,8 +40023,8 @@ window.SALESFORCE_DATA = {
       "appointments": 4,
       "connections": 1,
       "sales": 1,
-      "totalSales": 0,
-      "totalRevenue": 0,
+      "totalSales": 1,
+      "totalRevenue": 1500,
       "pipeline": 0
     },
     {
