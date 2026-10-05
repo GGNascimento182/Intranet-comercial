@@ -15,6 +15,16 @@ window.BUSINESS_PLAN = {
         {key:'im2',label:'IM 2 — Ideal Marketing 2',members:['Alessandro Melo','João Neto','Thiago Silva','Mateus Gayoso'],targets:[11038,11308,23338,23338,11250]},
         {key:'bc',label:'BC — Busca Cliente',project:'BuscaCliente',targets:[21120,26400,26400,26400,10560]}
       ]
+    },
+    '2026-10': {
+      // Mantém a meta mensal de setembro e a reparte pelos 21 dias úteis de
+      // outubro: S1=2, S2=5, S3=4 (12/10 é feriado), S4=5 e S5=5 dias.
+      // Assim, a distribuição segue a mesma lógica proporcional do plano.
+      teams: [
+        {key:'im',label:'IM — Ideal Marketing',project:'IdealMarketing',targets:[10956,27390,21912,27389,27389]},
+        {key:'im2',label:'IM 2 — Ideal Marketing 2',members:['Alessandro Melo','João Neto','Thiago Silva','Mateus Gayoso'],targets:[7645,19112,15290,19113,19112]},
+        {key:'bc',label:'BC — Busca Cliente',project:'BuscaCliente',targets:[10560,26400,21120,26400,26400]}
+      ]
     }
   }
 };

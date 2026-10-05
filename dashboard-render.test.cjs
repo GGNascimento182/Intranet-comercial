@@ -47,3 +47,8 @@ assert.doesNotMatch(roots['#bp-weekly'].innerHTML,/NaN|undefined/);
 assert.match(roots['#bp-history'].innerHTML,/BP/);
 assert.match(roots['#bp-status'].textContent,/dia útil/);
 for(const element of [...roots['#macro-metrics'].children,...roots['#history-metrics'].children])assert.doesNotMatch(element.innerHTML,/NaN|undefined/);
+roots['#bp-month'].value='2026-10';
+roots['#bp-month'].listeners.change();
+assert.match(roots['#bp-weekly'].innerHTML,/outubro de 2026/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?306\.188,00/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?10\.956,00/);
