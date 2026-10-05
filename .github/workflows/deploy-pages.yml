@@ -16,7 +16,9 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  # Uma publicação nova deve substituir uma execução presa na fila; o
+  # conteúdo mais recente da main é sempre a fonte do GitHub Pages.
+  cancel-in-progress: true
 
 jobs:
   refresh-data:
@@ -79,10 +81,9 @@ jobs:
           git push
 
   deploy-after-refresh:
-    needs: refresh-data
-    # O deploy só começa depois da carga. Isso evita publicar a versão que
-    # estava no checkout antes de o Supabase/Salesforce concluir a atualização.
-    if: ${{ needs.refresh-data.result == 'success' }}
+    # A publicação do front-end não pode ficar refém de uma carga externa
+    # demorada. Quando a carga gera um novo snapshot, o push do bot dispara
+    # este workflow novamente e publica os dados atualizados em seguida.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
