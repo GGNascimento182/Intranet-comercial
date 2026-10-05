@@ -6,6 +6,13 @@ window.BUSINESS_PLAN = {
       calls: 53825, schedulingRate: 0.04, appointments: 2153,
       connectionRate: 0.50, meetings: 1077, conversionRate: 0.20,
       sales: 215, revenue: 430750, ticket: 2001
+    },
+    '2026-10': {
+      // Esteira a partir das taxas do plano de setembro: 4% de agendamento,
+      // 50% de conexões e 20% de conversão. A receita é a meta global.
+      calls: 40750, schedulingRate: 0.04, appointments: 1630,
+      connectionRate: 0.50, meetings: 815, conversionRate: 0.20,
+      sales: 163, revenue: 326250, ticket: 2001
     }
   },
   weeklyCloserPlan: {
