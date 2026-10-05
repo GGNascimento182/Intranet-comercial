@@ -17,13 +17,13 @@ window.BUSINESS_PLAN = {
       ]
     },
     '2026-10': {
-      // Mantém a meta mensal de setembro e a reparte pelos 21 dias úteis de
-      // outubro: S1=2, S2=5, S3=4 (12/10 é feriado), S4=5 e S5=5 dias.
-      // Assim, a distribuição segue a mesma lógica proporcional do plano.
+      // Meta mensal de R$ 326.250,00, preservando a proporção entre os times
+      // e repartida pelos 21 dias úteis: S1=2, S2=5, S3=4 (12/10 é feriado),
+      // S4=5 e S5=5 dias.
       teams: [
-        {key:'im',label:'IM — Ideal Marketing',project:'IdealMarketing',targets:[10956,27390,21912,27389,27389]},
-        {key:'im2',label:'IM 2 — Ideal Marketing 2',members:['Alessandro Melo','João Neto','Thiago Silva','Mateus Gayoso'],targets:[7645,19112,15290,19113,19112]},
-        {key:'bc',label:'BC — Busca Cliente',project:'BuscaCliente',targets:[10560,26400,21120,26400,26400]}
+        {key:'im',label:'IM — Ideal Marketing',project:'IdealMarketing',targets:[11673.65,29184.14,23347.31,29184.14,29184.13]},
+        {key:'im2',label:'IM 2 — Ideal Marketing 2',members:['Alessandro Melo','João Neto','Thiago Silva','Mateus Gayoso'],targets:[8145.86,20364.66,16291.73,20364.66,20364.66]},
+        {key:'bc',label:'BC — Busca Cliente',project:'BuscaCliente',targets:[11251.91,28129.78,22503.82,28129.78,28129.77]}
       ]
     }
   }
