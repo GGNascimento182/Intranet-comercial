@@ -22,9 +22,10 @@ concurrency:
 
 jobs:
   refresh-data:
-    # Atualiza também após um push humano, para que correções de regra reflitam
-    # imediatamente. O commit gerado pelo próprio robô não reinicia o ciclo.
-    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    # Atualização pesada ocorre apenas na cadência agendada ou quando for
+    # acionada manualmente. Um push de interface deve publicar sem aguardar
+    # Salesforce/Supabase.
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
