@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-05T10:36:53.4389235Z",
-  "startedAt": "2026-10-05T10:35:45.5732465Z",
+  "extractedAt": "2026-10-05T11:36:42.8698906Z",
+  "startedAt": "2026-10-05T11:35:34.6760594Z",
   "asOfDate": "2026-10-05",
   "range": {
     "start": "2025-01",
@@ -80,9 +80,9 @@ window.SALESFORCE_DATA = {
   "firstDates": {
     "connections": "2025-01-01",
     "sales": "2025-01-01",
-    "pipeline": "2025-01-01",
     "totalSales": "2025-08-01",
-    "appointments": "2025-03-11"
+    "appointments": "2025-03-11",
+    "pipeline": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -39907,7 +39907,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 21779
+      "pipeline": 19259
     },
     {
       "date": "2026-10-02",
@@ -39998,7 +39998,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 31714
+      "pipeline": 34234
     },
     {
       "date": "2026-10-05",
