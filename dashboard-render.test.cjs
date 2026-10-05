@@ -52,4 +52,6 @@ roots['#bp-month'].value='2026-10';
 roots['#bp-month'].listeners.change();
 assert.match(roots['#bp-weekly'].innerHTML,/outubro de 2026/);
 assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?326\.250,00/);
-assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?11\.673,65/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?120\.625,00/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?40\.625,00/);
+assert.match(roots['#bp-weekly'].innerHTML,/R\$\s?165\.000,00/);
