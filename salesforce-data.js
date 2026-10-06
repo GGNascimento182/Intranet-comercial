@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-06T10:35:31.4650356Z",
-  "startedAt": "2026-10-06T10:34:23.3374589Z",
+  "extractedAt": "2026-10-06T11:34:11.4649103Z",
+  "startedAt": "2026-10-06T11:33:04.3443701Z",
   "asOfDate": "2026-10-06",
   "range": {
     "start": "2025-01",
@@ -79,10 +79,10 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "totalSales": "2025-08-01",
-    "connections": "2025-01-01",
-    "pipeline": "2025-01-01",
     "sales": "2025-01-01",
-    "appointments": "2025-03-11"
+    "connections": "2025-01-01",
+    "appointments": "2025-03-11",
+    "pipeline": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -10959,7 +10959,7 @@ window.SALESFORCE_DATA = {
       "sales": 1,
       "totalSales": 2,
       "totalRevenue": 3401,
-      "pipeline": 465353.75
+      "pipeline": 460933.75
     },
     {
       "month": "2026-09",
@@ -11031,7 +11031,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 229883
+      "pipeline": 234303
     },
     {
       "month": "2026-10",
@@ -38955,7 +38955,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 53374
+      "pipeline": 51374
     },
     {
       "date": "2026-09-10",
@@ -39163,7 +39163,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 14102
+      "pipeline": 16102
     },
     {
       "date": "2026-09-14",
@@ -39956,7 +39956,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 21018
+      "pipeline": 19398
     },
     {
       "date": "2026-09-28",
@@ -40086,7 +40086,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 45386
+      "pipeline": 42586
     },
     {
       "date": "2026-09-30",
@@ -40385,7 +40385,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 18860
+      "pipeline": 15860
     },
     {
       "date": "2026-10-10",
@@ -40398,7 +40398,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 1620
+      "pipeline": 6040
     },
     {
       "date": "2026-10-12",
@@ -40425,6 +40425,19 @@ window.SALESFORCE_DATA = {
       "totalSales": 0,
       "totalRevenue": 0,
       "pipeline": 3467
+    },
+    {
+      "date": "2026-10-15",
+      "month": "2026-10",
+      "supervisorId": "DISCONNECTED",
+      "supervisorName": "Desligados",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 0,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 3000
     },
     {
       "date": "2026-10-16",
