@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-06T15:34:50.9848268Z",
-  "startedAt": "2026-10-06T15:33:45.0172517Z",
+  "extractedAt": "2026-10-06T16:37:50.0123788Z",
+  "startedAt": "2026-10-06T16:36:42.7882647Z",
   "asOfDate": "2026-10-06",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
-    "connections": "2025-01-01",
     "totalSales": "2025-08-01",
-    "sales": "2025-01-01",
-    "pipeline": "2025-01-01"
+    "connections": "2025-01-01",
+    "appointments": "2025-03-11",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -131,7 +131,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9411,
+      "records": 9415,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -11026,7 +11026,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 29,
+      "appointments": 31,
       "connections": 6,
       "sales": 0,
       "totalSales": 0,
@@ -11038,7 +11038,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 2000,
-      "appointments": 40,
+      "appointments": 42,
       "connections": 15,
       "sales": 1,
       "totalSales": 2,
@@ -40211,7 +40211,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 2,
+      "appointments": 3,
       "connections": 3,
       "sales": 0,
       "totalSales": 0,
@@ -40341,7 +40341,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "DISCONNECTED",
       "supervisorName": "Desligados",
       "revenue": 0,
-      "appointments": 2,
+      "appointments": 3,
       "connections": 0,
       "sales": 0,
       "totalSales": 0,
@@ -40354,7 +40354,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
-      "appointments": 5,
+      "appointments": 7,
       "connections": 1,
       "sales": 0,
       "totalSales": 0,
