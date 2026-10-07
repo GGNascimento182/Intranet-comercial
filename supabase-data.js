@@ -2,7 +2,7 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-10-07T10:36:05.687Z",
+  "extractedAt": "2026-10-07T11:35:11.927Z",
   "asOfDate": "2026-10-07",
   "range": {
     "start": "2025-01",
@@ -330205,8 +330205,8 @@ window.SUPABASE_DATA = {
       "supervisorId": "b5d18b92-bb47-4a87-92d0-da7457aa2dac",
       "calledKeys": [],
       "answeredKeys": [],
-      "calls": 0,
-      "answeredCalls": 0,
+      "calls": 1,
+      "answeredCalls": 1,
       "appointments": 0,
       "connections": 0,
       "noShows": 0,
