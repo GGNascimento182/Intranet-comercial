@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-07T22:32:55.0410318Z",
-  "startedAt": "2026-10-07T22:31:49.9660406Z",
+  "extractedAt": "2026-10-07T23:31:13.6996099Z",
+  "startedAt": "2026-10-07T23:30:08.3611491Z",
   "asOfDate": "2026-10-07",
   "range": {
     "start": "2025-01",
@@ -78,16 +78,16 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
     "connections": "2025-01-01",
-    "appointments": "2025-03-11",
     "totalSales": "2025-08-01",
-    "sales": "2025-01-01"
+    "pipeline": "2025-01-01",
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1066 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3757 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3765 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 17 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5120,
+      "records": 5122,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -159,9 +159,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5221,
+      "records": 5229,
       "knownAmount": 2875564.34,
-      "missingAmounts": 3757
+      "missingAmounts": 3765
     },
     {
       "year": 2027,
@@ -11106,7 +11106,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 1600,
       "appointments": 104,
-      "connections": 35,
+      "connections": 37,
       "sales": 1,
       "totalSales": 4,
       "totalRevenue": 7700,
@@ -40500,7 +40500,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
       "appointments": 23,
-      "connections": 6,
+      "connections": 8,
       "sales": 0,
       "totalSales": 1,
       "totalRevenue": 2000,
