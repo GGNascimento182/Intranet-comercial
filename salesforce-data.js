@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-09T12:41:41.1589427Z",
-  "startedAt": "2026-10-09T12:40:34.1559981Z",
+  "extractedAt": "2026-10-09T13:39:06.1848637Z",
+  "startedAt": "2026-10-09T13:37:54.9363794Z",
   "asOfDate": "2026-10-09",
   "range": {
     "start": "2025-01",
@@ -78,16 +78,16 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "totalSales": "2025-08-01",
     "sales": "2025-01-01",
+    "connections": "2025-01-01",
     "pipeline": "2025-01-01",
     "appointments": "2025-03-11",
-    "connections": "2025-01-01"
+    "totalSales": "2025-08-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1063 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 3778 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3776 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 25 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "981 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -131,22 +131,22 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "appointments",
-      "records": 9565,
+      "records": 9571,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5157,
+      "records": 5159,
       "knownAmount": 0,
       "missingAmounts": 0
     },
     {
       "year": 2026,
       "metric": "sales",
-      "records": 730,
-      "knownAmount": 1377319.8500000003,
+      "records": 732,
+      "knownAmount": 1381237.8500000003,
       "missingAmounts": 0
     },
     {
@@ -159,9 +159,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5251,
-      "knownAmount": 2896676.34,
-      "missingAmounts": 3778
+      "records": 5249,
+      "knownAmount": 2898268.34,
+      "missingAmounts": 3776
     },
     {
       "year": 2027,
@@ -9715,8 +9715,8 @@ window.SALESFORCE_DATA = {
       "project": "BuscaCliente",
       "sales": 1,
       "salesAmount": 2318,
-      "paidSales": 0,
-      "paidAmount": 0
+      "paidSales": 1,
+      "paidAmount": 2318
     },
     {
       "date": "2026-10-08",
@@ -9726,8 +9726,8 @@ window.SALESFORCE_DATA = {
       "project": "BuscaCliente",
       "sales": 1,
       "salesAmount": 1600,
-      "paidSales": 0,
-      "paidAmount": 0
+      "paidSales": 1,
+      "paidAmount": 1600
     },
     {
       "date": "2026-10-08",
@@ -10490,7 +10490,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 42371,
       "appointments": 321,
-      "connections": 151,
+      "connections": 152,
       "sales": 23,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -10526,7 +10526,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Thais Leite",
       "revenue": 5800,
       "appointments": 87,
-      "connections": 65,
+      "connections": 64,
       "sales": 4,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -11130,15 +11130,15 @@ window.SALESFORCE_DATA = {
       "sales": 1,
       "totalSales": 1,
       "totalRevenue": 2000,
-      "pipeline": 484278
+      "pipeline": 485870
     },
     {
       "month": "2026-10",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 3650,
-      "appointments": 85,
-      "connections": 30,
+      "appointments": 87,
+      "connections": 31,
       "sales": 2,
       "totalSales": 3,
       "totalRevenue": 5640,
@@ -11148,10 +11148,10 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
-      "revenue": 1600,
-      "appointments": 129,
-      "connections": 52,
-      "sales": 1,
+      "revenue": 5518,
+      "appointments": 132,
+      "connections": 53,
+      "sales": 3,
       "totalSales": 6,
       "totalRevenue": 11618,
       "pipeline": 0
@@ -11173,7 +11173,7 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL00000FhaPOQAZ",
       "supervisorName": "Willian Cardoso",
       "revenue": 8690,
-      "appointments": 44,
+      "appointments": 45,
       "connections": 17,
       "sales": 4,
       "totalSales": 8,
@@ -24931,7 +24931,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 3180,
       "appointments": 14,
-      "connections": 9,
+      "connections": 10,
       "sales": 2,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -24970,7 +24970,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Thais Leite",
       "revenue": 0,
       "appointments": 6,
-      "connections": 5,
+      "connections": 4,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -40574,7 +40574,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 29031
+      "pipeline": 25113
     },
     {
       "date": "2026-10-08",
@@ -40594,10 +40594,10 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
-      "revenue": 0,
+      "revenue": 3918,
       "appointments": 25,
       "connections": 11,
-      "sales": 0,
+      "sales": 2,
       "totalSales": 2,
       "totalRevenue": 3918,
       "pipeline": 0
@@ -40639,7 +40639,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 65113
+      "pipeline": 69003
     },
     {
       "date": "2026-10-09",
@@ -40647,8 +40647,8 @@ window.SALESFORCE_DATA = {
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
-      "appointments": 0,
-      "connections": 1,
+      "appointments": 2,
+      "connections": 2,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -40659,6 +40659,19 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "supervisorId": "005bL000007dcX6QAI",
       "supervisorName": "Samantha Jeronimo",
+      "revenue": 0,
+      "appointments": 4,
+      "connections": 1,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 0
+    },
+    {
+      "date": "2026-10-09",
+      "month": "2026-10",
+      "supervisorId": "005bL00000FhaPOQAZ",
+      "supervisorName": "Willian Cardoso",
       "revenue": 0,
       "appointments": 1,
       "connections": 0,
@@ -40717,7 +40730,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 54430
+      "pipeline": 56050
     },
     {
       "date": "2026-10-14",
