@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-10T14:32:58.6766652Z",
-  "startedAt": "2026-10-10T14:31:50.6321941Z",
+  "extractedAt": "2026-10-10T15:33:05.6803733Z",
+  "startedAt": "2026-10-10T15:32:01.6860302Z",
   "asOfDate": "2026-10-10",
   "range": {
     "start": "2025-01",
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
-    "totalSales": "2025-08-01",
     "sales": "2025-01-01",
     "connections": "2025-01-01",
+    "totalSales": "2025-08-01",
+    "appointments": "2025-03-11",
     "pipeline": "2025-01-01"
   },
   "warnings": [
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5181,
+      "records": 5182,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -11215,7 +11215,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 10060,
       "appointments": 98,
-      "connections": 37,
+      "connections": 38,
       "sales": 4,
       "totalSales": 6,
       "totalRevenue": 14055,
@@ -40790,7 +40790,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
       "appointments": 0,
-      "connections": 1,
+      "connections": 2,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
