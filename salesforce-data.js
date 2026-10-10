@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-10T12:39:56.0968836Z",
-  "startedAt": "2026-10-10T12:38:48.9544722Z",
+  "extractedAt": "2026-10-10T13:34:01.1532862Z",
+  "startedAt": "2026-10-10T13:32:56.2000713Z",
   "asOfDate": "2026-10-10",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
-    "totalSales": "2025-08-01",
     "pipeline": "2025-01-01",
+    "totalSales": "2025-08-01",
+    "sales": "2025-01-01",
     "connections": "2025-01-01",
-    "sales": "2025-01-01"
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5177,
+      "records": 5180,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -10843,7 +10843,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 18697,
       "appointments": 176,
-      "connections": 136,
+      "connections": 137,
       "sales": 11,
       "totalSales": 1,
       "totalRevenue": 2997,
@@ -10879,7 +10879,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 34738,
       "appointments": 292,
-      "connections": 207,
+      "connections": 206,
       "sales": 16,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -11215,7 +11215,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 10060,
       "appointments": 98,
-      "connections": 36,
+      "connections": 37,
       "sales": 4,
       "totalSales": 6,
       "totalRevenue": 14055,
@@ -11227,7 +11227,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 5518,
       "appointments": 151,
-      "connections": 59,
+      "connections": 61,
       "sales": 3,
       "totalSales": 8,
       "totalRevenue": 15218,
@@ -32873,7 +32873,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 0,
       "appointments": 2,
-      "connections": 1,
+      "connections": 2,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -32912,7 +32912,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 4700,
       "appointments": 14,
-      "connections": 9,
+      "connections": 8,
       "sales": 3,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -40751,7 +40751,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
       "appointments": 24,
-      "connections": 7,
+      "connections": 9,
       "sales": 0,
       "totalSales": 2,
       "totalRevenue": 3600,
@@ -40782,6 +40782,19 @@ window.SALESFORCE_DATA = {
       "totalSales": 0,
       "totalRevenue": 0,
       "pipeline": 147652
+    },
+    {
+      "date": "2026-10-10",
+      "month": "2026-10",
+      "supervisorId": "005bL000007dcn4QAA",
+      "supervisorName": "Guilherme Bispo",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 1,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 0
     },
     {
       "date": "2026-10-11",
