@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-09T23:32:48.7286237Z",
-  "startedAt": "2026-10-09T23:31:52.8210497Z",
-  "asOfDate": "2026-10-09",
+  "extractedAt": "2026-10-10T10:33:08.7846814Z",
+  "startedAt": "2026-10-10T10:32:01.8553936Z",
+  "asOfDate": "2026-10-10",
   "range": {
     "start": "2025-01",
     "end": "2027-12"
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
     "sales": "2025-01-01",
-    "connections": "2025-01-01",
     "totalSales": "2025-08-01",
-    "pipeline": "2025-01-01"
+    "connections": "2025-01-01",
+    "pipeline": "2025-01-01",
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -40781,7 +40781,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 151272
+      "pipeline": 147652
     },
     {
       "date": "2026-10-11",
@@ -40862,6 +40862,19 @@ window.SALESFORCE_DATA = {
       "pipeline": 33376
     },
     {
+      "date": "2026-10-17",
+      "month": "2026-10",
+      "supervisorId": "DISCONNECTED",
+      "supervisorName": "Desligados",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 0,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 2000
+    },
+    {
       "date": "2026-10-19",
       "month": "2026-10",
       "supervisorId": "DISCONNECTED",
@@ -40925,6 +40938,19 @@ window.SALESFORCE_DATA = {
       "totalSales": 0,
       "totalRevenue": 0,
       "pipeline": 2000
+    },
+    {
+      "date": "2026-10-25",
+      "month": "2026-10",
+      "supervisorId": "DISCONNECTED",
+      "supervisorName": "Desligados",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 0,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 1620
     },
     {
       "date": "2026-10-26",
