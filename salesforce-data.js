@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-11T16:34:44.3965551Z",
-  "startedAt": "2026-10-11T16:33:37.1921091Z",
+  "extractedAt": "2026-10-11T17:33:19.5690262Z",
+  "startedAt": "2026-10-11T17:32:12.1299792Z",
   "asOfDate": "2026-10-11",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "totalSales": "2025-08-01",
     "connections": "2025-01-01",
+    "appointments": "2025-03-11",
     "pipeline": "2025-01-01",
     "sales": "2025-01-01",
-    "appointments": "2025-03-11"
+    "totalSales": "2025-08-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -9859,7 +9859,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 11474,
       "appointments": 0,
-      "connections": 10,
+      "connections": 11,
       "sales": 7,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -10363,7 +10363,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 31564,
       "appointments": 186,
-      "connections": 106,
+      "connections": 105,
       "sales": 15,
       "totalSales": 0,
       "totalRevenue": 0,
@@ -11607,6 +11607,19 @@ window.SALESFORCE_DATA = {
       "appointments": 0,
       "connections": 4,
       "sales": 3,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 0
+    },
+    {
+      "date": "2025-01-14",
+      "month": "2025-01",
+      "supervisorId": "005bL000007dcn4QAA",
+      "supervisorName": "Guilherme Bispo",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 1,
+      "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
       "pipeline": 0
@@ -20562,7 +20575,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
       "appointments": 7,
-      "connections": 12,
+      "connections": 11,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
