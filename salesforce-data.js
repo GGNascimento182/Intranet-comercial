@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-11T15:33:57.3399111Z",
-  "startedAt": "2026-10-11T15:32:50.0786162Z",
+  "extractedAt": "2026-10-11T16:34:44.3965551Z",
+  "startedAt": "2026-10-11T16:33:37.1921091Z",
   "asOfDate": "2026-10-11",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
-    "sales": "2025-01-01",
-    "connections": "2025-01-01",
     "totalSales": "2025-08-01",
-    "pipeline": "2025-01-01"
+    "connections": "2025-01-01",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -40729,7 +40729,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 49315
+      "pipeline": 47263
     },
     {
       "date": "2026-10-09",
@@ -40833,7 +40833,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 16527
+      "pipeline": 12527
     },
     {
       "date": "2026-10-13",
@@ -40846,7 +40846,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 83212
+      "pipeline": 80932
     },
     {
       "date": "2026-10-14",
@@ -40859,7 +40859,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 30240
+      "pipeline": 34520
     },
     {
       "date": "2026-10-15",
@@ -40872,7 +40872,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 14720
+      "pipeline": 16720
     },
     {
       "date": "2026-10-16",
@@ -40885,7 +40885,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 33376
+      "pipeline": 35428
     },
     {
       "date": "2026-10-17",
