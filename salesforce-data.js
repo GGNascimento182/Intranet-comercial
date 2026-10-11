@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-10T23:31:16.9235274Z",
-  "startedAt": "2026-10-10T23:30:35.8453650Z",
-  "asOfDate": "2026-10-10",
+  "extractedAt": "2026-10-11T10:34:04.1870581Z",
+  "startedAt": "2026-10-11T10:32:57.1335198Z",
+  "asOfDate": "2026-10-11",
   "range": {
     "start": "2025-01",
     "end": "2027-12"
@@ -78,10 +78,10 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "pipeline": "2025-01-01",
     "connections": "2025-01-01",
-    "sales": "2025-01-01",
     "totalSales": "2025-08-01",
+    "pipeline": "2025-01-01",
+    "sales": "2025-01-01",
     "appointments": "2025-03-11"
   },
   "warnings": [
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5184,
+      "records": 5185,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -11227,7 +11227,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 5518,
       "appointments": 152,
-      "connections": 63,
+      "connections": 64,
       "sales": 3,
       "totalSales": 8,
       "totalRevenue": 15218,
@@ -40582,7 +40582,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
       "appointments": 27,
-      "connections": 10,
+      "connections": 11,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
