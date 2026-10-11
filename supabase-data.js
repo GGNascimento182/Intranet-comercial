@@ -2,7 +2,7 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-10-11T19:33:11.456Z",
+  "extractedAt": "2026-10-11T20:34:29.658Z",
   "asOfDate": "2026-10-11",
   "range": {
     "start": "2025-01",
@@ -19440,28 +19440,6 @@ window.SUPABASE_DATA = {
       "soldAmount": 0,
       "paidDeals": 0,
       "paidAmount": 0,
-      "pendingDeals": 0,
-      "pendingAmount": 0
-    },
-    {
-      "date": "2025-05-19",
-      "month": "2025-05",
-      "memberId": "a4cf0272-78cd-41d9-9323-b661e174592e",
-      "role": "closer",
-      "supervisorId": "41e6ca2b-753e-4af8-a04d-567dd09f6717",
-      "calledKeys": [],
-      "answeredKeys": [],
-      "calls": 0,
-      "answeredCalls": 0,
-      "appointments": 0,
-      "connections": 0,
-      "noShows": 0,
-      "futureMeetings": 0,
-      "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 1000,
-      "paidDeals": 1,
-      "paidAmount": 1000,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
