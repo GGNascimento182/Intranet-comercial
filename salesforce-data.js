@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-12T16:37:39.1595213Z",
-  "startedAt": "2026-10-12T16:36:32.0603020Z",
+  "extractedAt": "2026-10-12T17:36:47.9746653Z",
+  "startedAt": "2026-10-12T17:35:59.2372045Z",
   "asOfDate": "2026-10-12",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-03-11",
+    "sales": "2025-01-01",
     "connections": "2025-01-01",
-    "totalSales": "2025-08-01",
+    "appointments": "2025-03-11",
     "pipeline": "2025-01-01",
-    "sales": "2025-01-01"
+    "totalSales": "2025-08-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5185,
+      "records": 5186,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -11215,7 +11215,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 10060,
       "appointments": 98,
-      "connections": 38,
+      "connections": 39,
       "sales": 4,
       "totalSales": 6,
       "totalRevenue": 14055,
@@ -40803,7 +40803,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 0,
       "appointments": 0,
-      "connections": 2,
+      "connections": 3,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
