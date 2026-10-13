@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-13T15:40:44.8525619Z",
-  "startedAt": "2026-10-13T15:39:37.9556683Z",
+  "extractedAt": "2026-10-13T16:40:00.5263520Z",
+  "startedAt": "2026-10-13T16:38:53.4555553Z",
   "asOfDate": "2026-10-13",
   "range": {
     "start": "2025-01",
@@ -80,9 +80,9 @@ window.SALESFORCE_DATA = {
   "firstDates": {
     "totalSales": "2025-08-01",
     "sales": "2025-01-01",
+    "pipeline": "2025-01-01",
     "connections": "2025-01-01",
-    "appointments": "2025-03-11",
-    "pipeline": "2025-01-01"
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -159,8 +159,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5275,
-      "knownAmount": 2883520.34,
+      "records": 5277,
+      "knownAmount": 2888457.34,
       "missingAmounts": 3808
     },
     {
@@ -11157,7 +11157,7 @@ window.SALESFORCE_DATA = {
       "sales": 2,
       "totalSales": 3,
       "totalRevenue": 5401,
-      "pipeline": 328770.75
+      "pipeline": 331335.75
     },
     {
       "month": "2026-09",
@@ -11229,7 +11229,7 @@ window.SALESFORCE_DATA = {
       "sales": 1,
       "totalSales": 1,
       "totalRevenue": 2000,
-      "pipeline": 527102
+      "pipeline": 529474
     },
     {
       "month": "2026-10",
@@ -39984,7 +39984,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 13930
+      "pipeline": 15730
     },
     {
       "date": "2026-09-24",
@@ -40049,7 +40049,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 18847
+      "pipeline": 21984
     },
     {
       "date": "2026-09-25",
@@ -40322,7 +40322,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 34853
+      "pipeline": 32481
     },
     {
       "date": "2026-09-30",
@@ -40868,7 +40868,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 72496
+      "pipeline": 74868
     },
     {
       "date": "2026-10-13",
