@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-13T23:44:13.5599147Z",
-  "startedAt": "2026-10-13T23:43:06.3497567Z",
-  "asOfDate": "2026-10-13",
+  "extractedAt": "2026-10-14T10:51:29.7498393Z",
+  "startedAt": "2026-10-14T10:50:19.9262364Z",
+  "asOfDate": "2026-10-14",
   "range": {
     "start": "2025-01",
     "end": "2027-12"
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "pipeline": "2025-01-01",
-    "appointments": "2025-03-11",
-    "connections": "2025-01-01",
+    "sales": "2025-01-01",
     "totalSales": "2025-08-01",
-    "sales": "2025-01-01"
+    "appointments": "2025-03-11",
+    "pipeline": "2025-01-01",
+    "connections": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -138,7 +138,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5202,
+      "records": 5204,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -11258,7 +11258,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 2000,
       "appointments": 82,
-      "connections": 35,
+      "connections": 36,
       "sales": 1,
       "totalSales": 2,
       "totalRevenue": 4052,
@@ -11270,7 +11270,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Guilherme Bispo",
       "revenue": 12065,
       "appointments": 114,
-      "connections": 42,
+      "connections": 43,
       "sales": 5,
       "totalSales": 8,
       "totalRevenue": 18275,
@@ -40949,11 +40949,24 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 0,
       "appointments": 0,
-      "connections": 0,
+      "connections": 1,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
       "pipeline": 72971
+    },
+    {
+      "date": "2026-10-14",
+      "month": "2026-10",
+      "supervisorId": "005bL000007dcn4QAA",
+      "supervisorName": "Guilherme Bispo",
+      "revenue": 0,
+      "appointments": 0,
+      "connections": 1,
+      "sales": 0,
+      "totalSales": 0,
+      "totalRevenue": 0,
+      "pipeline": 0
     },
     {
       "date": "2026-10-15",
