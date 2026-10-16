@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-15T22:26:12.8564501Z",
-  "startedAt": "2026-10-15T22:25:05.8645022Z",
+  "extractedAt": "2026-10-16T01:26:55.8419075Z",
+  "startedAt": "2026-10-16T01:26:00.0665449Z",
   "asOfDate": "2026-10-15",
   "range": {
     "start": "2025-01",
@@ -79,16 +79,16 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "connections": "2025-01-01",
+    "pipeline": "2025-01-01",
     "totalSales": "2025-08-01",
     "sales": "2025-01-01",
-    "appointments": "2025-03-11",
-    "pipeline": "2025-01-01"
+    "appointments": "2025-03-11"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1055 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2026: 1 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
-    "2026: 3865 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 3877 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 32 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "980 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -139,7 +139,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5255,
+      "records": 5256,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -160,9 +160,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5325,
+      "records": 5337,
       "knownAmount": 2874246.34,
-      "missingAmounts": 3865
+      "missingAmounts": 3877
     },
     {
       "year": 2027,
@@ -11338,7 +11338,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 13867,
       "appointments": 209,
-      "connections": 80,
+      "connections": 81,
       "sales": 8,
       "totalSales": 10,
       "totalRevenue": 17467,
@@ -41083,7 +41083,7 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Samantha Jeronimo",
       "revenue": 0,
       "appointments": 22,
-      "connections": 3,
+      "connections": 4,
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
