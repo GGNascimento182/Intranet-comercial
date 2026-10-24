@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-23T23:12:52.8846271Z",
-  "startedAt": "2026-10-23T23:11:47.6730118Z",
+  "extractedAt": "2026-10-24T01:39:58.0385644Z",
+  "startedAt": "2026-10-24T01:38:57.7616355Z",
   "asOfDate": "2026-10-23",
   "range": {
     "start": "2025-01",
@@ -79,14 +79,15 @@ window.SALESFORCE_DATA = {
   ],
   "firstDates": {
     "appointments": "2025-03-11",
-    "sales": "2025-01-01",
     "totalSales": "2025-08-01",
     "connections": "2025-01-01",
+    "sales": "2025-01-01",
     "pipeline": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1056 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 1 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2026: 4010 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 29 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "979 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
@@ -138,7 +139,7 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "connections",
-      "records": 5434,
+      "records": 5435,
       "knownAmount": 0,
       "missingAmounts": 0
     },
@@ -152,9 +153,9 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "totalSales",
-      "records": 395,
+      "records": 396,
       "knownAmount": 820003.5499999999,
-      "missingAmounts": 0
+      "missingAmounts": 1
     },
     {
       "year": 2026,
@@ -10216,6 +10217,17 @@ window.SALESFORCE_DATA = {
     {
       "date": "2026-10-23",
       "month": "2026-10",
+      "closerName": "Kaio Miranda",
+      "supervisorName": "Matheus Porto",
+      "project": "BuscaCliente",
+      "sales": 1,
+      "salesAmount": 0,
+      "paidSales": 0,
+      "paidAmount": 0
+    },
+    {
+      "date": "2026-10-23",
+      "month": "2026-10",
       "closerName": "Leandro Sgambatti",
       "supervisorName": "Amanda Sicala",
       "project": "IdealMarketing",
@@ -11632,9 +11644,9 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 11087,
       "appointments": 161,
-      "connections": 63,
+      "connections": 64,
       "sales": 5,
-      "totalSales": 4,
+      "totalSales": 5,
       "totalRevenue": 8587,
       "pipeline": 580375
     },
@@ -41791,9 +41803,9 @@ window.SALESFORCE_DATA = {
       "supervisorName": "Desligados",
       "revenue": 0,
       "appointments": 8,
-      "connections": 4,
+      "connections": 5,
       "sales": 0,
-      "totalSales": 0,
+      "totalSales": 1,
       "totalRevenue": 0,
       "pipeline": 49276
     },
