@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-31T20:03:10.2018612Z",
-  "startedAt": "2026-10-31T20:02:00.9569460Z",
+  "extractedAt": "2026-10-31T23:27:27.4603643Z",
+  "startedAt": "2026-10-31T23:26:18.4430341Z",
   "asOfDate": "2026-10-31",
   "range": {
     "start": "2025-01",
@@ -78,11 +78,11 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "sales": "2025-01-01",
     "connections": "2025-01-01",
-    "pipeline": "2025-01-01",
+    "totalSales": "2025-08-01",
+    "sales": "2025-01-01",
     "appointments": "2025-03-11",
-    "totalSales": "2025-08-01"
+    "pipeline": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
@@ -145,8 +145,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "sales",
-      "records": 807,
-      "knownAmount": 1542200.8500000003,
+      "records": 808,
+      "knownAmount": 1544080.8500000003,
       "missingAmounts": 0
     },
     {
@@ -159,8 +159,8 @@ window.SALESFORCE_DATA = {
     {
       "year": 2026,
       "metric": "pipeline",
-      "records": 5517,
-      "knownAmount": 2771428.24,
+      "records": 5516,
+      "knownAmount": 2769548.24,
       "missingAmounts": 4115
     },
     {
@@ -10617,8 +10617,8 @@ window.SALESFORCE_DATA = {
       "project": "IdealMarketing",
       "sales": 1,
       "salesAmount": 1880,
-      "paidSales": 0,
-      "paidAmount": 0
+      "paidSales": 1,
+      "paidAmount": 1880
     }
   ],
   "rows": [
@@ -11988,16 +11988,16 @@ window.SALESFORCE_DATA = {
       "sales": 11,
       "totalSales": 9,
       "totalRevenue": 18487,
-      "pipeline": 391005
+      "pipeline": 389125
     },
     {
       "month": "2026-10",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
-      "revenue": 62243,
+      "revenue": 64123,
       "appointments": 470,
       "connections": 251,
-      "sales": 27,
+      "sales": 28,
       "totalSales": 30,
       "totalRevenue": 67723,
       "pipeline": 0
@@ -42590,17 +42590,17 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 23942
+      "pipeline": 22062
     },
     {
       "date": "2026-10-31",
       "month": "2026-10",
       "supervisorId": "005bL000007dcn4QAA",
       "supervisorName": "Guilherme Bispo",
-      "revenue": 0,
+      "revenue": 1880,
       "appointments": 10,
       "connections": 6,
-      "sales": 0,
+      "sales": 1,
       "totalSales": 1,
       "totalRevenue": 1880,
       "pipeline": 0
