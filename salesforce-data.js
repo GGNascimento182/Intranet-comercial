@@ -4,9 +4,9 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-10-31T23:27:27.4603643Z",
-  "startedAt": "2026-10-31T23:26:18.4430341Z",
-  "asOfDate": "2026-10-31",
+  "extractedAt": "2026-11-01T16:51:17.5321879Z",
+  "startedAt": "2026-11-01T16:50:09.3875170Z",
+  "asOfDate": "2026-11-01",
   "range": {
     "start": "2025-01",
     "end": "2027-12"
@@ -78,9 +78,9 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "connections": "2025-01-01",
     "totalSales": "2025-08-01",
     "sales": "2025-01-01",
+    "connections": "2025-01-01",
     "appointments": "2025-03-11",
     "pipeline": "2025-01-01"
   },
@@ -734,6 +734,12 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "metric": "appointments",
       "complete": true,
+      "partialPeriod": false
+    },
+    {
+      "month": "2026-11",
+      "metric": "appointments",
+      "complete": true,
       "partialPeriod": true
     },
     {
@@ -794,6 +800,12 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "metric": "connections",
       "complete": true,
+      "partialPeriod": false
+    },
+    {
+      "month": "2026-11",
+      "metric": "connections",
+      "complete": true,
       "partialPeriod": true
     },
     {
@@ -908,10 +920,22 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "metric": "sales",
       "complete": true,
-      "partialPeriod": true
+      "partialPeriod": false
     },
     {
       "month": "2026-10",
+      "metric": "revenue",
+      "complete": true,
+      "partialPeriod": false
+    },
+    {
+      "month": "2026-11",
+      "metric": "sales",
+      "complete": true,
+      "partialPeriod": true
+    },
+    {
+      "month": "2026-11",
       "metric": "revenue",
       "complete": true,
       "partialPeriod": true
@@ -1028,10 +1052,22 @@ window.SALESFORCE_DATA = {
       "month": "2026-10",
       "metric": "totalSales",
       "complete": true,
-      "partialPeriod": true
+      "partialPeriod": false
     },
     {
       "month": "2026-10",
+      "metric": "totalRevenue",
+      "complete": true,
+      "partialPeriod": false
+    },
+    {
+      "month": "2026-11",
+      "metric": "totalSales",
+      "complete": true,
+      "partialPeriod": true
+    },
+    {
+      "month": "2026-11",
       "metric": "totalRevenue",
       "complete": true,
       "partialPeriod": true
@@ -11988,7 +12024,7 @@ window.SALESFORCE_DATA = {
       "sales": 11,
       "totalSales": 9,
       "totalRevenue": 18487,
-      "pipeline": 389125
+      "pipeline": 375581
     },
     {
       "month": "2026-10",
@@ -12048,7 +12084,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 329169
+      "pipeline": 342713
     },
     {
       "month": "2026-12",
@@ -42460,7 +42496,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 31878
+      "pipeline": 29028
     },
     {
       "date": "2026-10-29",
@@ -42525,7 +42561,7 @@ window.SALESFORCE_DATA = {
       "sales": 2,
       "totalSales": 2,
       "totalRevenue": 4000,
-      "pipeline": 80836
+      "pipeline": 73539
     },
     {
       "date": "2026-10-30",
@@ -42590,7 +42626,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 22062
+      "pipeline": 18665
     },
     {
       "date": "2026-10-31",
@@ -42707,7 +42743,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 40994
+      "pipeline": 54538
     },
     {
       "date": "2026-11-09",
