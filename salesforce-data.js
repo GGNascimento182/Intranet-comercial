@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-11-07T20:57:26.4320161Z",
-  "startedAt": "2026-11-07T20:56:26.5952010Z",
+  "extractedAt": "2026-11-08T00:43:56.5780851Z",
+  "startedAt": "2026-11-08T00:42:48.4332959Z",
   "asOfDate": "2026-11-07",
   "range": {
     "start": "2025-01",
