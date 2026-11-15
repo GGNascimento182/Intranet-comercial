@@ -2,7 +2,7 @@
 window.SUPABASE_DATA = {
   "schemaVersion": 1,
   "source": "Supabase (snapshot agregado)",
-  "extractedAt": "2026-11-15T17:16:13.320Z",
+  "extractedAt": "2026-11-15T21:54:41.663Z",
   "asOfDate": "2026-11-15",
   "range": {
     "start": "2025-01",
@@ -25010,10 +25010,10 @@ window.SUPABASE_DATA = {
       "noShows": 0,
       "futureMeetings": 0,
       "appointmentsReceived": 0,
-      "soldDeals": 1,
-      "soldAmount": 1100,
-      "paidDeals": 1,
-      "paidAmount": 1100,
+      "soldDeals": 2,
+      "soldAmount": 2200,
+      "paidDeals": 2,
+      "paidAmount": 2200,
       "pendingDeals": 0,
       "pendingAmount": 0
     },
