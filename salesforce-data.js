@@ -4,8 +4,8 @@ window.SALESFORCE_DATA = {
   "source": "Salesforce CLI",
   "status": "loaded",
   "currency": "BRL",
-  "extractedAt": "2026-11-22T17:53:25.4208055Z",
-  "startedAt": "2026-11-22T17:52:17.4949774Z",
+  "extractedAt": "2026-11-22T23:40:06.1487832Z",
+  "startedAt": "2026-11-22T23:38:57.2133210Z",
   "asOfDate": "2026-11-22",
   "range": {
     "start": "2025-01",
@@ -78,16 +78,16 @@ window.SALESFORCE_DATA = {
     }
   ],
   "firstDates": {
-    "appointments": "2025-04-01",
-    "pipeline": "2025-01-01",
     "totalSales": "2025-08-01",
+    "pipeline": "2025-01-01",
     "connections": "2025-01-01",
+    "appointments": "2025-04-01",
     "sales": "2025-01-01"
   },
   "warnings": [
     "2025: 11 oportunidades de venda sem Amount; a soma considera esses registros como zero.",
     "2025: 1052 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
-    "2026: 4315 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
+    "2026: 4314 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "2027: 70 oportunidades de pipeline sem Amount; a soma considera esses registros como zero.",
     "978 oportunidades marcadas como Conectada estão sem data da reunião na base acessível e não podem ser alocadas em meses.",
     "1 reuniões com a data inconsistente 30/12/1899 foram excluídas do histórico."
@@ -160,8 +160,8 @@ window.SALESFORCE_DATA = {
       "year": 2026,
       "metric": "pipeline",
       "records": 5737,
-      "knownAmount": 2851413.24,
-      "missingAmounts": 4315
+      "knownAmount": 2853513.24,
+      "missingAmounts": 4314
     },
     {
       "year": 2027,
@@ -12587,7 +12587,7 @@ window.SALESFORCE_DATA = {
       "sales": 7,
       "totalSales": 7,
       "totalRevenue": 15988,
-      "pipeline": 647577
+      "pipeline": 649677
     },
     {
       "month": "2026-11",
@@ -44269,7 +44269,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 56620
+      "pipeline": 54568
     },
     {
       "date": "2026-11-19",
@@ -44334,7 +44334,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 16843
+      "pipeline": 14743
     },
     {
       "date": "2026-11-21",
@@ -44373,7 +44373,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 55696
+      "pipeline": 59848
     },
     {
       "date": "2026-11-24",
@@ -44399,7 +44399,7 @@ window.SALESFORCE_DATA = {
       "sales": 0,
       "totalSales": 0,
       "totalRevenue": 0,
-      "pipeline": 28526
+      "pipeline": 30626
     },
     {
       "date": "2026-11-26",
